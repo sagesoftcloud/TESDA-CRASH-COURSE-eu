@@ -1,1 +1,1 @@
-This is for the end-user only.
+This is for the TESDA end-user only.
