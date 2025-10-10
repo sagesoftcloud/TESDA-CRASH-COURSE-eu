@@ -1,0 +1,2288 @@
+{
+  "conversation_id": "3f12b9d2-12c7-443f-ae9a-af2f95c6c27f",
+  "next_message": null,
+  "history": [
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "Prompt": {
+            "prompt": "if I /save 1st this converstation it will automatically save?"
+          }
+        },
+        "timestamp": "2025-10-10T09:44:41.497522+08:00",
+        "images": null
+      },
+      "assistant": {
+        "ToolUse": {
+          "message_id": "54398350-bcae-4da9-aea8-7580a25b17d9",
+          "content": "",
+          "tool_uses": [
+            {
+              "id": "tooluse_AkU2in_nSDKT_Sk7j9oRUw",
+              "name": "introspect",
+              "orig_name": "introspect",
+              "args": {
+                "query": "What happens when I use the /save command? Does it automatically save the conversation?"
+              },
+              "orig_args": {
+                "query": "What happens when I use the /save command? Does it automatically save the conversation?"
+              }
+            }
+          ]
+        }
+      },
+      "request_metadata": {
+        "request_id": "88c52fce-80b2-439f-aec4-c9e4fb880dfd",
+        "message_id": "54398350-bcae-4da9-aea8-7580a25b17d9",
+        "request_start_timestamp_ms": 1760060681503,
+        "stream_end_timestamp_ms": 1760060684587,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 737509083
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 526667
+          },
+          {
+            "secs": 0,
+            "nanos": 37833
+          },
+          {
+            "secs": 0,
+            "nanos": 24333
+          },
+          {
+            "secs": 0,
+            "nanos": 5584
+          },
+          {
+            "secs": 0,
+            "nanos": 4792
+          },
+          {
+            "secs": 0,
+            "nanos": 4750
+          },
+          {
+            "secs": 0,
+            "nanos": 7750
+          },
+          {
+            "secs": 0,
+            "nanos": 4125
+          },
+          {
+            "secs": 0,
+            "nanos": 7125
+          },
+          {
+            "secs": 0,
+            "nanos": 346166833
+          },
+          {
+            "secs": 0,
+            "nanos": 18917
+          },
+          {
+            "secs": 0,
+            "nanos": 12042
+          },
+          {
+            "secs": 0,
+            "nanos": 12167
+          },
+          {
+            "secs": 0,
+            "nanos": 5333
+          },
+          {
+            "secs": 0,
+            "nanos": 7583
+          },
+          {
+            "secs": 0,
+            "nanos": 60959
+          },
+          {
+            "secs": 0,
+            "nanos": 13292
+          },
+          {
+            "secs": 0,
+            "nanos": 2250
+          },
+          {
+            "secs": 0,
+            "nanos": 125
+          }
+        ],
+        "user_prompt_length": 219,
+        "response_size": 100,
+        "chat_conversation_type": "ToolUse",
+        "tool_use_ids_and_names": [
+          [
+            "tooluse_AkU2in_nSDKT_Sk7j9oRUw",
+            "introspect"
+          ]
+        ],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "ToolUseResults": {
+            "tool_use_results": [
+              {
+                "tool_use_id": "tooluse_AkU2in_nSDKT_Sk7j9oRUw",
+                "content": [
+                  {
+                    "Json": {
+                      "built_in_help": "q (Amazon Q Chat)\n\nUsage: chat_cli <COMMAND>\n\nCommands:\n  quit        Quit the application\n  clear       Clear the conversation history\n  agent       Manage agents\n  context     Manage context files for the chat session\n  editor      Open $EDITOR (defaults to vi) to compose a prompt\n  compact     Summarize the conversation to free up context space\n  tools       View tools and permissions\n  issue       Create a new Github issue or make a feature request\n  changelog   View changelog for Amazon Q CLI\n  prompts     View and retrieve prompts\n  hooks       View context hooks\n  usage       Show current session's context window usage\n  mcp         See mcp server loaded\n  model       Select a model for the current conversation session\n  experiment  Toggle experimental features\n  subscribe   Upgrade to a Q Developer Pro subscription for increased query limits\n  save        Save the current conversation\n  load        Load a previous conversation\n  todos       View, manage, and resume to-do lists\n  help        Print this message or the help of the given subcommand(s)\n\nOptions:\n  -h, --help  Print help (see more with '--help')\n",
+                      "documentation": "\n\n--- README.md ---\n# Amazon Q CLI\n\n## Installation\n\n- **macOS**:\n  - **DMG**: [Download now](https://desktop-release.q.us-east-1.amazonaws.com/latest/Amazon%20Q.dmg)\n- **Linux**:\n  - [Ubuntu/Debian](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-installing.html#command-line-installing-ubuntu)\n  - [AppImage](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-installing.html#command-line-installing-appimage)\n  - [Alternative Linux builds](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-installing.html#command-line-installing-alternative-linux)\n\n## Contributing\n\nThank you so much for considering to contribute to Amazon Q.\n\nBefore getting started, see our [contributing docs](CONTRIBUTING.md#security-issue-notifications).\n\n### Prerequisites\n\n- MacOS\n  - Xcode 13 or later\n  - Brew\n\n#### 1. Clone repo\n\n```shell\ngit clone https://github.com/aws/amazon-q-developer-cli.git\n```\n\n#### 2. Install the Rust toolchain using [Rustup](https://rustup.rs):\n\n```shell\ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh\nrustup default stable\nrustup toolchain install nightly\ncargo install typos-cli\n```\n\n#### 3. Develop locally\n\n- To compile and run: `cargo run --bin chat_cli`.\n- To run tests: `cargo test`.\n- To run lints: `cargo clippy`.\n- To format rust files: `cargo +nightly fmt`.\n- To run subcommands: `cargo run --bin chat_cli -- {subcommand}`.\n  - Login would then be: `cargo run --bin chat_cli -- login`\n\n## Project Layout\n\n- [`chat_cli`](crates/chat-cli/) - the `q` CLI, allows users to interface with Amazon Q Developer from\n  the command line\n- [`scripts/`](scripts/) - Contains ops and build related scripts\n- [`crates/`](crates/) - Contains all rust crates\n- [`docs/`](docs/) - Contains technical documentation\n\n## Security\n\nFor security related concerns, see [here](SECURITY.md).\n\n## Licensing\n\nThis repo is dual licensed under MIT and Apache 2.0 licenses.\n\nThose licenses can be found [here](LICENSE.MIT) and [here](LICENSE.APACHE).\n\n“Amazon Web Services” and all related marks, including logos, graphic designs, and service names, are trademarks or trade dress of AWS in the U.S. and other countries. AWS’s trademarks and trade dress may not be used in connection with any product or service that is not AWS’s, in any manner that is likely to cause confusion among customers, or in any manner that disparages or discredits AWS.\n\n\n--- docs/built-in-tools.md ---\n# Built-in Tools\n\nAmazon Q CLI includes several built-in tools that agents can use. This document describes each tool and its configuration options.\n\n- [`execute_bash`](#execute_bash-tool) — Execute a shell command.\n- [`fs_read`](#fs_read-tool) — Read files, directories, and images.\n- [`fs_write`](#fs_write-tool) — Create and edit files.\n- [`introspect`](#introspect-tool) — Provide information about Q CLI capabilities and documentation.\n- [`report_issue`](#report_issue-tool) — Open a GitHub issue template.\n- [`knowledge`](#knowledge-tool) — Store and retrieve information in a knowledge base.\n- [`thinking`](#thinking-tool) — Internal reasoning mechanism.\n- [`todo_list`](#todo_list-tool) — Create and manage TODO lists for tracking multi-step tasks.\n- [`use_aws`](#use_aws-tool) — Make AWS CLI API calls.\n\n## Execute_bash Tool\n\nExecute the specified bash command.\n\n### Configuration\n\n```json\n{\n  \"toolsSettings\": {\n    \"execute_bash\": {\n      \"allowedCommands\": [\"git status\", \"git fetch\"],\n      \"deniedCommands\": [\"git commit .*\", \"git push .*\"],\n      \"autoAllowReadonly\": true\n    }\n  }\n}\n```\n\n### Configuration Options\n\n| Option | Type | Default | Description                                                                              |\n|--------|------|---------|------------------------------------------------------------------------------------------|\n| `allowedCommands` | array of strings | `[]` | List of specific commands that are allowed without prompting. Supports regex formatting. Note that regex entered are anchored with \\A and \\z |\n| `deniedCommands` | array of strings | `[]` | List of specific commands that are denied. Supports regex formatting. Note that regex entered are anchored with \\A and \\z. Deny rules are evaluated before allow rules |\n| `autoAllowReadonly` | boolean | `false` | Whether to allow read-only commands without prompting                                    |\n\n## Fs_read Tool\n\nTool for reading files, directories, and images.\n\n### Configuration\n\n```json\n{\n  \"toolsSettings\": {\n    \"fs_read\": {\n      \"allowedPaths\": [\"~/projects\", \"./src/**\"],\n      \"deniedPaths\": [\"/some/denied/path/\", \"/another/denied/path/**/file.txt\"]\n    }\n  }\n}\n```\n\n### Configuration Options\n\n| Option | Type | Default | Description |\n|--------|------|---------|-------------|\n| `allowedPaths` | array of strings | `[]` | List of paths that can be read without prompting. Supports glob patterns. Glob patterns have the same behavior as gitignore. For example, `~/temp` would match `~/temp/child` and `~/temp/child/grandchild` |\n| `deniedPaths` | array of strings | `[]` | List of paths that are denied. Supports glob patterns. Deny rules are evaluated before allow rules. Glob patterns have the same behavior as gitignore. For example, `~/temp` would match `~/temp/child` and `~/temp/child/grandchild`  |\n\n## Fs_write Tool\n\nTool for creating and editing files.\n\n### Configuration\n\n```json\n{\n  \"toolsSettings\": {\n    \"fs_write\": {\n      \"allowedPaths\": [\"~/projects/output.txt\", \"./src/**\"],\n      \"deniedPaths\": [\"/some/denied/path/\", \"/another/denied/path/**/file.txt\"]\n    }\n  }\n}\n```\n\n### Configuration Options\n\n| Option | Type | Default | Description |\n|--------|------|---------|-------------|\n| `allowedPaths` | array of strings | `[]` | List of paths that can be written to without prompting. Supports glob patterns. Glob patterns have the same behavior as gitignore.For example, `~/temp` would match `~/temp/child` and `~/temp/child/grandchild` |\n| `deniedPaths` | array of strings | `[]` | List of paths that are denied. Supports glob patterns. Deny rules are evaluated before allow rules. Glob patterns have the same behavior as gitignore.For example, `~/temp` would match `~/temp/child` and `~/temp/child/grandchild` |\n\n## Introspect Tool\n\nProvide information about Q CLI capabilities, features, commands, and documentation. This tool accesses Q CLI's built-in documentation and help content to answer questions about the CLI's functionality.\n\n### Usage\n\nThe introspect tool is automatically used when you ask questions about Q CLI itself, such as:\n- \"What can you do?\"\n- \"How do I save conversations?\"\n- \"What commands are available?\"\n- \"Do you have feature X?\"\n\n### Behavior\n\n- Tries to provide the information that is explicitly documented\n- Accesses README, built-in tools documentation, experiments, and settings information\n- Automatically enters tangent mode when configured to do so and if we set the setting introspect.tangentMode = true.\n\n## Report_issue Tool\n\nOpens the browser to a pre-filled GitHub issue template to report chat issues, bugs, or feature requests.\n\nThis tool has no configuration options.\n\n## Knowledge Tool (experimental)\n\nStore and retrieve information in a knowledge base across chat sessions. Provides semantic search capabilities for files, directories, and text content.\n\nThis tool has no configuration options.\n\n## Thinking Tool (experimental)\n\nAn internal reasoning mechanism that improves the quality of complex tasks by breaking them down into atomic actions.\n\nThis tool has no configuration options.\n\n## TODO List Tool (experimental)\n\nCreate and manage TODO lists for tracking multi-step tasks. Lists are stored locally in `.amazonq/cli-todo-lists/`.\n\nThis tool has no configuration options.\n\n## Use_aws Tool\n\nMake AWS CLI API calls with the specified service, operation, and parameters.\n\n### Configuration\n\n```json\n{\n  \"toolsSettings\": {\n    \"use_aws\": {\n      \"allowedServices\": [\"s3\", \"lambda\", \"ec2\"],\n      \"deniedServices\": [\"eks\", \"rds\"],\n      \"autoAllowReadonly\": true\n    }\n  }\n}\n```\n\n### Configuration Options\n\n| Option | Type | Default | Description |\n|--------|------|---------|-------------|\n| `allowedServices` | array of strings | `[]` | List of AWS services that can be accessed without prompting |\n| `deniedServices` | array of strings | `[]` | List of AWS services to deny. Deny rules are evaluated before allow rules |\n| `autoAllowReadonly` | boolean | `false` | Whether to automatically allow read-only operations (get, describe, list, ls, search, batch_get) without prompting |\n\n## Using Tool Settings in Agent Configuration\n\nTool settings are specified in the `toolsSettings` section of the agent configuration file. Each tool's settings are specified using the tool's name as the key.\n\nFor MCP server tools, use the format `@server_name/tool_name` as the key:\n\n```json\n{\n  \"toolsSettings\": {\n    \"fs_write\": {\n      \"allowedPaths\": [\"~/projects\"]\n    },\n    \"@git/git_status\": {\n      \"git_user\": \"$GIT_USER\"\n    }\n  }\n}\n```\n\n## Tool Permissions\n\nTools can be explicitly allowed in the `allowedTools` section of the agent configuration:\n\n```json\n{\n  \"allowedTools\": [\n    \"fs_read\",\n    \"knowledge\",\n    \"@git/git_status\"\n  ]\n}\n```\n\nIf a tool is not in the `allowedTools` list, the user will be prompted for permission when the tool is used unless an allowed `toolSettings` configuration is set.\n\nSome tools have default permission behaviors:\n- `fs_read` and `report_issue` are trusted by default\n- `execute_bash`, `fs_write`, and `use_aws` prompt for permission by default, but can be configured to allow specific commands/paths/services\n\n\n--- docs/experiments.md ---\n# Experimental Features\n\nAmazon Q CLI includes experimental features that can be toggled on/off using the `/experiment` command. These features are in active development and may change or be removed at any time.\n\n## Available Experiments\n\n### Knowledge\n**Command:** `/knowledge`  \n**Description:** Enables persistent context storage and retrieval across chat sessions\n\n**Features:**\n- Store and search through files, directories, and text content\n- Semantic search capabilities for better context retrieval  \n- Persistent knowledge base across chat sessions\n- Add/remove/search knowledge contexts\n\n**Usage:**\n```\n/knowledge add <path>        # Add files or directories to knowledge base\n/knowledge show             # Display knowledge base contents\n/knowledge remove <path>    # Remove knowledge base entry by path\n/knowledge update <path>    # Update a file or directory in knowledge base\n/knowledge clear            # Remove all knowledge base entries\n/knowledge status           # Show background operation status\n/knowledge cancel           # Cancel background operation\n```\n\n### Thinking\n**Description:** Enables complex reasoning with step-by-step thought processes\n\n**Features:**\n- Shows AI reasoning process for complex problems\n- Helps understand how conclusions are reached\n- Useful for debugging and learning\n- Transparent decision-making process\n\n**When enabled:** The AI will show its thinking process when working through complex problems or multi-step reasoning.\n\n### Tangent Mode\n**Command:** `/tangent`  \n**Description:** Enables conversation checkpointing for exploring tangential topics\n\n**Features:**\n- Create conversation checkpoints to explore side topics\n- Return to the main conversation thread at any time\n- Preserve conversation context while branching off\n- Keyboard shortcut support (default: Ctrl+T)\n\n**Usage:**\n```\n/tangent                    # Toggle tangent mode on/off\n```\n\n**Settings:**\n- `chat.enableTangentMode` - Enable/disable tangent mode feature (boolean)\n- `chat.tangentModeKey` - Keyboard shortcut key (single character, default: 't')\n- `introspect.tangentMode` - Auto-enter tangent mode for introspect questions (boolean)\n\n**When enabled:** Use `/tangent` or the keyboard shortcut to create a checkpoint and explore tangential topics. Use the same command to return to your main conversation.\n\n### TODO Lists\n**Tool name**: `todo_list`\n**Command:** `/todos`  \n**Description:** Enables Q to create and modify TODO lists using the `todo_list` tool and the user to view and manage existing TODO lists using `/todos`.\n\n**Features:**\n- Q will automatically make TODO lists when appropriate or when asked\n- View, manage, and delete TODOs using `/todos`\n- Resume existing TODO lists stored in `.amazonq/cli-todo-lists`\n\n**Usage:**\n```\n/todos clear-finished       # Delete completed TODOs in your working directory\n/todos resume               # Select and resume an existing TODO list\n/todos view                 # Select and view and existing TODO list\n/todos delete               # Select and delete an existing TODO list\n```\n\n**Settings:**\n- `chat.enableTodoList` - Enable/disable TODO list functionality (boolean)\n\n\n## Managing Experiments\n\nUse the `/experiment` command to toggle experimental features:\n\n```\n/experiment\n```\n\nThis will show an interactive menu where you can:\n- See current status of each experiment (ON/OFF)\n- Toggle experiments by selecting them\n- View descriptions of what each experiment does\n\n## Important Notes\n\n⚠️ **Experimental features may be changed or removed at any time**  \n⚠️ **Experience might not be perfect**  \n⚠️ **Use at your own discretion in production workflows**\n\nThese features are provided to gather feedback and test new capabilities. Please report any issues or feedback through the `/issue` command.\n\n## Fuzzy Search Support\n\nAll experimental commands are available in the fuzzy search (Ctrl+S):\n- `/experiment` - Manage experimental features\n- `/knowledge` - Knowledge base commands (when enabled)\n- `/todos` - User-controlled TODO list commands (when enabled)\n\n## Settings Integration\n\nExperiments are stored as settings and persist across sessions:\n- `EnabledKnowledge` - Knowledge experiment state\n- `EnabledThinking` - Thinking experiment state\n- `EnabledTodoList` - TODO list experiment state\n\nYou can also manage these through the settings system if needed.\n\n\n--- docs/agent-file-locations.md ---\n# Agent File Locations\n\nAgent configuration files can be placed in two different locations, allowing for both workspace-specific and user-wide agent configurations.\n\n## Local Agents (Workspace-Specific)\n\nLocal agents are stored in the current working directory under:\n\n```\n.amazonq/cli-agents/\n```\n\nThese agents are specific to the current workspace or project and are only available when running Q CLI from that directory or its subdirectories.\n\n**Example structure:**\n```\nmy-project/\n├── .amazonq/\n│       └── cli-agents/\n│           ├── dev-agent.json\n│           └── aws-specialist.json\n└── src/\n    └── main.py\n```\n\n## Global Agents (User-Wide)\n\nGlobal agents are stored in your home directory under:\n\n```\n~/.aws/amazonq/cli-agents/\n```\n\nNote: For globally available agents, the `amazonq` directory is in the `.aws` folder. \n\nThese agents are available from any directory when using Q CLI.\n\n**Example structure:**\n```\n~/.aws/amazonq/cli-agents/\n├── general-assistant.json\n├── code-reviewer.json\n└── documentation-writer.json\n```\n\n## Agent Precedence\n\nWhen Q CLI looks for an agent, it follows this precedence order:\n\n1. **Local first**: Checks `.amazonq/cli-agents/` in the current working directory\n2. **Global fallback**: If not found locally, checks `~/.aws/amazonq/cli-agents/` in the home directory\n\n## Naming Conflicts\n\nIf both local and global directories contain agents with the same name, the **local agent takes precedence**. When this happens, Q CLI will display a warning message:\n\n```\nWARNING: Agent conflict for my-agent. Using workspace version.\n```\n\nThe global agent with the same name will be ignored in favor of the local version.\n\n## Best Practices\n\n### Use Local Agents For:\n- Project-specific configurations\n- Agents that need access to specific project files or tools\n- Development environments with unique requirements\n- Sharing agent configurations with team members via version control\n\n### Use Global Agents For:\n- General-purpose agents used across multiple projects\n- Personal productivity agents\n- Agents that don't require project-specific context\n- Commonly used development tools and workflows\n\n## Example Usage\n\nTo create a local agent for your current project:\n\n```bash\nmkdir -p .amazonq/cli-agents\ncat > .amazonq/cli-agents/project-helper.json << 'EOF'\n{\n  \"description\": \"Helper agent for this specific project\",\n  \"tools\": [\"fs_read\", \"fs_write\", \"execute_bash\"],\n  \"resources\": [\n    \"file://README.md\",\n    \"file://docs/**/*.md\"\n  ]\n}\nEOF\n```\n\nTo create a global agent available everywhere:\n\n```bash\nmkdir -p ~/.aws/amazonq/cli-agents\ncat > ~/.aws/amazonq/cli-agents/general-helper.json << 'EOF'\n{\n  \"description\": \"General purpose assistant\",\n  \"tools\": [\"*\"],\n  \"allowedTools\": [\"fs_read\"]\n}\nEOF\n```\n\n## Directory Creation\n\nQ CLI will automatically create the global agents directory (`~/.aws/amazonq/cli-agents/`) if it doesn't exist. However, you need to manually create the local agents directory (`.amazonq/cli-agents/`) in your workspace if you want to use local agents.\n\n\n--- docs/tangent-mode.md ---\n# Tangent Mode\n\nTangent mode creates conversation checkpoints, allowing you to explore side topics without disrupting your main conversation flow. Enter tangent mode, ask questions or explore ideas, then return to your original conversation exactly where you left off.\n\n## Enabling Tangent Mode\n\nTangent mode is experimental and must be enabled:\n\n**Via Experiment Command**: Run `/experiment` and select tangent mode from the list.\n\n**Via Settings**: `q settings chat.enableTangentMode true`\n\n## Basic Usage\n\n### Enter Tangent Mode\nUse `/tangent` or Ctrl+T:\n```\n> /tangent\nCreated a conversation checkpoint (↯). Use ctrl + t or /tangent to restore the conversation later.\n```\n\n### In Tangent Mode\nYou'll see a yellow `↯` symbol in your prompt:\n```\n↯ > What is the difference between async and sync functions?\n```\n\n### Exit Tangent Mode\nUse `/tangent` or Ctrl+T again:\n```\n↯ > /tangent\nRestored conversation from checkpoint (↯). - Returned to main conversation.\n```\n\n### Exit Tangent Mode with Tail\nUse `/tangent tail` to preserve the last conversation entry (question + answer):\n```\n↯ > /tangent tail\nRestored conversation from checkpoint (↯) with last conversation entry preserved.\n```\n\n## Usage Examples\n\n### Example 1: Exploring Alternatives\n```\n> I need to process a large CSV file in Python. What's the best approach?\n\nI recommend using pandas for CSV processing...\n\n> /tangent\nCreated a conversation checkpoint (↯).\n\n↯ > What about using the csv module instead of pandas?\n\nThe csv module is lighter weight...\n\n↯ > /tangent\nRestored conversation from checkpoint (↯).\n\n> Thanks! I'll go with pandas. Can you show me error handling?\n```\n\n### Example 2: Getting Q CLI Help\n```\n> Help me write a deployment script\n\nI can help you create a deployment script...\n\n> /tangent\nCreated a conversation checkpoint (↯).\n\n↯ > What Q CLI commands are available for file operations?\n\nQ CLI provides fs_read, fs_write, execute_bash...\n\n↯ > /tangent\nRestored conversation from checkpoint (↯).\n\n> It's a Node.js application for AWS\n```\n\n### Example 3: Clarifying Requirements\n```\n> I need to optimize this SQL query\n\nCould you share the query you'd like to optimize?\n\n> /tangent\nCreated a conversation checkpoint (↯).\n\n↯ > What information do you need to help optimize a query?\n\nTo optimize SQL queries effectively, I need:\n1. The current query\n2. Table schemas and indexes...\n\n↯ > /tangent\nRestored conversation from checkpoint (↯).\n\n> Here's my query: SELECT * FROM orders...\n```\n\n### Example 4: Keeping Useful Information\n```\n> Help me debug this Python error\n\nI can help you debug that. Could you share the error message?\n\n> /tangent\nCreated a conversation checkpoint (↯).\n\n↯ > What are the most common Python debugging techniques?\n\nHere are the most effective Python debugging techniques:\n1. Use print statements strategically\n2. Leverage the Python debugger (pdb)...\n\n↯ > /tangent tail\nRestored conversation from checkpoint (↯) with last conversation entry preserved.\n\n> Here's my error: TypeError: unsupported operand type(s)...\n\n# The preserved entry (question + answer about debugging techniques) is now part of main conversation\n```\n\n## Configuration\n\n### Keyboard Shortcut\n```bash\n# Change shortcut key (default: t)\nq settings chat.tangentModeKey y\n```\n\n### Auto-Tangent for Introspect\n```bash\n# Auto-enter tangent mode for Q CLI help questions\nq settings introspect.tangentMode true\n```\n\n## Visual Indicators\n\n- **Normal mode**: `> ` (magenta)\n- **Tangent mode**: `↯ > ` (yellow ↯ + magenta)\n- **With profile**: `[dev] ↯ > ` (cyan + yellow ↯ + magenta)\n\n## Best Practices\n\n### When to Use Tangent Mode\n- Asking clarifying questions about the current topic\n- Exploring alternative approaches before deciding\n- Getting help with Q CLI commands or features\n- Testing understanding of concepts\n\n### When NOT to Use\n- Completely unrelated topics (start new conversation)\n- Long, complex discussions (use regular flow)\n- When you want the side discussion in main context\n\n### Tips\n1. **Keep tangents focused** - Brief explorations, not extended discussions\n2. **Return promptly** - Don't forget you're in tangent mode\n3. **Use for clarification** - Perfect for \"wait, what does X mean?\" questions\n4. **Experiment safely** - Test ideas without affecting main conversation\n5. **Use `/tangent tail`** - When both the tangent question and answer are useful for main conversation\n\n## Limitations\n\n- Tangent conversations are discarded when you exit\n- Only one level of tangent supported (no nested tangents)\n- Experimental feature that may change or be removed\n- Must be explicitly enabled\n\n## Troubleshooting\n\n### Tangent Mode Not Working\n```bash\n# Enable via experiment (select from list)\n/experiment\n\n# Or enable via settings\nq settings chat.enableTangentMode true\n```\n\n### Keyboard Shortcut Not Working\n```bash\n# Check/reset shortcut key\nq settings chat.tangentModeKey t\n```\n\n### Lost in Tangent Mode\nLook for the `↯` symbol in your prompt. Use `/tangent` to exit and return to main conversation.\n\n## Related Features\n\n- **Introspect**: Q CLI help (auto-enters tangent if configured)\n- **Experiments**: Manage experimental features with `/experiment`\n\n\n--- docs/introspect-tool.md ---\n# Introspect Tool\n\nThe introspect tool provides Q CLI with self-awareness, automatically answering questions about Q CLI's features, commands, and functionality using official documentation.\n\n## How It Works\n\nThe introspect tool activates automatically when you ask Q CLI questions like:\n- \"How do I save conversations with Q CLI?\"\n- \"What experimental features does Q CLI have?\"\n- \"Can Q CLI read files?\"\n\n## What It Provides\n\n- **Command Help**: Real-time help for all slash commands (`/save`, `/load`, etc.)\n- **Documentation**: Access to README, built-in tools, experiments, and feature guides\n- **Settings**: All configuration options and how to change them\n- **GitHub Links**: Direct links to official documentation for verification\n\n## Important Limitations\n\n**Hallucination Risk**: Despite safeguards, the AI may occasionally provide inaccurate information or make assumptions. **Always verify important details** using the GitHub documentation links provided in responses.\n\n## Usage Examples\n\n```\n> How do I save conversations with Q CLI?\nYou can save conversations using `/save` or `/save name`.\nLoad them later with `/load`.\n\n> What experimental features does Q CLI have?\nQ CLI offers Tangent Mode and Thinking Mode. \nUse `/experiment` to enable them.\n\n> Can Q CLI read and write files?\nYes, Q CLI has fs_read, fs_write, and execute_bash tools\nfor file operations.\n```\n\n## Auto-Tangent Mode\n\nEnable automatic tangent mode for Q CLI help questions:\n\n```bash\nq settings introspect.tangentMode true\n```\n\nThis keeps help separate from your main conversation.\n\n## Best Practices\n\n1. **Be explicit**: Ask \"How does Q CLI handle files?\" not \"How do you handle files?\"\n2. **Verify information**: Check the GitHub links provided in responses\n3. **Use proper syntax**: Reference commands with `/` (e.g., `/save`)\n4. **Enable auto-tangent**: Keep help isolated from main conversations\n\n## Configuration\n\n```bash\n# Enable auto-tangent for introspect questions\nq settings introspect.tangentMode true\n```\n\n## Related Features\n\n- **Tangent Mode**: Isolate help conversations\n- **Experiments**: Enable experimental features with `/experiment`\n\n\n--- docs/todo-lists.md ---\n# TODO Management\n\nThe `/todos` command provides persistent TODO list management for Amazon Q CLI, allowing you to view, resume, and manage TODO lists created during chat sessions.\n\n## Getting Started\n\nTODO lists are automatically created when Q breaks down complex tasks. You can then manage these lists using the todos command:\n\n`/todos view`\n`/todos resume`\n\n## Commands\n\n#### `/todos view`\n\nDisplay and select a TODO list to view its contents, showing task descriptions and completion status.\n\nInteractive selection shows:\n- ✓ Completed lists (green checkmark)\n- ✗ In-progress lists with completion count (red X with progress)\n\n#### `/todos resume`\n\nShow an interactive menu of available TODO lists with their current progress status. Selecting a todo list will load the list back into your chat session, allowing Q to continue where it left off.\n\n#### `/clear-finished`\n\nRemove all completed TODO lists from storage. This helps clean up your workspace by removing lists where all tasks have been completed.\n\n#### `/todos delete [--all]`\n\nDelete specific TODO lists or all lists at once.\n\n`q chat todos delete` # Interactive selection to delete one list\n`q chat todos delete --all` # Delete all TODO lists\n\n**Options:**\n- `--all` - Delete all TODO lists without interactive selection\n\n## Storage\n\nTODO lists are stored locally in `.amazonq/cli-todo-lists/` directory within your current working directory. Each list is saved as a JSON file with:\n\n- Unique timestamp-based ID\n- Task descriptions and completion status  \n- Context updates from completed tasks\n- Modified file paths\n- Overall list description\n\n#### Interactive Selection\n\nAll commands use interactive selection allowing you to:\n- Navigate with arrow keys\n- Press Enter to select\n- Press Esc to cancel\n\n## Best Practices\n\n#### Managing Lists\n\n- Use `clear-finished` regularly to remove completed lists\n- Resume lists to continue complex multi-step tasks\n- View lists to check progress without resuming\n\n#### Workflow Integration\n\n- Let Q create TODO lists for complex tasks automatically\n- Use `resume` to pick up where you left off in previous sessions\n- Check `view` to see what tasks remain before resuming work\n\n#### TODO List Storage\n\n- Lists are stored in current working directory only\n- No automatic cleanup of old lists\n- No cross-directory list sharing\n\n## Troubleshooting\n\n#### No Lists Available\n\nIf commands show \"No to-do lists available\":\n\n1. **Check directory**: Ensure you're in the directory where lists were created\n2. **Verify storage**: Look for `.amazonq/cli-todo-lists/` directory\n3. **Create lists**: Use chat sessions to create new TODO lists\n\n#### Lists Not Loading\n\nIf lists exist but won't load:\n\n1. **Check permissions**: Ensure read access to `.amazonq/cli-todo-lists/`\n2. **Verify format**: Lists should be valid JSON files\n3. **Check file integrity**: Corrupted files may prevent loading\n\n## `todo_list` vs. `/todos`\nThe `todo_list` tool is specifically for the model to call. The model is allowed to create TODO lists, mark tasks as complete, add/remove\ntasks, load TODO lists with a given ID (which are automatically provided when resuming TODO lists), and search for existing TODO lists.\n\nThe `/todos` command is for the user to manage existing TODO lists created by the model. The user can view, resume, and delete TODO lists\nby using the appropriate subcommand and selecting the TODO list to perform the action on.\n\n## Examples\n#### Asking Q to make a TODO list:\n```\n> Make a todo list with 3 read-only tasks.\n\n> I'll create a todo list with 3 read-only tasks for you.\n\n🛠️  Using tool: todo_list (trusted)\n ⋮ \n ● TODO:\n[ ] Review project documentation\n[ ] Check system status\n[ ] Read latest updates\n ⋮ \n ● Completed in 0.4s\n```\n\n#### Selecting a TODO list to view:\n```\n> /todos view\n\n? Select a to-do list to view: ›\n❯ ✗ Unfinished todo list (0/3)\n  ✔ Completed todo list (3/3)\n```\n\n#### Resuming a TODO list (after selecting):\n```\n> /todos resume\n\n⟳ Resuming: Read-only tasks for information gathering\n\n🛠️  Using tool: todo_list (trusted)\n ⋮ \n ● TODO:\n[x] Review project documentation\n[ ] Check system status\n[ ] Read latest updates\n ⋮ \n ● Completed in 0.1s\n ```\n\n\n\n\n\n\n--- changelog (from feed.json) ---\n\n## 1.16.1 (2025-09-17)\n- fixed: Dashboard not updating after logging in - [#688](https://github.com/aws/amazon-q-developer-cli-autocomplete/pull/688)\n\n## 1.16.0 (2025-09-16)\n- added: Support for remote MCP connections - [#2836](https://github.com/aws/amazon-q-developer-cli/pull/2836)\n- added: A new `/tangent tail` command to preserve the last tangent conversation - [#2838](https://github.com/aws/amazon-q-developer-cli/pull/2838)\n- added: A new edit subcommand to `/agent` slash command for modifying existing agents - [#2854](https://github.com/aws/amazon-q-developer-cli/pull/2854)\n- added: A new auto-announcement feature with `/changelog` command - [#2833](https://github.com/aws/amazon-q-developer-cli/pull/2833)\n- added: A new CLI history persistence feature with file storage - [#2769](https://github.com/aws/amazon-q-developer-cli/pull/2769)\n- added: Support for comma-containing arguments in MCP --args parameter - [#2754](https://github.com/aws/amazon-q-developer-cli/pull/2754)\n- added: Support for configurable autoAllowReadonly setting in use_aws tool - [#2828](https://github.com/aws/amazon-q-developer-cli/pull/2828)\n- added: Support for configurable line wrapping in chat interface - [#2816](https://github.com/aws/amazon-q-developer-cli/pull/2816)\n- added: Support for model field in agent configuration format - [#2815](https://github.com/aws/amazon-q-developer-cli/pull/2815)\n- added: AGENTS.md documentation to default agent resources - [#2812](https://github.com/aws/amazon-q-developer-cli/pull/2812)\n- security: Reduced default fs_read trust permission to current working directory only - [#2824](https://github.com/aws/amazon-q-developer-cli/pull/2824)\n- security: Changed autoAllowReadonly default to false for security in execute_bash - [#2846](https://github.com/aws/amazon-q-developer-cli/pull/2846)\n- security: Updated dangerous patterns for execute_bash to include $ character - [#2811](https://github.com/aws/amazon-q-developer-cli/pull/2811)\n- fixed: Path with trailing slash not being handled in file matching - [#2817](https://github.com/aws/amazon-q-developer-cli/pull/2817)\n- fixed: Summary being erroneously preserved when conversation is cleared - [#2793](https://github.com/aws/amazon-q-developer-cli/pull/2793)\n\n## 1.15.0 (2025-09-02)\n- added: A new command `/experiment` for toggling experimental features - [#2711](https://github.com/aws/amazon-q-developer-cli/pull/2711)\n- added: A new command `/agent generate` for generating agent config with Q - [#2690](https://github.com/aws/amazon-q-developer-cli/pull/2690)\n- added: A new command `/tangent` for going on a tangent without context pollution - [#2634](https://github.com/aws/amazon-q-developer-cli/pull/2634)\n- added: A new to-do list tool for handling complex multi-step prompts - [#2533](https://github.com/aws/amazon-q-developer-cli/pull/2533)\n- added: Agent-scoped knowledge base and context-specific search - [#2647](https://github.com/aws/amazon-q-developer-cli/pull/2647)\n- added: A new tool `introspect` that allows Q CLI to answer questions about itself - [#2677](https://github.com/aws/amazon-q-developer-cli/pull/2677)\n\n## 1.14.1 (2025-08-21)\n- fixed: Tool permission issue in agent - [#2619](https://github.com/aws/amazon-q-developer-cli/pull/2619)\n- added: MCP admin-level configuration with GetProfile - [#2639](https://github.com/aws/amazon-q-developer-cli/pull/2639)\n- added: Wildcard pattern matching support for agent allowedTools - [#2612](https://github.com/aws/amazon-q-developer-cli/pull/2612)\n- added: Agent hot swap capability - [#2637](https://github.com/aws/amazon-q-developer-cli/pull/2637)\n- fixed: Agent default profile printing issue in `use_aws`, plus minor doc updates - [#2617](https://github.com/aws/amazon-q-developer-cli/pull/2617)\n- changed: Knowledge beta improvements (phase 2): Refactored async_client and added BM25 support - [#2608](https://github.com/aws/amazon-q-developer-cli/pull/2608)\n\n## 1.14.0 (2025-08-15)\n- added: Additional supported models in `q chat`, see `/model` - [#2419](https://github.com/aws/amazon-q-developer-cli/pull/2419)\n- added: `--include` and `--exclude` flags for the `/knowledge add` command - [#2545](https://github.com/aws/amazon-q-developer-cli/pull/2545)\n- added: Notifications on API retries - [#2607](https://github.com/aws/amazon-q-developer-cli/pull/2607)\n\n\n--- CONTRIBUTING.md ---\n# Contributing Guidelines\n\nThank you for your interest in contributing to Amazon Q. Whether it's a bug report, new feature, correction, or additional\ndocumentation, we greatly value feedback and contributions from our community.\n\nPlease read through this document before submitting any issues or pull requests to ensure we have all the necessary\ninformation to effectively respond to your bug report or contribution.\n\n## Reporting Bugs/Feature Requests\n\nWe welcome you to use the GitHub issue tracker to report bugs or suggest features.\n\nWhen filing an issue, please check existing open, or recently closed, issues to make sure somebody else hasn't already\nreported the issue. Please try to include as much information as you can. Details like these are incredibly useful:\n\n- A reproducible test case or series of steps\n- The version of our code being used\n- Any modifications you've made relevant to the bug\n- Anything unusual about your environment or deployment\n\n## Contributing via Pull Requests\n\nBefore making changes around new features, please first make a feature request and get a statement from the team. This codebase moves quickly, and you work is likely to be lost if not first coordinated with us.\n\nContributions via pull requests are much appreciated. Before sending us a pull request, please ensure that:\n\n1. You are working against the latest source on the _main_ branch.\n2. You check existing open, and recently merged, pull requests to make sure someone else hasn't addressed the problem already.\n3. You open an issue to discuss any significant work - we would hate for your time to be wasted.\n\nTo send us a pull request, please:\n\n1. Fork the repository.\n2. Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.\n3. Ensure local tests pass.\n4. Commit to your fork using clear commit messages.\n5. Send us a pull request, answering any default questions in the pull request interface.\n6. Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.\n\nGitHub provides additional document on [forking a repository](https://help.github.com/articles/fork-a-repo/) and\n[creating a pull request](https://help.github.com/articles/creating-a-pull-request/).\n\n## Finding contributions to work on\n\nLooking at the existing issues is a great way to find something to contribute on. As our projects, by default, use the default GitHub issue labels (enhancement/bug/duplicate/help wanted/invalid/question/wontfix), looking at any 'help wanted' issues is a great place to start.\n\n## Code of Conduct\n\nThis project has adopted the [Amazon Open Source Code of Conduct](https://aws.github.io/code-of-conduct).\nFor more information see the [Code of Conduct FAQ](https://aws.github.io/code-of-conduct-faq) or contact\nopensource-codeofconduct@amazon.com with any additional questions or comments.\n\n## Security issue notifications\n\nIf you discover a potential security issue in this project we ask that you notify AWS/Amazon Security via our [vulnerability reporting page](http://aws.amazon.com/security/vulnerability-reporting/). Please do **not** create a public github issue.\n\n## Licensing\n\nThis repo is dual licensed under MIT and Apache 2.0 licenses. We will ask you to confirm the licensing of your contribution.\n\n\n--- Available Settings ---\nQ CLI supports these configuration settings (use `q settings` command from terminal, NOT /settings):\n\n• telemetry.enabled - Enable/disable telemetry collection (boolean)\n• telemetryClientId - Legacy client identifier for telemetry (string)\n• codeWhisperer.shareCodeWhispererContentWithAWS - Share content with CodeWhisperer service (boolean)\n• chat.enableThinking - Enable thinking tool for complex reasoning (boolean)\n• chat.enableKnowledge - Enable knowledge base functionality (boolean)\n• knowledge.defaultIncludePatterns - Default file patterns to include in knowledge base (array)\n• knowledge.defaultExcludePatterns - Default file patterns to exclude from knowledge base (array)\n• knowledge.maxFiles - Maximum number of files for knowledge indexing (number)\n• knowledge.chunkSize - Text chunk size for knowledge processing (number)\n• knowledge.chunkOverlap - Overlap between text chunks (number)\n• knowledge.indexType - Type of knowledge index to use (string)\n• chat.skimCommandKey - Key binding for fuzzy search command (single character)\n• chat.enableTangentMode - Enable tangent mode feature (boolean)\n• chat.tangentModeKey - Key binding for tangent mode toggle (single character)\n• introspect.tangentMode - Auto-enter tangent mode for introspect questions (boolean)\n• chat.greeting.enabled - Show greeting message on chat start (boolean)\n• api.timeout - API request timeout in seconds (number)\n• chat.editMode - Enable edit mode for chat interface (boolean)\n• chat.enableNotifications - Enable desktop notifications (boolean)\n• api.codewhisperer.service - CodeWhisperer service endpoint URL (string)\n• api.q.service - Q service endpoint URL (string)\n• mcp.initTimeout - MCP server initialization timeout (number)\n• mcp.noInteractiveTimeout - Non-interactive MCP timeout (number)\n• mcp.loadedBefore - Track previously loaded MCP servers (boolean)\n• chat.defaultModel - Default AI model for conversations (string)\n• chat.disableMarkdownRendering - Disable markdown formatting in chat (boolean)\n• chat.defaultAgent - Default agent configuration (string)\n• chat.disableAutoCompaction - Disable automatic conversation summarization (boolean)\n• chat.enableHistoryHints - Show conversation history hints (boolean)\n• chat.enableTodoList - Enable the todo list feature (boolean)\n\nNOTE: Settings are managed via `q settings` command from terminal, not slash commands in chat.\n\n\n--- CRITICAL INSTRUCTION ---\nYOU MUST ONLY provide information that is explicitly documented in the sections above. If specific details about any tool, feature, or command are not documented, you MUST clearly state that the information is not available in the documentation. DO NOT generate plausible-sounding information or make assumptions about undocumented features.\n\n--- GitHub References ---\nINSTRUCTION: When your response uses information from any of these documentation files, include the relevant GitHub link(s) at the end:\n• README.md: https://github.com/aws/amazon-q-developer-cli/blob/main/README.md\n• Built-in Tools: https://github.com/aws/amazon-q-developer-cli/blob/main/docs/built-in-tools.md\n• Experiments: https://github.com/aws/amazon-q-developer-cli/blob/main/docs/experiments.md\n• Agent File Locations: https://github.com/aws/amazon-q-developer-cli/blob/main/docs/agent-file-locations.md\n• Tangent Mode: https://github.com/aws/amazon-q-developer-cli/blob/main/docs/tangent-mode.md\n• Introspect Tool: https://github.com/aws/amazon-q-developer-cli/blob/main/docs/introspect-tool.md\n• Todo Lists: https://github.com/aws/amazon-q-developer-cli/blob/main/docs/todo-lists.md\n• Contributing: https://github.com/aws/amazon-q-developer-cli/blob/main/CONTRIBUTING.md\n",
+                      "query_context": "What happens when I use the /save command? Does it automatically save the conversation?",
+                      "recommendations": []
+                    }
+                  }
+                ],
+                "status": "Success"
+              }
+            ]
+          }
+        },
+        "timestamp": null,
+        "images": null
+      },
+      "assistant": {
+        "Response": {
+          "message_id": "912bf206-6100-47bb-9a52-99befd28dadf",
+          "content": "Yes, when you use `/save` it will automatically save the current conversation. You can save it with a default name by just typing `/save`, or you can specify a custom name like `/save my-conversation-name`.\n\nTo load a saved conversation later, use `/load` and select from your saved conversations.\n\nThe conversations are saved locally and persist between sessions, so you can resume them anytime.\n\n**Reference**: https://github.com/aws/amazon-q-developer-cli/blob/main/README.md"
+        }
+      },
+      "request_metadata": {
+        "request_id": "1d5522e8-c9d4-468d-8be9-bfdd313a5055",
+        "message_id": "912bf206-6100-47bb-9a52-99befd28dadf",
+        "request_start_timestamp_ms": 1760060684898,
+        "stream_end_timestamp_ms": 1760060690394,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 380965792
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 42209
+          },
+          {
+            "secs": 0,
+            "nanos": 11250
+          },
+          {
+            "secs": 0,
+            "nanos": 99619041
+          },
+          {
+            "secs": 0,
+            "nanos": 111518458
+          },
+          {
+            "secs": 0,
+            "nanos": 55957250
+          },
+          {
+            "secs": 0,
+            "nanos": 147352709
+          },
+          {
+            "secs": 0,
+            "nanos": 9875
+          },
+          {
+            "secs": 0,
+            "nanos": 108979791
+          },
+          {
+            "secs": 0,
+            "nanos": 57612083
+          },
+          {
+            "secs": 0,
+            "nanos": 56987750
+          },
+          {
+            "secs": 0,
+            "nanos": 103418041
+          },
+          {
+            "secs": 0,
+            "nanos": 40296459
+          },
+          {
+            "secs": 0,
+            "nanos": 69259792
+          },
+          {
+            "secs": 0,
+            "nanos": 42722959
+          },
+          {
+            "secs": 0,
+            "nanos": 51938083
+          },
+          {
+            "secs": 0,
+            "nanos": 29054292
+          },
+          {
+            "secs": 0,
+            "nanos": 53637959
+          },
+          {
+            "secs": 0,
+            "nanos": 56164542
+          },
+          {
+            "secs": 0,
+            "nanos": 53311500
+          },
+          {
+            "secs": 0,
+            "nanos": 61646541
+          },
+          {
+            "secs": 0,
+            "nanos": 56673750
+          },
+          {
+            "secs": 0,
+            "nanos": 172224000
+          },
+          {
+            "secs": 0,
+            "nanos": 52673167
+          },
+          {
+            "secs": 0,
+            "nanos": 57753083
+          },
+          {
+            "secs": 0,
+            "nanos": 53916166
+          },
+          {
+            "secs": 0,
+            "nanos": 110118167
+          },
+          {
+            "secs": 0,
+            "nanos": 56333375
+          },
+          {
+            "secs": 0,
+            "nanos": 114789292
+          },
+          {
+            "secs": 0,
+            "nanos": 54368125
+          },
+          {
+            "secs": 0,
+            "nanos": 135984125
+          },
+          {
+            "secs": 0,
+            "nanos": 107927125
+          },
+          {
+            "secs": 0,
+            "nanos": 37173750
+          },
+          {
+            "secs": 0,
+            "nanos": 24453167
+          },
+          {
+            "secs": 0,
+            "nanos": 95306000
+          },
+          {
+            "secs": 0,
+            "nanos": 54246125
+          },
+          {
+            "secs": 0,
+            "nanos": 50958708
+          },
+          {
+            "secs": 0,
+            "nanos": 110909917
+          },
+          {
+            "secs": 0,
+            "nanos": 54964250
+          },
+          {
+            "secs": 0,
+            "nanos": 52936334
+          },
+          {
+            "secs": 0,
+            "nanos": 57107209
+          },
+          {
+            "secs": 0,
+            "nanos": 54918083
+          },
+          {
+            "secs": 0,
+            "nanos": 58144834
+          },
+          {
+            "secs": 0,
+            "nanos": 53384333
+          },
+          {
+            "secs": 0,
+            "nanos": 117063833
+          },
+          {
+            "secs": 0,
+            "nanos": 121181625
+          },
+          {
+            "secs": 0,
+            "nanos": 84
+          },
+          {
+            "secs": 0,
+            "nanos": 84
+          }
+        ],
+        "user_prompt_length": 0,
+        "response_size": 478,
+        "chat_conversation_type": "NotToolUse",
+        "tool_use_ids_and_names": [],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "Prompt": {
+            "prompt": "which path directory are you now?"
+          }
+        },
+        "timestamp": "2025-10-10T09:45:05.202086+08:00",
+        "images": null
+      },
+      "assistant": {
+        "Response": {
+          "message_id": "1312bedc-0432-455d-a057-e2c5a39d0deb",
+          "content": "I'm currently in `/Users/jimbermudez/Documents/TESDA` based on the system context provided."
+        }
+      },
+      "request_metadata": {
+        "request_id": "e1d6d223-1a40-4cd9-a010-b77406a446b5",
+        "message_id": "1312bedc-0432-455d-a057-e2c5a39d0deb",
+        "request_start_timestamp_ms": 1760060705203,
+        "stream_end_timestamp_ms": 1760060708474,
+        "time_to_first_chunk": {
+          "secs": 3,
+          "nanos": 270693833
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 75459
+          },
+          {
+            "secs": 0,
+            "nanos": 16875
+          },
+          {
+            "secs": 0,
+            "nanos": 13208
+          },
+          {
+            "secs": 0,
+            "nanos": 4333
+          },
+          {
+            "secs": 0,
+            "nanos": 3958
+          },
+          {
+            "secs": 0,
+            "nanos": 3958
+          },
+          {
+            "secs": 0,
+            "nanos": 4041
+          },
+          {
+            "secs": 0,
+            "nanos": 3959
+          },
+          {
+            "secs": 0,
+            "nanos": 3792
+          },
+          {
+            "secs": 0,
+            "nanos": 3500
+          },
+          {
+            "secs": 0,
+            "nanos": 7292
+          },
+          {
+            "secs": 0,
+            "nanos": 125
+          },
+          {
+            "secs": 0,
+            "nanos": 84
+          }
+        ],
+        "user_prompt_length": 191,
+        "response_size": 91,
+        "chat_conversation_type": "NotToolUse",
+        "tool_use_ids_and_names": [],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "Prompt": {
+            "prompt": "ok now create a folder and name it \"CRASH-COURSE-D23\", the go inside it we will work there and create a Folder DAY-2-JIM and DAY-3-JIM"
+          }
+        },
+        "timestamp": "2025-10-10T09:46:43.691534+08:00",
+        "images": null
+      },
+      "assistant": {
+        "ToolUse": {
+          "message_id": "778cd064-680b-4e2d-8dd7-f69a9f330ad1",
+          "content": "",
+          "tool_uses": [
+            {
+              "id": "tooluse_7mnbEddySQuYngZJeU2HKQ",
+              "name": "execute_bash",
+              "orig_name": "execute_bash",
+              "args": {
+                "command": "mkdir -p CRASH-COURSE-D23/DAY-2-JIM CRASH-COURSE-D23/DAY-3-JIM && cd CRASH-COURSE-D23 && ls -la",
+                "summary": "Create CRASH-COURSE-D23 folder with DAY-2-JIM and DAY-3-JIM subfolders, then navigate into it"
+              },
+              "orig_args": {
+                "command": "mkdir -p CRASH-COURSE-D23/DAY-2-JIM CRASH-COURSE-D23/DAY-3-JIM && cd CRASH-COURSE-D23 && ls -la",
+                "summary": "Create CRASH-COURSE-D23 folder with DAY-2-JIM and DAY-3-JIM subfolders, then navigate into it"
+              }
+            }
+          ]
+        }
+      },
+      "request_metadata": {
+        "request_id": "2fa9ea37-6424-4b9d-a3b6-9b25a2cb42e6",
+        "message_id": "778cd064-680b-4e2d-8dd7-f69a9f330ad1",
+        "request_start_timestamp_ms": 1760060803692,
+        "stream_end_timestamp_ms": 1760060808741,
+        "time_to_first_chunk": {
+          "secs": 3,
+          "nanos": 860449875
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 44791
+          },
+          {
+            "secs": 0,
+            "nanos": 15417
+          },
+          {
+            "secs": 0,
+            "nanos": 471749750
+          },
+          {
+            "secs": 0,
+            "nanos": 15083
+          },
+          {
+            "secs": 0,
+            "nanos": 5625
+          },
+          {
+            "secs": 0,
+            "nanos": 10333
+          },
+          {
+            "secs": 0,
+            "nanos": 4833
+          },
+          {
+            "secs": 0,
+            "nanos": 7000
+          },
+          {
+            "secs": 0,
+            "nanos": 4750
+          },
+          {
+            "secs": 0,
+            "nanos": 9125
+          },
+          {
+            "secs": 0,
+            "nanos": 35709
+          },
+          {
+            "secs": 0,
+            "nanos": 7209
+          },
+          {
+            "secs": 0,
+            "nanos": 277708416
+          },
+          {
+            "secs": 0,
+            "nanos": 13167
+          },
+          {
+            "secs": 0,
+            "nanos": 5000
+          },
+          {
+            "secs": 0,
+            "nanos": 9166
+          },
+          {
+            "secs": 0,
+            "nanos": 31125
+          },
+          {
+            "secs": 0,
+            "nanos": 10500
+          },
+          {
+            "secs": 0,
+            "nanos": 5167
+          },
+          {
+            "secs": 0,
+            "nanos": 7084
+          },
+          {
+            "secs": 0,
+            "nanos": 437857917
+          },
+          {
+            "secs": 0,
+            "nanos": 14000
+          },
+          {
+            "secs": 0,
+            "nanos": 5667
+          },
+          {
+            "secs": 0,
+            "nanos": 4458
+          },
+          {
+            "secs": 0,
+            "nanos": 17792
+          },
+          {
+            "secs": 0,
+            "nanos": 8167
+          },
+          {
+            "secs": 0,
+            "nanos": 69916
+          },
+          {
+            "secs": 0,
+            "nanos": 8542
+          },
+          {
+            "secs": 0,
+            "nanos": 4917
+          },
+          {
+            "secs": 0,
+            "nanos": 7958
+          },
+          {
+            "secs": 0,
+            "nanos": 4541
+          },
+          {
+            "secs": 0,
+            "nanos": 4459
+          },
+          {
+            "secs": 0,
+            "nanos": 4000
+          },
+          {
+            "secs": 0,
+            "nanos": 8208
+          },
+          {
+            "secs": 0,
+            "nanos": 11209
+          },
+          {
+            "secs": 0,
+            "nanos": 28417
+          },
+          {
+            "secs": 0,
+            "nanos": 125
+          }
+        ],
+        "user_prompt_length": 292,
+        "response_size": 218,
+        "chat_conversation_type": "ToolUse",
+        "tool_use_ids_and_names": [
+          [
+            "tooluse_7mnbEddySQuYngZJeU2HKQ",
+            "execute_bash"
+          ]
+        ],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "ToolUseResults": {
+            "tool_use_results": [
+              {
+                "tool_use_id": "tooluse_7mnbEddySQuYngZJeU2HKQ",
+                "content": [
+                  {
+                    "Json": {
+                      "exit_status": "0",
+                      "stdout": "total 0\ndrwxr-xr-x  4 jimbermudez  staff  128 10 Oct 09:46 .\ndrwxr-xr-x@ 5 jimbermudez  staff  160 10 Oct 09:46 ..\ndrwxr-xr-x  2 jimbermudez  staff   64 10 Oct 09:46 DAY-2-JIM\ndrwxr-xr-x  2 jimbermudez  staff   64 10 Oct 09:46 DAY-3-JIM",
+                      "stderr": ""
+                    }
+                  }
+                ],
+                "status": "Success"
+              }
+            ]
+          }
+        },
+        "timestamp": null,
+        "images": null
+      },
+      "assistant": {
+        "Response": {
+          "message_id": "2687a40f-f332-40a6-a6fa-ca675dba1032",
+          "content": "Done! I've created the folder structure:\n- `CRASH-COURSE-D23/` (main folder)\n  - `DAY-2-JIM/`\n  - `DAY-3-JIM/`\n\nWe're now inside the `CRASH-COURSE-D23` directory and ready to work."
+        }
+      },
+      "request_metadata": {
+        "request_id": "acd37abd-a66c-4f05-92c5-ce54c8b02441",
+        "message_id": "2687a40f-f332-40a6-a6fa-ca675dba1032",
+        "request_start_timestamp_ms": 1760060811298,
+        "stream_end_timestamp_ms": 1760060814090,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 350779583
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 63042
+          },
+          {
+            "secs": 0,
+            "nanos": 6167
+          },
+          {
+            "secs": 0,
+            "nanos": 2542
+          },
+          {
+            "secs": 0,
+            "nanos": 15041
+          },
+          {
+            "secs": 0,
+            "nanos": 563000
+          },
+          {
+            "secs": 0,
+            "nanos": 1347083
+          },
+          {
+            "secs": 0,
+            "nanos": 8792
+          },
+          {
+            "secs": 0,
+            "nanos": 3240084
+          },
+          {
+            "secs": 0,
+            "nanos": 10500
+          },
+          {
+            "secs": 0,
+            "nanos": 4916
+          },
+          {
+            "secs": 0,
+            "nanos": 8958
+          },
+          {
+            "secs": 0,
+            "nanos": 4583
+          },
+          {
+            "secs": 0,
+            "nanos": 7042
+          },
+          {
+            "secs": 0,
+            "nanos": 3959
+          },
+          {
+            "secs": 0,
+            "nanos": 5750
+          },
+          {
+            "secs": 0,
+            "nanos": 905958
+          },
+          {
+            "secs": 0,
+            "nanos": 8500
+          },
+          {
+            "secs": 0,
+            "nanos": 1912667
+          },
+          {
+            "secs": 0,
+            "nanos": 7167
+          },
+          {
+            "secs": 0,
+            "nanos": 24584
+          },
+          {
+            "secs": 0,
+            "nanos": 41375
+          },
+          {
+            "secs": 0,
+            "nanos": 25948375
+          },
+          {
+            "secs": 0,
+            "nanos": 33160083
+          },
+          {
+            "secs": 0,
+            "nanos": 45209292
+          },
+          {
+            "secs": 0,
+            "nanos": 1615167
+          },
+          {
+            "secs": 0,
+            "nanos": 35891167
+          },
+          {
+            "secs": 0,
+            "nanos": 67885916
+          },
+          {
+            "secs": 0,
+            "nanos": 77431542
+          },
+          {
+            "secs": 0,
+            "nanos": 70710333
+          },
+          {
+            "secs": 0,
+            "nanos": 125
+          },
+          {
+            "secs": 0,
+            "nanos": 83
+          }
+        ],
+        "user_prompt_length": 0,
+        "response_size": 180,
+        "chat_conversation_type": "NotToolUse",
+        "tool_use_ids_and_names": [],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "Prompt": {
+            "prompt": "can you connect this to this github? \"https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu.git\" my Github accout is contributor here, and the Owner of repository created a Branch for me, can you push that there, I dont know if I do it correctly becauce I just got to github repository then go to my branch and get the code HTTPS which is this https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu.git, if I push a code there It will update the Branch not the main right?"
+          }
+        },
+        "timestamp": "2025-10-10T09:50:12.543715+08:00",
+        "images": null
+      },
+      "assistant": {
+        "ToolUse": {
+          "message_id": "7bd214d3-3ad1-479b-86ef-d79d4ccb34c6",
+          "content": "I'll help you connect to the GitHub repository and set up your branch. First, let me initialize git and connect to the repository:",
+          "tool_uses": [
+            {
+              "id": "tooluse_m3o7IOvvR6Sr77GVdB23yQ",
+              "name": "execute_bash",
+              "orig_name": "execute_bash",
+              "args": {
+                "summary": "Initialize git repository and add remote origin",
+                "command": "git init && git remote add origin https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu.git"
+              },
+              "orig_args": {
+                "summary": "Initialize git repository and add remote origin",
+                "command": "git init && git remote add origin https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu.git"
+              }
+            }
+          ]
+        }
+      },
+      "request_metadata": {
+        "request_id": "d1e3f066-8ba1-4223-86b0-605aff4f2a50",
+        "message_id": "7bd214d3-3ad1-479b-86ef-d79d4ccb34c6",
+        "request_start_timestamp_ms": 1760061012545,
+        "stream_end_timestamp_ms": 1760061016402,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 518850042
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 50334
+          },
+          {
+            "secs": 0,
+            "nanos": 7333
+          },
+          {
+            "secs": 0,
+            "nanos": 11292
+          },
+          {
+            "secs": 0,
+            "nanos": 8995541
+          },
+          {
+            "secs": 0,
+            "nanos": 32596041
+          },
+          {
+            "secs": 0,
+            "nanos": 64945875
+          },
+          {
+            "secs": 0,
+            "nanos": 60710209
+          },
+          {
+            "secs": 0,
+            "nanos": 141374041
+          },
+          {
+            "secs": 0,
+            "nanos": 68112334
+          },
+          {
+            "secs": 0,
+            "nanos": 15225958
+          },
+          {
+            "secs": 0,
+            "nanos": 141023917
+          },
+          {
+            "secs": 0,
+            "nanos": 386606209
+          },
+          {
+            "secs": 0,
+            "nanos": 14834
+          },
+          {
+            "secs": 0,
+            "nanos": 9000
+          },
+          {
+            "secs": 0,
+            "nanos": 4708
+          },
+          {
+            "secs": 0,
+            "nanos": 4500
+          },
+          {
+            "secs": 0,
+            "nanos": 4125
+          },
+          {
+            "secs": 0,
+            "nanos": 38208
+          },
+          {
+            "secs": 0,
+            "nanos": 7250
+          },
+          {
+            "secs": 0,
+            "nanos": 416455333
+          },
+          {
+            "secs": 0,
+            "nanos": 37750
+          },
+          {
+            "secs": 0,
+            "nanos": 12875
+          },
+          {
+            "secs": 0,
+            "nanos": 7000
+          },
+          {
+            "secs": 0,
+            "nanos": 5166
+          },
+          {
+            "secs": 0,
+            "nanos": 5083
+          },
+          {
+            "secs": 0,
+            "nanos": 178209
+          },
+          {
+            "secs": 0,
+            "nanos": 6625
+          },
+          {
+            "secs": 0,
+            "nanos": 4958
+          },
+          {
+            "secs": 0,
+            "nanos": 4834
+          },
+          {
+            "secs": 0,
+            "nanos": 4291
+          },
+          {
+            "secs": 0,
+            "nanos": 4209
+          },
+          {
+            "secs": 0,
+            "nanos": 4375
+          },
+          {
+            "secs": 0,
+            "nanos": 4083
+          },
+          {
+            "secs": 0,
+            "nanos": 19083
+          },
+          {
+            "secs": 0,
+            "nanos": 9875
+          },
+          {
+            "secs": 0,
+            "nanos": 5625
+          },
+          {
+            "secs": 0,
+            "nanos": 4625
+          },
+          {
+            "secs": 0,
+            "nanos": 83
+          }
+        ],
+        "user_prompt_length": 631,
+        "response_size": 299,
+        "chat_conversation_type": "ToolUse",
+        "tool_use_ids_and_names": [
+          [
+            "tooluse_m3o7IOvvR6Sr77GVdB23yQ",
+            "execute_bash"
+          ]
+        ],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "ToolUseResults": {
+            "tool_use_results": [
+              {
+                "tool_use_id": "tooluse_m3o7IOvvR6Sr77GVdB23yQ",
+                "content": [
+                  {
+                    "Json": {
+                      "exit_status": "0",
+                      "stdout": "Initialized empty Git repository in /Users/jimbermudez/Documents/TESDA/.git/",
+                      "stderr": ""
+                    }
+                  }
+                ],
+                "status": "Success"
+              }
+            ]
+          }
+        },
+        "timestamp": null,
+        "images": null
+      },
+      "assistant": {
+        "ToolUse": {
+          "message_id": "78073264-2a52-427a-9963-0964792ad9eb",
+          "content": "",
+          "tool_uses": [
+            {
+              "id": "tooluse_qwbfxJzYRq2_Es21SrKJmw",
+              "name": "execute_bash",
+              "orig_name": "execute_bash",
+              "args": {
+                "summary": "Fetch all branches from the remote repository",
+                "command": "git fetch origin"
+              },
+              "orig_args": {
+                "summary": "Fetch all branches from the remote repository",
+                "command": "git fetch origin"
+              }
+            }
+          ]
+        }
+      },
+      "request_metadata": {
+        "request_id": "fe3ce2d0-1f09-43d5-9c3d-98604b19d9df",
+        "message_id": "78073264-2a52-427a-9963-0964792ad9eb",
+        "request_start_timestamp_ms": 1760061017163,
+        "stream_end_timestamp_ms": 1760061020509,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 777386000
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 36625
+          },
+          {
+            "secs": 0,
+            "nanos": 7041
+          },
+          {
+            "secs": 0,
+            "nanos": 371858792
+          },
+          {
+            "secs": 0,
+            "nanos": 22958
+          },
+          {
+            "secs": 0,
+            "nanos": 7083
+          },
+          {
+            "secs": 0,
+            "nanos": 1621167
+          },
+          {
+            "secs": 0,
+            "nanos": 15250
+          },
+          {
+            "secs": 0,
+            "nanos": 5375
+          },
+          {
+            "secs": 0,
+            "nanos": 3042
+          },
+          {
+            "secs": 0,
+            "nanos": 5625
+          },
+          {
+            "secs": 0,
+            "nanos": 4792
+          },
+          {
+            "secs": 0,
+            "nanos": 4666
+          },
+          {
+            "secs": 0,
+            "nanos": 9248792
+          },
+          {
+            "secs": 0,
+            "nanos": 182703875
+          },
+          {
+            "secs": 0,
+            "nanos": 20750
+          },
+          {
+            "secs": 0,
+            "nanos": 1345958
+          },
+          {
+            "secs": 0,
+            "nanos": 1360459
+          },
+          {
+            "secs": 0,
+            "nanos": 49542
+          },
+          {
+            "secs": 0,
+            "nanos": 125
+          }
+        ],
+        "user_prompt_length": 0,
+        "response_size": 91,
+        "chat_conversation_type": "ToolUse",
+        "tool_use_ids_and_names": [
+          [
+            "tooluse_qwbfxJzYRq2_Es21SrKJmw",
+            "execute_bash"
+          ]
+        ],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "ToolUseResults": {
+            "tool_use_results": [
+              {
+                "tool_use_id": "tooluse_qwbfxJzYRq2_Es21SrKJmw",
+                "content": [
+                  {
+                    "Json": {
+                      "exit_status": "0",
+                      "stdout": "",
+                      "stderr": "From https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu\n * [new branch]      Day-1---JCC       -> origin/Day-1---JCC\n * [new branch]      Day-10---All-Tech -> origin/Day-10---All-Tech\n * [new branch]      Day-2-3---Jimmel  -> origin/Day-2-3---Jimmel\n * [new branch]      Day-4-5---Aaron   -> origin/Day-4-5---Aaron\n * [new branch]      Day-6-7---JCV     -> origin/Day-6-7---JCV\n * [new branch]      Day-8---9---JCC   -> origin/Day-8---9---JCC\n * [new branch]      main              -> origin/main"
+                    }
+                  }
+                ],
+                "status": "Success"
+              }
+            ]
+          }
+        },
+        "timestamp": null,
+        "images": null
+      },
+      "assistant": {
+        "ToolUse": {
+          "message_id": "0d598241-cfd6-4902-aa5f-9fc907514db9",
+          "content": "Perfect! I can see your branch: `Day-2-3---Jimmel`. Let me check out your branch:",
+          "tool_uses": [
+            {
+              "id": "tooluse_gPpKPCWzRKe3L36LLavKwg",
+              "name": "execute_bash",
+              "orig_name": "execute_bash",
+              "args": {
+                "summary": "Checkout to your specific branch",
+                "command": "git checkout -b Day-2-3---Jimmel origin/Day-2-3---Jimmel"
+              },
+              "orig_args": {
+                "summary": "Checkout to your specific branch",
+                "command": "git checkout -b Day-2-3---Jimmel origin/Day-2-3---Jimmel"
+              }
+            }
+          ]
+        }
+      },
+      "request_metadata": {
+        "request_id": "b10f46f9-b19f-4607-af9f-e83f0e339547",
+        "message_id": "0d598241-cfd6-4902-aa5f-9fc907514db9",
+        "request_start_timestamp_ms": 1760061022122,
+        "stream_end_timestamp_ms": 1760061026566,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 529838250
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 29417
+          },
+          {
+            "secs": 0,
+            "nanos": 14792
+          },
+          {
+            "secs": 0,
+            "nanos": 8208709
+          },
+          {
+            "secs": 0,
+            "nanos": 17708
+          },
+          {
+            "secs": 0,
+            "nanos": 19250
+          },
+          {
+            "secs": 0,
+            "nanos": 5005625
+          },
+          {
+            "secs": 0,
+            "nanos": 2187667
+          },
+          {
+            "secs": 0,
+            "nanos": 26383083
+          },
+          {
+            "secs": 0,
+            "nanos": 70000584
+          },
+          {
+            "secs": 0,
+            "nanos": 117097541
+          },
+          {
+            "secs": 0,
+            "nanos": 160407417
+          },
+          {
+            "secs": 0,
+            "nanos": 324632375
+          },
+          {
+            "secs": 0,
+            "nanos": 17416
+          },
+          {
+            "secs": 0,
+            "nanos": 2063167
+          },
+          {
+            "secs": 0,
+            "nanos": 17708
+          },
+          {
+            "secs": 0,
+            "nanos": 6084
+          },
+          {
+            "secs": 0,
+            "nanos": 9250
+          },
+          {
+            "secs": 0,
+            "nanos": 606380917
+          },
+          {
+            "secs": 0,
+            "nanos": 155979625
+          },
+          {
+            "secs": 0,
+            "nanos": 103241584
+          },
+          {
+            "secs": 0,
+            "nanos": 103790084
+          },
+          {
+            "secs": 0,
+            "nanos": 77522208
+          },
+          {
+            "secs": 0,
+            "nanos": 70290083
+          },
+          {
+            "secs": 0,
+            "nanos": 56135666
+          },
+          {
+            "secs": 0,
+            "nanos": 11924167
+          },
+          {
+            "secs": 0,
+            "nanos": 17959
+          },
+          {
+            "secs": 0,
+            "nanos": 1951583
+          },
+          {
+            "secs": 0,
+            "nanos": 342250
+          },
+          {
+            "secs": 0,
+            "nanos": 9861750
+          },
+          {
+            "secs": 0,
+            "nanos": 26042
+          },
+          {
+            "secs": 0,
+            "nanos": 83
+          }
+        ],
+        "user_prompt_length": 0,
+        "response_size": 199,
+        "chat_conversation_type": "ToolUse",
+        "tool_use_ids_and_names": [
+          [
+            "tooluse_gPpKPCWzRKe3L36LLavKwg",
+            "execute_bash"
+          ]
+        ],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "ToolUseResults": {
+            "tool_use_results": [
+              {
+                "tool_use_id": "tooluse_gPpKPCWzRKe3L36LLavKwg",
+                "content": [
+                  {
+                    "Json": {
+                      "exit_status": "0",
+                      "stdout": "branch 'Day-2-3---Jimmel' set up to track 'origin/Day-2-3---Jimmel'.",
+                      "stderr": "Switched to a new branch 'Day-2-3---Jimmel'"
+                    }
+                  }
+                ],
+                "status": "Success"
+              }
+            ]
+          }
+        },
+        "timestamp": null,
+        "images": null
+      },
+      "assistant": {
+        "ToolUse": {
+          "message_id": "8a42d456-1e55-4ef0-b0d5-484c399765b0",
+          "content": "",
+          "tool_uses": [
+            {
+              "id": "tooluse_GSshTkc_QQKAkmdOmYb2lg",
+              "name": "execute_bash",
+              "orig_name": "execute_bash",
+              "args": {
+                "summary": "Check current branch and status",
+                "command": "git branch && git status"
+              },
+              "orig_args": {
+                "summary": "Check current branch and status",
+                "command": "git branch && git status"
+              }
+            }
+          ]
+        }
+      },
+      "request_metadata": {
+        "request_id": "cdba7410-2a3a-4cdf-a94b-fcdf94f94e9f",
+        "message_id": "8a42d456-1e55-4ef0-b0d5-484c399765b0",
+        "request_start_timestamp_ms": 1760061027154,
+        "stream_end_timestamp_ms": 1760061030438,
+        "time_to_first_chunk": {
+          "secs": 2,
+          "nanos": 753689625
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 48791
+          },
+          {
+            "secs": 0,
+            "nanos": 15042
+          },
+          {
+            "secs": 0,
+            "nanos": 329422625
+          },
+          {
+            "secs": 0,
+            "nanos": 13916
+          },
+          {
+            "secs": 0,
+            "nanos": 5750
+          },
+          {
+            "secs": 0,
+            "nanos": 1143917
+          },
+          {
+            "secs": 0,
+            "nanos": 13667
+          },
+          {
+            "secs": 0,
+            "nanos": 193192708
+          },
+          {
+            "secs": 0,
+            "nanos": 14458
+          },
+          {
+            "secs": 0,
+            "nanos": 31125
+          },
+          {
+            "secs": 0,
+            "nanos": 9917
+          },
+          {
+            "secs": 0,
+            "nanos": 3333
+          },
+          {
+            "secs": 0,
+            "nanos": 5783792
+          },
+          {
+            "secs": 0,
+            "nanos": 44750
+          },
+          {
+            "secs": 0,
+            "nanos": 83
+          }
+        ],
+        "user_prompt_length": 0,
+        "response_size": 85,
+        "chat_conversation_type": "ToolUse",
+        "tool_use_ids_and_names": [
+          [
+            "tooluse_GSshTkc_QQKAkmdOmYb2lg",
+            "execute_bash"
+          ]
+        ],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    },
+    {
+      "user": {
+        "additional_context": "",
+        "env_context": {
+          "env_state": {
+            "operating_system": "macos",
+            "current_working_directory": "/Users/jimbermudez/Documents/TESDA",
+            "environment_variables": []
+          }
+        },
+        "content": {
+          "ToolUseResults": {
+            "tool_use_results": [
+              {
+                "tool_use_id": "tooluse_GSshTkc_QQKAkmdOmYb2lg",
+                "content": [
+                  {
+                    "Json": {
+                      "exit_status": "0",
+                      "stdout": "* Day-2-3---Jimmel\nOn branch Day-2-3---Jimmel\nYour branch is up to date with 'origin/Day-2-3---Jimmel'.\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\t.DS_Store\n\tMONTH-1/\n\nnothing added to commit but untracked files present (use \"git add\" to track)",
+                      "stderr": ""
+                    }
+                  }
+                ],
+                "status": "Success"
+              }
+            ]
+          }
+        },
+        "timestamp": null,
+        "images": null
+      },
+      "assistant": {
+        "Response": {
+          "message_id": "7bdcaa5f-afa9-4aba-855b-484af6789977",
+          "content": "Great! You're now connected to your branch `Day-2-3---Jimmel`. \n\n**To answer your question**: Yes, when you push code to this branch, it will update **your branch only**, not the main branch. The main branch stays untouched until you create a pull request to merge your changes.\n\nYour current setup:\n- ✅ Connected to the repository\n- ✅ On your branch: `Day-2-3---Jimmel`\n- ✅ Ready to add your `CRASH-COURSE-D23` folder\n\nTo push your work later, you'll use:\n```bash\ngit add .\ngit commit -m \"Your commit message\"\ngit push origin Day-2-3---Jimmel\n```\n\nThis will only update your branch, keeping the main branch safe."
+        }
+      },
+      "request_metadata": {
+        "request_id": "f4bc9067-47c6-499b-9fdd-be430dd7f995",
+        "message_id": "7bdcaa5f-afa9-4aba-855b-484af6789977",
+        "request_start_timestamp_ms": 1760061031081,
+        "stream_end_timestamp_ms": 1760061035467,
+        "time_to_first_chunk": {
+          "secs": 1,
+          "nanos": 574298666
+        },
+        "time_between_chunks": [
+          {
+            "secs": 0,
+            "nanos": 52292
+          },
+          {
+            "secs": 0,
+            "nanos": 6458
+          },
+          {
+            "secs": 0,
+            "nanos": 12877500
+          },
+          {
+            "secs": 0,
+            "nanos": 33618542
+          },
+          {
+            "secs": 0,
+            "nanos": 32038834
+          },
+          {
+            "secs": 0,
+            "nanos": 69404167
+          },
+          {
+            "secs": 0,
+            "nanos": 17833
+          },
+          {
+            "secs": 0,
+            "nanos": 26454084
+          },
+          {
+            "secs": 0,
+            "nanos": 61616958
+          },
+          {
+            "secs": 0,
+            "nanos": 12875
+          },
+          {
+            "secs": 0,
+            "nanos": 45587125
+          },
+          {
+            "secs": 0,
+            "nanos": 16918916
+          },
+          {
+            "secs": 0,
+            "nanos": 32860792
+          },
+          {
+            "secs": 0,
+            "nanos": 41448791
+          },
+          {
+            "secs": 0,
+            "nanos": 48419125
+          },
+          {
+            "secs": 0,
+            "nanos": 25366458
+          },
+          {
+            "secs": 0,
+            "nanos": 108642375
+          },
+          {
+            "secs": 0,
+            "nanos": 3083
+          },
+          {
+            "secs": 0,
+            "nanos": 10333
+          },
+          {
+            "secs": 0,
+            "nanos": 51364916
+          },
+          {
+            "secs": 0,
+            "nanos": 6650291
+          },
+          {
+            "secs": 0,
+            "nanos": 41697958
+          },
+          {
+            "secs": 0,
+            "nanos": 56168542
+          },
+          {
+            "secs": 0,
+            "nanos": 36220208
+          },
+          {
+            "secs": 0,
+            "nanos": 28022625
+          },
+          {
+            "secs": 0,
+            "nanos": 39362125
+          },
+          {
+            "secs": 0,
+            "nanos": 13500
+          },
+          {
+            "secs": 0,
+            "nanos": 34497208
+          },
+          {
+            "secs": 0,
+            "nanos": 29925041
+          },
+          {
+            "secs": 0,
+            "nanos": 30221917
+          },
+          {
+            "secs": 0,
+            "nanos": 28614500
+          },
+          {
+            "secs": 0,
+            "nanos": 30392750
+          },
+          {
+            "secs": 0,
+            "nanos": 33015917
+          },
+          {
+            "secs": 0,
+            "nanos": 29088791
+          },
+          {
+            "secs": 0,
+            "nanos": 31735334
+          },
+          {
+            "secs": 0,
+            "nanos": 32355458
+          },
+          {
+            "secs": 0,
+            "nanos": 32162833
+          },
+          {
+            "secs": 0,
+            "nanos": 29723542
+          },
+          {
+            "secs": 0,
+            "nanos": 66579209
+          },
+          {
+            "secs": 0,
+            "nanos": 13709
+          },
+          {
+            "secs": 0,
+            "nanos": 30465916
+          },
+          {
+            "secs": 0,
+            "nanos": 61430458
+          },
+          {
+            "secs": 0,
+            "nanos": 64340042
+          },
+          {
+            "secs": 0,
+            "nanos": 29438500
+          },
+          {
+            "secs": 0,
+            "nanos": 33148125
+          },
+          {
+            "secs": 0,
+            "nanos": 32531208
+          },
+          {
+            "secs": 0,
+            "nanos": 28885833
+          },
+          {
+            "secs": 0,
+            "nanos": 30751250
+          },
+          {
+            "secs": 0,
+            "nanos": 39705750
+          },
+          {
+            "secs": 0,
+            "nanos": 24930417
+          },
+          {
+            "secs": 0,
+            "nanos": 30036583
+          },
+          {
+            "secs": 0,
+            "nanos": 32630292
+          },
+          {
+            "secs": 0,
+            "nanos": 31338416
+          },
+          {
+            "secs": 0,
+            "nanos": 33070208
+          },
+          {
+            "secs": 0,
+            "nanos": 32686500
+          },
+          {
+            "secs": 0,
+            "nanos": 29068250
+          },
+          {
+            "secs": 0,
+            "nanos": 161928959
+          },
+          {
+            "secs": 0,
+            "nanos": 11750
+          },
+          {
+            "secs": 0,
+            "nanos": 5167
+          },
+          {
+            "secs": 0,
+            "nanos": 33625
+          },
+          {
+            "secs": 0,
+            "nanos": 31819875
+          },
+          {
+            "secs": 0,
+            "nanos": 34665375
+          },
+          {
+            "secs": 0,
+            "nanos": 34501500
+          },
+          {
+            "secs": 0,
+            "nanos": 28804375
+          },
+          {
+            "secs": 0,
+            "nanos": 34065333
+          },
+          {
+            "secs": 0,
+            "nanos": 42680625
+          },
+          {
+            "secs": 0,
+            "nanos": 19426125
+          },
+          {
+            "secs": 0,
+            "nanos": 29620875
+          },
+          {
+            "secs": 0,
+            "nanos": 74246041
+          },
+          {
+            "secs": 0,
+            "nanos": 39586833
+          },
+          {
+            "secs": 0,
+            "nanos": 33088959
+          },
+          {
+            "secs": 0,
+            "nanos": 26209917
+          },
+          {
+            "secs": 0,
+            "nanos": 55107750
+          },
+          {
+            "secs": 0,
+            "nanos": 6802917
+          },
+          {
+            "secs": 0,
+            "nanos": 32126791
+          },
+          {
+            "secs": 0,
+            "nanos": 31148875
+          },
+          {
+            "secs": 0,
+            "nanos": 33267333
+          },
+          {
+            "secs": 0,
+            "nanos": 272060083
+          },
+          {
+            "secs": 0,
+            "nanos": 15375
+          },
+          {
+            "secs": 0,
+            "nanos": 18667
+          },
+          {
+            "secs": 0,
+            "nanos": 10792
+          },
+          {
+            "secs": 0,
+            "nanos": 18125
+          },
+          {
+            "secs": 0,
+            "nanos": 7792
+          },
+          {
+            "secs": 0,
+            "nanos": 1561416
+          },
+          {
+            "secs": 0,
+            "nanos": 125
+          },
+          {
+            "secs": 0,
+            "nanos": 83
+          }
+        ],
+        "user_prompt_length": 0,
+        "response_size": 619,
+        "chat_conversation_type": "NotToolUse",
+        "tool_use_ids_and_names": [],
+        "model_id": "claude-sonnet-4",
+        "message_meta_tags": []
+      }
+    }
+  ],
+  "valid_history_range": [
+    0,
+    10
+  ],
+  "transcript": [
+    "> if I /save 1st this converstation it will automatically save?",
+    "\n[Tool uses: introspect]",
+    "Yes, when you use `/save` it will automatically save the current conversation. You can save it with a default name by just typing `/save`, or you can specify a custom name like `/save my-conversation-name`.\n\nTo load a saved conversation later, use `/load` and select from your saved conversations.\n\nThe conversations are saved locally and persist between sessions, so you can resume them anytime.\n\n**Reference**: https://github.com/aws/amazon-q-developer-cli/blob/main/README.md\n[Tool uses: none]",
+    "> which path directory are you now?",
+    "I'm currently in `/Users/jimbermudez/Documents/TESDA` based on the system context provided.\n[Tool uses: none]",
+    "> ok now create a folder and name it \"CRASH-COURSE-D23\", the go inside it we will work there and create a Folder DAY-2-JIM and DAY-3-JIM",
+    "\n[Tool uses: execute_bash]",
+    "> t",
+    "Done! I've created the folder structure:\n- `CRASH-COURSE-D23/` (main folder)\n  - `DAY-2-JIM/`\n  - `DAY-3-JIM/`\n\nWe're now inside the `CRASH-COURSE-D23` directory and ready to work.\n[Tool uses: none]",
+    "> can you connect this to this github? \"https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu.git\" my Github accout is contributor here, and the Owner of repository created a Branch for me, can you push that there, I dont know if I do it correctly becauce I just got to github repository then go to my branch and get the code HTTPS which is this https://github.com/sagesoftcloud/TESDA-CRASH-COURSE-eu.git, if I push a code there It will update the Branch not the main right?",
+    "I'll help you connect to the GitHub repository and set up your branch. First, let me initialize git and connect to the repository:\n[Tool uses: execute_bash]",
+    "\n[Tool uses: execute_bash]",
+    "Perfect! I can see your branch: `Day-2-3---Jimmel`. Let me check out your branch:\n[Tool uses: execute_bash]",
+    "\n[Tool uses: execute_bash]",
+    "Great! You're now connected to your branch `Day-2-3---Jimmel`. \n\n**To answer your question**: Yes, when you push code to this branch, it will update **your branch only**, not the main branch. The main branch stays untouched until you create a pull request to merge your changes.\n\nYour current setup:\n- ✅ Connected to the repository\n- ✅ On your branch: `Day-2-3---Jimmel`\n- ✅ Ready to add your `CRASH-COURSE-D23` folder\n\nTo push your work later, you'll use:\n```bash\ngit add .\ngit commit -m \"Your commit message\"\ngit push origin Day-2-3---Jimmel\n```\n\nThis will only update your branch, keeping the main branch safe.\n[Tool uses: none]",
+    "> /save Q-Prompts"
+  ],
+  "tools": {
+    "native___": [
+      {
+        "ToolSpecification": {
+          "name": "execute_bash",
+          "description": "Execute the specified bash command.",
+          "input_schema": {
+            "json": {
+              "required": [
+                "command"
+              ],
+              "type": "object",
+              "properties": {
+                "summary": {
+                  "description": "A brief explanation of what the command does",
+                  "type": "string"
+                },
+                "command": {
+                  "type": "string",
+                  "description": "Bash command to execute"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "ToolSpecification": {
+          "name": "use_aws",
+          "description": "Make an AWS CLI api call with the specified service, operation, and parameters. All arguments MUST conform to the AWS CLI specification. Should the output of the invocation indicate a malformed command, invoke help to obtain the the correct command.",
+          "input_schema": {
+            "json": {
+              "properties": {
+                "operation_name": {
+                  "type": "string",
+                  "description": "The name of the operation to perform."
+                },
+                "service_name": {
+                  "type": "string",
+                  "description": "The name of the AWS service. If you want to query s3, you should use s3api if possible."
+                },
+                "parameters": {
+                  "type": "object",
+                  "description": "The parameters for the operation. The parameter keys MUST conform to the AWS CLI specification. You should prefer to use JSON Syntax over shorthand syntax wherever possible. For parameters that are booleans, prioritize using flags with no value. Denote these flags with flag names as key and an empty string as their value. You should also prefer kebab case."
+                },
+                "region": {
+                  "description": "Region name for calling the operation on AWS.",
+                  "type": "string"
+                },
+                "profile_name": {
+                  "description": "Optional: AWS profile name to use from ~/.aws/credentials. Defaults to default profile if not specified.",
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string",
+                  "description": "Human readable description of the api that is being called."
+                }
+              },
+              "type": "object",
+              "required": [
+                "region",
+                "service_name",
+                "operation_name",
+                "label"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ToolSpecification": {
+          "name": "dummy",
+          "description": "This is a dummy tool. If you are seeing this that means the tool associated with this tool call is not in the list of available tools. This could be because a wrong tool name was supplied or the list of tools has changed since the conversation has started. Do not show this when user asks you to list tools.",
+          "input_schema": {
+            "json": {
+              "properties": {},
+              "required": [],
+              "type": "object"
+            }
+          }
+        }
+      },
+      {
+        "ToolSpecification": {
+          "name": "fs_read",
+          "description": "Tool for reading files, directories and images. Always provide an 'operations' array.\n\nFor single operation: provide array with one element.\nFor batch operations: provide array with multiple elements.\n\nAvailable modes:\n- Line: Read lines from a file\n- Directory: List directory contents\n- Search: Search for patterns in files\n- Image: Read and process images\n\nExamples:\n1. Single: {\"operations\": [{\"mode\": \"Line\", \"path\": \"/file.txt\"}]}\n2. Batch: {\"operations\": [{\"mode\": \"Line\", \"path\": \"/file1.txt\"}, {\"mode\": \"Search\", \"path\": \"/file2.txt\", \"pattern\": \"test\"}]}",
+          "input_schema": {
+            "json": {
+              "type": "object",
+              "properties": {
+                "operations": {
+                  "type": "array",
+                  "description": "Array of operations to execute. Provide one element for single operation, multiple for batch.",
+                  "minItems": 1,
+                  "items": {
+                    "properties": {
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "Line",
+                          "Directory",
+                          "Search",
+                          "Image"
+                        ],
+                        "description": "The operation mode to run in: `Line`, `Directory`, `Search`. `Line` and `Search` are only for text files, and `Directory` is only for directories. `Image` is for image files, in this mode `image_paths` is required."
+                      },
+                      "end_line": {
+                        "description": "Ending line number (optional, for Line mode). A negative index represents a line number starting from the end of the file.",
+                        "type": "integer",
+                        "default": -1
+                      },
+                      "path": {
+                        "type": "string",
+                        "description": "Path to the file or directory. The path should be absolute, or otherwise start with ~ for the user's home (required for Line, Directory, Search modes)."
+                      },
+                      "start_line": {
+                        "type": "integer",
+                        "description": "Starting line number (optional, for Line mode). A negative index represents a line number starting from the end of the file.",
+                        "default": 1
+                      },
+                      "image_paths": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array",
+                        "description": "List of paths to the images. This is currently supported by the Image mode."
+                      },
+                      "pattern": {
+                        "type": "string",
+                        "description": "Pattern to search for (required, for Search mode). Case insensitive. The pattern matching is performed per line."
+                      },
+                      "context_lines": {
+                        "description": "Number of context lines around search results (optional, for Search mode)",
+                        "type": "integer",
+                        "default": 2
+                      },
+                      "depth": {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "Depth of a recursive directory listing (optional, for Directory mode)"
+                      }
+                    },
+                    "required": [
+                      "mode"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "summary": {
+                  "type": "string",
+                  "description": "Optional description of the purpose of this batch operation (mainly useful for multiple operations)"
+                }
+              },
+              "required": [
+                "operations"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ToolSpecification": {
+          "name": "introspect",
+          "description": "ALWAYS use this tool when users ask ANY question about Q CLI itself, its capabilities, features, commands, or functionality. This includes questions like 'Can you...', 'Do you have...', 'How do I...', 'What can you do...', or any question about Q's abilities. When mentioning commands in your response, always prefix them with '/' (e.g., '/save', '/load', '/context'). CRITICAL: Only provide information explicitly documented in Q CLI documentation. If details about any tool, feature, or command are not documented, clearly state the information is not available rather than generating assumptions.",
+          "input_schema": {
+            "json": {
+              "properties": {
+                "query": {
+                  "description": "The user's question about Q CLI usage, features, or capabilities",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "required": []
+            }
+          }
+        }
+      },
+      {
+        "ToolSpecification": {
+          "name": "fs_write",
+          "description": "A tool for creating and editing files\n * The `create` command will override the file at `path` if it already exists as a file, and otherwise create a new file\n * The `append` command will add content to the end of an existing file, automatically adding a newline if the file doesn't end with one. The file must exist.\n Notes for using the `str_replace` command:\n * The `old_str` parameter should match EXACTLY one or more consecutive lines from the original file. Be mindful of whitespaces!\n * If the `old_str` parameter is not unique in the file, the replacement will not be performed. Make sure to include enough context in `old_str` to make it unique\n * The `new_str` parameter should contain the edited lines that should replace the `old_str`.",
+          "input_schema": {
+            "json": {
+              "properties": {
+                "command": {
+                  "enum": [
+                    "create",
+                    "str_replace",
+                    "insert",
+                    "append"
+                  ],
+                  "description": "The commands to run. Allowed options are: `create`, `str_replace`, `insert`, `append`.",
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string",
+                  "description": "A brief explanation of what the file change does or why it's being made."
+                },
+                "insert_line": {
+                  "description": "Required parameter of `insert` command. The `new_str` will be inserted AFTER the line `insert_line` of `path`.",
+                  "type": "integer"
+                },
+                "new_str": {
+                  "description": "Required parameter of `str_replace` command containing the new string. Required parameter of `insert` command containing the string to insert. Required parameter of `append` command containing the content to append to the file.",
+                  "type": "string"
+                },
+                "file_text": {
+                  "description": "Required parameter of `create` command, with the content of the file to be created.",
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Absolute path to file or directory, e.g. `/repo/file.py` or `/repo`."
+                },
+                "old_str": {
+                  "type": "string",
+                  "description": "Required parameter of `str_replace` command containing the string in `path` to replace."
+                }
+              },
+              "required": [
+                "command",
+                "path"
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      {
+        "ToolSpecification": {
+          "name": "report_issue",
+          "description": "Opens the browser to a pre-filled gh (GitHub) issue template to report chat issues, bugs, or feature requests. Pre-filled information includes the conversation transcript, chat context, and chat request IDs from the service.",
+          "input_schema": {
+            "json": {
+              "type": "object",
+              "required": [
+                "title"
+              ],
+              "properties": {
+                "title": {
+                  "description": "The title of the GitHub issue.",
+                  "type": "string"
+                },
+                "expected_behavior": {
+                  "description": "Optional: The expected chat behavior or action that did not happen.",
+                  "type": "string"
+                },
+                "actual_behavior": {
+                  "type": "string",
+                  "description": "Optional: The actual chat behavior that happened and demonstrates the issue or lack of a feature."
+                },
+                "steps_to_reproduce": {
+                  "type": "string",
+                  "description": "Optional: Previous user chat requests or steps that were taken that may have resulted in the issue or error response."
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "context_manager": {
+    "max_context_files_size": 150000,
+    "current_profile": "q_cli_default",
+    "paths": [
+      "AmazonQ.md",
+      "AGENTS.md",
+      "README.md",
+      ".amazonq/rules/**/*.md"
+    ],
+    "hooks": {}
+  },
+  "context_message_length": 140,
+  "latest_summary": null,
+  "model_info": {
+    "model_name": "claude-sonnet-4",
+    "model_id": "claude-sonnet-4",
+    "context_window_tokens": 200000
+  },
+  "file_line_tracker": {},
+  "mcp_enabled": true
+}
