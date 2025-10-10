@@ -221,8 +221,4 @@ This session implements a two-account setup:
 - Monitoring and auditing essential for security
 - MFA requirements enhance security posture
 
-## Next Steps
-- Implement automated role rotation
-- Set up AWS Organizations for centralized management
-- Configure AWS SSO for enhanced user experience
-- Implement Infrastructure as Code using CloudFormation
+
