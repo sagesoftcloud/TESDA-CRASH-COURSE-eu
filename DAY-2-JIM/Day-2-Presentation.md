@@ -32,7 +32,149 @@
 
 ---
 
-## Slide 4: Why Monitor Systems?
+## Slide 4: Architecture Overview - What You'll Build Today
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    COMPLETE MONITORING SYSTEM                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    │
+│  │   USERS     │───▶│ LOAD BALANCER│───▶│  WEB SERVERS    │    │
+│  │ (Customers) │    │   (Traffic   │    │ (Auto Scaling)  │    │
+│  └─────────────┘    │ Distribution)│    └─────────────────┘    │
+│                     └──────────────┘                           │
+│                            │                                   │
+│  ┌─────────────────────────▼─────────────────────────────────┐ │
+│  │                 MONITORING LAYER                          │ │
+│  │                                                           │ │
+│  │  📊 CloudWatch    📋 Log Analysis    🚨 Alerts & Alarms  │ │
+│  │  • CPU/Memory     • Error Detection  • Email/SMS        │ │
+│  │  • Response Time  • Pattern Matching • Auto-scaling     │ │
+│  │  • Custom Metrics • Lambda Functions • Self-healing     │ │
+│  └───────────────────────────────────────────────────────────┘ │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐ │
+│  │                    VISUALIZATION                            │ │
+│  │  📈 Real-time Dashboards  📊 Business Metrics             │ │
+│  │  📱 Mobile Alerts         🎯 Performance KPIs             │ │
+│  └─────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**What This Means**: By end of day, you'll have a complete system that watches itself and fixes problems automatically!
+
+---
+
+## Slide 5: Project 1 - System Monitoring Architecture
+
+```
+PROJECT 1: CLOUDWATCH MONITORING SETUP
+=====================================
+
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   EC2 INSTANCE  │────▶│   CLOUDWATCH    │────▶│   DASHBOARD     │
+│                 │     │                 │     │                 │
+│ • Web Server    │     │ • Collects      │     │ • Visual Charts │
+│ • CloudWatch    │     │   Metrics       │     │ • Real-time     │
+│   Agent         │     │ • Stores Logs   │     │   Updates       │
+│ • Custom Apps   │     │ • Triggers      │     │ • Mobile Access │
+│                 │     │   Alarms        │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+         │                        │                        │
+         ▼                        ▼                        ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   METRICS       │     │     ALARMS      │     │   NOTIFICATIONS │
+│                 │     │                 │     │                 │
+│ • CPU: 25%      │     │ • High CPU >80% │     │ • Email Alerts  │
+│ • Memory: 45%   │     │ • Errors >5/min │     │ • SMS Messages  │
+│ • Response: 200ms│     │ • Response >1s  │     │ • Slack/Teams   │
+│ • Orders: 15/min│     │ • Low Orders    │     │ • Auto-scaling  │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+**You'll Build**: Complete monitoring that tracks everything and alerts you before problems affect customers!
+
+---
+
+## Slide 6: Project 2 - Log Analysis Architecture
+
+```
+PROJECT 2: AUTOMATED LOG ANALYSIS
+=================================
+
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  APPLICATION    │────▶│   CLOUDWATCH    │────▶│     LAMBDA      │
+│     LOGS        │     │      LOGS       │     │   FUNCTION      │
+│                 │     │                 │     │                 │
+│ • Access Logs   │     │ • Centralized   │     │ • Smart         │
+│ • Error Logs    │     │   Storage       │     │   Analysis      │
+│ • App Logs      │     │ • Real-time     │     │ • Pattern       │
+│ • System Logs   │     │   Streaming     │     │   Detection     │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+         │                        │                        │
+         ▼                        ▼                        ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  LOG EXAMPLES   │     │  LOG INSIGHTS   │     │   SMART ALERTS  │
+│                 │     │                 │     │                 │
+│ ✅ "User login  │     │ • Search Logs   │     │ 🚨 "Database    │
+│    successful"  │     │ • Find Patterns │     │    errors up    │
+│ ⚠️  "Slow query │     │ • Count Errors  │     │    300%!"       │
+│    detected"    │     │ • Trend Analysis│     │ 📧 Auto-email   │
+│ ❌ "Payment     │     │ • Custom Queries│     │    to team      │
+│    failed"      │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+**You'll Build**: Intelligent system that reads thousands of log messages and automatically finds problems!
+
+---
+
+## Slide 7: Project 3 - Self-Healing Infrastructure
+
+```
+PROJECT 3: SELF-HEALING INFRASTRUCTURE
+=====================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    INFRASTRUCTURE AS CODE                       │
+│  ┌─────────────────┐                    ┌─────────────────┐    │
+│  │  CLOUDFORMATION │───── DEPLOYS ────▶│  AUTO SCALING   │    │
+│  │     TEMPLATE    │                    │     GROUP       │    │
+│  │                 │                    │                 │    │
+│  │ • VPC Network   │                    │ • Min: 2 servers│    │
+│  │ • Load Balancer │                    │ • Max: 6 servers│    │
+│  │ • Security      │                    │ • Auto-healing  │    │
+│  │ • Monitoring    │                    │ • Auto-scaling  │    │
+│  └─────────────────┘                    └─────────────────┘    │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      SELF-HEALING ACTIONS                       │
+│                                                                 │
+│  🔥 SERVER CRASHES        ───▶  🚀 NEW SERVER LAUNCHES         │
+│  📈 TRAFFIC INCREASES     ───▶  ➕ ADD MORE SERVERS             │
+│  📉 TRAFFIC DECREASES     ───▶  ➖ REMOVE EXTRA SERVERS         │
+│  ⚠️  HIGH CPU DETECTED    ───▶  🔄 SCALE UP AUTOMATICALLY       │
+│  ✅ SYSTEM HEALTHY        ───▶  💰 OPTIMIZE COSTS               │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+    │   MONITORING    │────▶│   DECISIONS     │────▶│    ACTIONS      │
+    │                 │     │                 │     │                 │
+    │ • Watch System  │     │ • Analyze Data  │     │ • Scale Up/Down │
+    │ • Collect Data  │     │ • Make Choices  │     │ • Replace Failed│
+    │ • Detect Issues │     │ • Trigger Rules │     │ • Send Alerts   │
+    └─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+**You'll Build**: Infrastructure that thinks for itself and fixes problems without human intervention!
+
+---
+
+## Slide 8: Why Monitor Systems?
 **Like a Doctor Checking Your Health**:
 - **Vital Signs**: CPU, Memory, Network (like pulse, blood pressure)
 - **Early Warning**: Catch problems before they get serious
@@ -41,7 +183,7 @@
 
 ---
 
-## Slide 5: The Three Types of System Information
+## Slide 9: The Three Types of System Information
 **1. Metrics (Numbers)**
 - How much CPU is being used?
 - How much memory is available?
@@ -58,7 +200,7 @@
 
 ---
 
-## Slide 6: Amazon CloudWatch - Your System Monitor
+## Slide 10: Amazon CloudWatch - Your System Monitor
 **What is CloudWatch?**
 - AWS service that watches your systems 24/7
 - Like a security guard that never sleeps
@@ -72,7 +214,7 @@
 
 ---
 
-## Slide 7: Automation Benefits
+## Slide 11: Automation Benefits
 **Why Automate Tasks?**
 - **Faster Response**: Computers react in seconds, humans take minutes
 - **No Human Errors**: Computers follow instructions exactly
@@ -82,7 +224,7 @@
 
 ---
 
-## Slide 8: Infrastructure as Code
+## Slide 12: Infrastructure as Code
 **What is Infrastructure as Code?**
 - Writing instructions to create computer systems
 - Like a recipe for building servers
@@ -96,25 +238,59 @@
 
 ---
 
-## Slide 9: Today's Hands-on Projects
-**Project 1: System Monitoring (80 minutes)**
-- Set up monitoring for a web application
-- Create alerts for problems
-- Build a dashboard to see system health
+## Slide 13: End-to-End Flow - What You'll Experience
 
-**Project 2: Log Analysis (80 minutes)**
-- Collect logs from multiple sources
-- Automatically find error patterns
-- Set up alerts for critical issues
+```
+YOUR LEARNING JOURNEY TODAY
+===========================
 
-**Project 3: Self-Healing Systems (80 minutes)**
-- Deploy infrastructure that fixes itself
-- Automatic scaling when busy
-- Recovery from failures
+HOUR 1: THEORY & CONCEPTS
+┌─────────────────────────┐
+│  📚 Learn Principles    │
+│  🎯 Understand Goals    │
+│  📊 See Architecture    │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 2: BUILD MONITORING
+┌─────────────────────────┐
+│  🖥️  Launch EC2 Server  │
+│  📊 Install CloudWatch  │
+│  🚨 Create Alarms       │
+│  📈 Build Dashboard     │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 3: SMART LOG ANALYSIS
+┌─────────────────────────┐
+│  📋 Collect Logs        │
+│  🤖 Create Lambda       │
+│  🔍 Smart Queries       │
+│  📧 Auto Alerts         │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 4: SELF-HEALING SYSTEM
+┌─────────────────────────┐
+│  📝 Write IaC Template  │
+│  🚀 Deploy Auto-Scaling │
+│  🔧 Test Self-Healing   │
+│  💪 Validate Resilience │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 5: INTEGRATION & TESTING
+┌─────────────────────────┐
+│  🧪 End-to-End Testing  │
+│  📊 Performance Review  │
+│  🎯 Skills Assessment   │
+│  🏆 Certification Ready │
+└─────────────────────────┘
+```
 
 ---
 
-## Slide 10: Success Goals for Today
+## Slide 14: Success Goals for Today
 **By the end of today, you will**:
 - ✅ Monitor applications like a professional
 - ✅ Automatically detect and alert on problems
@@ -125,7 +301,7 @@
 
 ---
 
-## Slide 11: Real-World Example
+## Slide 15: Real-World Example
 **E-commerce Website Scenario**:
 - Website must be available 99.9% of the time
 - Thousands of customers shopping daily
@@ -139,7 +315,7 @@
 
 ---
 
-## Slide 12: Let's Get Started!
+## Slide 16: Let's Get Started!
 **Ready for Hands-on Practice?**
 - AWS accounts prepared ✓
 - Step-by-step guides ready ✓
@@ -153,7 +329,7 @@
 
 ---
 
-## Slide 13: Questions Before We Begin
+## Slide 17: Questions Before We Begin
 **Any Questions About**:
 - Operational excellence concepts?
 - Today's learning objectives?

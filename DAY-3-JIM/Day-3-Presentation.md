@@ -37,7 +37,181 @@
 
 ---
 
-## Slide 4: What is CI/CD?
+## Slide 4: Complete Architecture - What You'll Build Today
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    ENTERPRISE OPERATIONAL EXCELLENCE PLATFORM               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐         │
+│  │   DEVELOPERS    │───▶│   CI/CD PIPELINE │───▶│  PRODUCTION     │         │
+│  │                 │    │                 │    │   ENVIRONMENT   │         │
+│  │ • Push Code     │    │ • Auto Test     │    │ • Zero Downtime │         │
+│  │ • New Features  │    │ • Auto Build    │    │ • Blue-Green    │         │
+│  │ • Bug Fixes     │    │ • Auto Deploy   │    │ • Auto Rollback │         │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘         │
+│                                 │                        │                  │
+│  ┌──────────────────────────────▼────────────────────────▼────────────────┐ │
+│  │                        CHAOS ENGINEERING                                │ │
+│  │                                                                         │ │
+│  │  🔥 Fault Injection    🧪 Resilience Tests    📊 Recovery Metrics      │ │
+│  │  • Server Failures     • Network Issues       • MTTR Tracking          │ │
+│  │  • Database Errors     • Load Testing         • Availability %         │ │
+│  │  • Network Latency     • Disaster Recovery    • Business Impact        │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │                    ADVANCED MONITORING & INTELLIGENCE                   │ │
+│  │                                                                         │ │
+│  │  📈 Business Metrics   🤖 ML Predictions   🎯 Executive Dashboards      │ │
+│  │  • Revenue Impact      • Anomaly Detection • Real-time KPIs            │ │
+│  │  • Customer Satisfaction • Capacity Planning • Cost Optimization       │ │
+│  │  • Conversion Rates    • Predictive Scaling • Strategic Insights       │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**What This Means**: You'll build systems that deploy themselves, test themselves, and predict their own problems!
+
+---
+
+## Slide 5: Project 1 - CI/CD Pipeline Architecture
+
+```
+PROJECT 1: ZERO-DOWNTIME CI/CD PIPELINE
+=======================================
+
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   CODECOMMIT    │────▶│   CODEBUILD     │────▶│   CODEDEPLOY    │
+│   (Git Repo)    │     │  (Build & Test) │     │ (Blue-Green)    │
+│                 │     │                 │     │                 │
+│ • Source Code   │     │ • Run Tests     │     │ • Zero Downtime │
+│ • Version Control│     │ • Build Docker  │     │ • Auto Rollback │
+│ • Branch Rules  │     │ • Security Scan │     │ • Health Checks │
+│ • Pull Requests │     │ • Quality Gates │     │ • Traffic Switch│
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+         │                        │                        │
+         ▼                        ▼                        ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  TRIGGER EVENT  │     │   BUILD PROCESS │     │  DEPLOYMENT     │
+│                 │     │                 │     │                 │
+│ • Code Push     │     │ ✅ Unit Tests   │     │ 🔵 Blue Env     │
+│ • Auto Start    │     │ ✅ Integration  │     │    (Current)    │
+│ • Notifications │     │ ✅ Security     │     │ 🟢 Green Env    │
+│ • Status Updates│     │ ✅ Performance  │     │    (New Version)│
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+
+BLUE-GREEN DEPLOYMENT FLOW:
+===========================
+Step 1: 🔵 Blue serves 100% traffic (current version)
+Step 2: 🟢 Green deploys new version (0% traffic)
+Step 3: 🧪 Test Green environment thoroughly
+Step 4: 🔄 Switch 100% traffic to Green instantly
+Step 5: 🔵 Blue becomes standby for rollback
+```
+
+**You'll Build**: Professional deployment system used by Netflix, Amazon, and Google!
+
+---
+
+## Slide 6: Project 2 - Chaos Engineering Architecture
+
+```
+PROJECT 2: CHAOS ENGINEERING & RESILIENCE TESTING
+=================================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    FAULT INJECTION SIMULATOR                    │
+│                                                                 │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+│  │  SERVER CHAOS   │  │  NETWORK CHAOS  │  │ DATABASE CHAOS  │ │
+│  │                 │  │                 │  │                 │ │
+│  │ 🔥 Kill Servers │  │ 🐌 Add Latency  │  │ 💥 Connection   │ │
+│  │ 🔄 Restart Apps │  │ 📡 Drop Packets │  │    Failures     │ │
+│  │ 💾 Fill Disk    │  │ 🌐 DNS Issues   │  │ 🔒 Lock Tables  │ │
+│  │ 🧠 Stress CPU   │  │ 🚫 Block Ports  │  │ ⏱️  Slow Queries│ │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      SYSTEM RESPONSE                            │
+│                                                                 │
+│  📊 MONITORING         🤖 AUTO-RECOVERY        📈 METRICS       │
+│                                                                 │
+│  • Response Time       • Replace Failed        • MTTR: 2 min   │
+│  • Error Rates         • Scale Up/Down         • Uptime: 99.9% │
+│  • Availability        • Load Balance          • Recovery: Auto │
+│  • User Impact         • Circuit Breakers      • Cost: Optimal │
+└─────────────────────────────────────────────────────────────────┘
+
+CHAOS EXPERIMENT FLOW:
+=====================
+1. 🎯 HYPOTHESIS: "System survives server failure"
+2. 🔥 INJECT FAULT: Kill 50% of servers
+3. 📊 MEASURE: Response time, error rate, availability
+4. 🛡️  VALIDATE: System recovers automatically
+5. 📝 LEARN: Document weaknesses and improvements
+6. 🔄 IMPROVE: Fix issues and repeat
+```
+
+**You'll Build**: The same resilience testing used by Netflix's Chaos Monkey!
+
+---
+
+## Slide 7: Project 3 - Advanced Monitoring Architecture
+
+```
+PROJECT 3: ADVANCED MONITORING & BUSINESS INTELLIGENCE
+======================================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    DISTRIBUTED TRACING (X-RAY)                  │
+│                                                                 │
+│  USER REQUEST JOURNEY:                                          │
+│  👤 User ──▶ 🌐 Load Balancer ──▶ 🖥️  Web Server ──▶ 💾 Database │
+│     │              │                    │                │      │
+│     ▼              ▼                    ▼                ▼      │
+│   50ms           25ms                 150ms             75ms    │
+│                                                                 │
+│  🔍 TRACE ANALYSIS: Total: 300ms (Database is bottleneck!)     │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    BUSINESS INTELLIGENCE                        │
+│                                                                 │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+│  │ TECHNICAL       │  │   BUSINESS      │  │   EXECUTIVE     │ │
+│  │ METRICS         │  │   METRICS       │  │   DASHBOARD     │ │
+│  │                 │  │                 │  │                 │ │
+│  │ • Response Time │──▶│ • Conversion    │──▶│ • Revenue/Hour  │ │
+│  │ • Error Rate    │  │   Rate          │  │ • Customer      │ │
+│  │ • CPU Usage     │  │ • Cart          │  │   Satisfaction  │ │
+│  │ • Memory        │  │   Abandonment   │  │ • Market Share  │ │
+│  │ • Throughput    │  │ • Order Value   │  │ • Growth Rate   │ │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  MACHINE LEARNING & PREDICTIONS                 │
+│                                                                 │
+│  🤖 ANOMALY DETECTION      📈 PREDICTIVE SCALING               │
+│                                                                 │
+│  • Normal: 1000 users/2pm  • Traffic spike predicted in 30min  │
+│  • Alert: 100 users/2pm    • Recommend: Add 2 servers now      │
+│  • Pattern: Holiday surge  • Cost savings: Scale down at 10pm  │
+│  • Action: Auto-investigate• Business impact: Prevent slowdown  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**You'll Build**: AI-powered monitoring that predicts problems before they happen!
+
+---
+
+## Slide 8: What is CI/CD?
 **CI/CD = Continuous Integration / Continuous Deployment**
 
 **Like a Modern Factory Assembly Line**:
@@ -50,24 +224,7 @@
 
 ---
 
-## Slide 5: Traditional vs Modern Deployment
-**Traditional Way (Old)**:
-- Deploy once per month
-- Manual testing and deployment
-- Downtime during updates
-- High risk of errors
-- Difficult to rollback
-
-**Modern CI/CD Way (New)**:
-- Deploy multiple times per day
-- Automated testing and deployment
-- Zero downtime deployments
-- Low risk due to automation
-- Instant rollback capability
-
----
-
-## Slide 6: Blue-Green Deployment Strategy
+## Slide 9: Blue-Green Deployment Strategy
 **How Zero-Downtime Deployment Works**:
 
 **Blue Environment**: Current production (customers using this)
@@ -83,7 +240,7 @@
 
 ---
 
-## Slide 7: What is Chaos Engineering?
+## Slide 10: What is Chaos Engineering?
 **Definition**: Intentionally breaking things to make systems stronger
 
 **Real-World Analogy**:
@@ -95,7 +252,60 @@
 
 ---
 
-## Slide 8: Why Break Things on Purpose?
+## Slide 11: End-to-End Integration Flow
+
+```
+YOUR COMPLETE LEARNING JOURNEY TODAY
+===================================
+
+HOUR 1: ADVANCED CONCEPTS
+┌─────────────────────────┐
+│  🎓 Enterprise Patterns │
+│  🏗️  Architecture Design│
+│  📊 Business Alignment  │
+│  🎯 Success Metrics     │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 2: CI/CD MASTERY
+┌─────────────────────────┐
+│  📝 Create Git Repo     │
+│  🏗️  Build Pipeline     │
+│  🔵 Blue-Green Deploy   │
+│  🔄 Test Zero-Downtime  │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 3: CHAOS ENGINEERING
+┌─────────────────────────┐
+│  🔥 Design Experiments  │
+│  💥 Inject Failures     │
+│  📊 Measure Resilience  │
+│  🛡️  Validate Recovery  │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 4: ADVANCED MONITORING
+┌─────────────────────────┐
+│  🔍 Distributed Tracing │
+│  🤖 ML Anomaly Detection│
+│  📈 Business Intelligence│
+│  🎯 Executive Dashboards │
+└─────────────────────────┘
+            │
+            ▼
+HOUR 5: ENTERPRISE INTEGRATION
+┌─────────────────────────┐
+│  🎯 Final Challenge     │
+│  👔 Executive Presentation│
+│  🏆 Skills Certification│
+│  🚀 Career Readiness    │
+└─────────────────────────┘
+```
+
+---
+
+## Slide 12: Why Break Things on Purpose?
 **Benefits of Chaos Engineering**:
 - **Find Weaknesses**: Discover problems before customers do
 - **Build Confidence**: Know your system can handle failures
@@ -109,7 +319,7 @@
 
 ---
 
-## Slide 9: Advanced Monitoring Evolution
+## Slide 13: Advanced Monitoring Evolution
 **Level 1**: Basic monitoring (CPU, memory)
 **Level 2**: Application monitoring (response time, errors)
 **Level 3**: Business monitoring (revenue, user satisfaction)
@@ -119,22 +329,7 @@
 
 ---
 
-## Slide 10: Distributed Tracing
-**The Problem**: In modern applications, one user request touches many services
-
-**Example E-commerce Purchase**:
-1. User clicks "Buy Now"
-2. Authentication service verifies user
-3. Inventory service checks stock
-4. Payment service processes payment
-5. Shipping service creates order
-6. Email service sends confirmation
-
-**Distributed Tracing**: Follow the complete journey and find bottlenecks
-
----
-
-## Slide 11: Machine Learning in Operations
+## Slide 14: Machine Learning in Operations
 **Traditional Alerts**: Fixed thresholds (CPU > 80%)
 **Smart Alerts**: Machine learning detects unusual patterns
 
@@ -146,25 +341,7 @@
 
 ---
 
-## Slide 12: Today's Real-World Projects
-**Project 1: CI/CD Pipeline (80 minutes)**
-- Build automated deployment system
-- Implement blue-green deployment
-- Zero-downtime updates with rollback
-
-**Project 2: Chaos Engineering (80 minutes)**
-- Design resilience experiments
-- Test system failure scenarios
-- Validate recovery procedures
-
-**Project 3: Advanced Monitoring (80 minutes)**
-- Implement distributed tracing
-- Create business intelligence dashboards
-- Set up predictive analytics
-
----
-
-## Slide 13: Enterprise-Level Skills
+## Slide 15: Enterprise-Level Skills
 **After Today, You'll Have**:
 - **CI/CD Expertise**: Deploy like Netflix and Amazon
 - **Resilience Testing**: Build unbreakable systems
@@ -175,7 +352,7 @@
 
 ---
 
-## Slide 14: Success Metrics for Today
+## Slide 16: Success Metrics for Today
 **Technical Achievements**:
 - ✅ Deploy code with zero downtime
 - ✅ Automatically test system resilience
@@ -190,42 +367,13 @@
 
 ---
 
-## Slide 15: Industry Best Practices
+## Slide 17: Industry Best Practices
 **Netflix**: Deploys 1000+ times daily with chaos engineering
 **Amazon**: "You build it, you run it" culture
 **Google**: Site Reliability Engineering with error budgets
 **Facebook**: Automated testing and gradual rollouts
 
 **Key Lesson**: The best companies combine automation, testing, and continuous improvement
-
----
-
-## Slide 16: The Operational Excellence Journey
-**Where You Started** (Day 1):
-- Basic cloud knowledge
-- Manual processes
-
-**Where You Were** (Day 2):
-- Monitoring and automation
-- Self-healing systems
-
-**Where You Are Now** (Day 3):
-- Enterprise-level operational excellence
-- Advanced automation and intelligence
-
----
-
-## Slide 17: Final Assessment Preview
-**Comprehensive Challenge**:
-- Deploy a complete application using CI/CD
-- Test resilience with chaos engineering
-- Monitor with advanced observability
-- Present business value to stakeholders
-
-**Assessment Criteria**:
-- Technical implementation (60%)
-- Problem-solving approach (20%)
-- Business understanding (20%)
 
 ---
 
