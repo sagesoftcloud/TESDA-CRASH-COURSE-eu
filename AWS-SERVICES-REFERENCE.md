@@ -14,7 +14,7 @@
 - **Video Focus**: Dashboard creation, alarm configuration, metric interpretation
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/cloudwatch/
 - **🎥 AWS YouTube**: [Amazon CloudWatch Overview](https://www.youtube.com/watch?v=a4dhoTQCyRA)
-- **🎥 Tutorial Video**: [CloudWatch Dashboards and Alarms](https://www.youtube.com/watch?v=IJ3pomeNgtM)
+- **🎥 Tutorial Video**: [CloudWatch Dashboards and Alarms](https://www.youtube.com/watch?v=Yxl7e88cTAQ)
 
 **CloudWatch Agent**
 - **Use Case**: Detailed system-level monitoring (CPU, memory, disk, network)
@@ -23,7 +23,7 @@
 - **Video Focus**: Installation process, configuration file setup, metric verification
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html
 - **🎥 AWS YouTube**: [Installing CloudWatch Agent](https://www.youtube.com/watch?v=vAnIhIwE5hY)
-- **🎥 Tutorial Video**: [CloudWatch Agent Configuration](https://www.youtube.com/watch?v=TC1j_pLGbKE)
+- **🎥 Tutorial Video**: [CloudWatch Agent Configuration](https://www.youtube.com/watch?v=7UlFuwONrvQ)
 
 **CloudWatch Logs**
 - **Use Case**: Centralized log management and analysis
@@ -31,8 +31,8 @@
 - **Key Features**: Log streaming, log insights queries, metric filters
 - **Video Focus**: Log group creation, log streaming setup, query examples
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/
-- **🎥 AWS YouTube**: [CloudWatch Logs Overview](https://www.youtube.com/watch?v=RBHkxOtBkMg)
-- **🎥 Tutorial Video**: [CloudWatch Logs Setup and Analysis](https://www.youtube.com/watch?v=jiS5dHdyHjE)
+- **🎥 AWS YouTube**: [CloudWatch Logs Overview](https://www.youtube.com/watch?v=HRJnhzSSFtk)
+- **🎥 Tutorial Video**: [CloudWatch Logs Setup and Analysis](https://www.youtube.com/watch?v=5QK3FB1EsV0)
 
 **CloudWatch Logs Insights**
 - **Use Case**: Interactive log analysis and querying
@@ -41,7 +41,7 @@
 - **Video Focus**: Query syntax, common patterns, troubleshooting techniques
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html
 - **🎥 AWS YouTube**: [CloudWatch Logs Insights](https://www.youtube.com/watch?v=2s2xcwm8QrM)
-- **🎥 Tutorial Video**: [Log Insights Query Examples](https://www.youtube.com/watch?v=vONjqKyYeAg)
+- **🎥 Tutorial Video**: [Log Insights Query Examples](https://www.youtube.com/watch?v=bY5X2jLLlUk)
 
 ### Compute & Infrastructure Services
 
