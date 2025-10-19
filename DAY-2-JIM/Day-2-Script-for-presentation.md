@@ -4,6 +4,19 @@
 ### Opening (Slide 1)
 **"Good morning, everyone! Welcome to Day 2 of our AWS Operational Excellence training."**
 
+**"Before we begin, let me share a bit about my background and why that's actually perfect for what we're learning today. I'm primarily an infrastructure guy - my expertise is in building, monitoring, and maintaining systems that keep applications running smoothly. I'm not a developer who writes application code all day, and that's exactly the perspective you need for operational excellence!"**
+
+**"You see, as an infrastructure professional, I live and breathe the world of:**
+- **Making sure systems never go down**
+- **Monitoring everything that can possibly break**
+- **Automating repetitive tasks so humans don't make mistakes**
+- **Planning for disasters before they happen**
+- **Optimizing costs while maintaining performance**
+
+**This infrastructure mindset is what operational excellence is all about. We're not here to write fancy applications - we're here to make sure those applications run flawlessly, scale automatically, and recover from failures without anyone losing sleep."**
+
+**"So when I teach you monitoring, automation, and self-healing systems, I'm sharing real-world experience from someone who's been called at 3 AM when systems fail, and who's learned how to prevent those 3 AM calls through proper operational practices."**
+
 "Today we're going to learn something very practical - how to make computer systems work better and fix themselves when problems happen. Think of it like teaching a car to check its own engine and fix small problems before they become big ones."
 
 "We have 5 hours together - 1 hour to understand the concepts, then 4 hours of hands-on practice where you'll actually build these systems yourself."

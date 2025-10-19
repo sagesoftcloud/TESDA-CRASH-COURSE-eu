@@ -4,6 +4,20 @@
 ### Opening (Slide 1)
 **"Welcome back, everyone! Congratulations on completing Day 2 successfully."**
 
+**"As we dive into today's advanced topics, I want to remind you of something important about my background that makes this training especially valuable. I'm an infrastructure specialist - my world revolves around making sure systems run reliably, scale efficiently, and recover gracefully from failures."**
+
+**"Now, you might think, 'But we're learning about CI/CD and deployment pipelines - isn't that developer stuff?' Here's the thing: the best CI/CD pipelines aren't built by developers alone. They're built by infrastructure professionals who understand:**
+- **How systems fail and how to prevent it**
+- **What monitoring and alerting really need to look like**
+- **How to design for scalability and resilience from day one**
+- **The operational impact of every deployment decision**
+
+**When developers build CI/CD pipelines, they often focus on 'does my code deploy?' When infrastructure professionals build them, we ask 'does my code deploy reliably, with zero downtime, full monitoring, automatic rollback, and complete observability?'"**
+
+**"The same goes for chaos engineering - this isn't about breaking things for fun. It's about systematically validating that our infrastructure can handle real-world failures. As someone who's been responsible for keeping systems running 24/7, I can tell you that chaos engineering isn't optional - it's essential."**
+
+**"So today, you're learning these advanced concepts from someone who's lived through production outages, who's been called when systems fail, and who's learned how to build systems that don't fail in the first place."**
+
 "Today is where we take everything to the next level. Yesterday you learned to monitor and automate systems. Today, you'll learn to build systems like the world's biggest tech companies - Netflix, Amazon, Google."
 
 "We're going to cover three advanced topics that separate good IT professionals from great ones: automated code deployment, resilience testing, and predictive monitoring."
