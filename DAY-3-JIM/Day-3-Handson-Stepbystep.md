@@ -21,7 +21,7 @@ By the end of this hands-on session, you will:
 ### What You'll Build
 A complete CI/CD pipeline that:
 - Automatically tests code changes
-- Deploys with zero downtime using blue-green strategy
+- Deploys with zero downtime using Elastic Beanstalk blue-green strategy
 - Includes automated rollback capabilities
 - Integrates monitoring and alerting
 
@@ -30,15 +30,15 @@ You're the DevOps engineer for a popular e-commerce app like Shopee. The develop
 
 ---
 
-### Step 1: Create Sample Application Repository (15 minutes)
+### Step 1: Create Sample Web Application (15 minutes)
 
 #### 1.1 Set Up CodeCommit Repository
 ```
 🖥️ VISUAL: AWS Console
 📍 Services → CodeCommit
 📍 Click "Create repository"
-📍 Repository name: "ecommerce-app-cicd"
-📍 Description: "E-commerce application with CI/CD pipeline"
+📍 Repository name: "ecommerce-beanstalk-app"
+📍 Description: "E-commerce web application for Beanstalk deployment"
 📍 Click "Create"
 ```
 
@@ -48,38 +48,1053 @@ You're the DevOps engineer for a popular e-commerce app like Shopee. The develop
 cd /home/ec2-user
 
 # Clone the repository
-git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/ecommerce-app-cicd
-cd ecommerce-app-cicd
+git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/ecommerce-beanstalk-app
+cd ecommerce-beanstalk-app
 ```
 
-#### 1.3 Create Node.js Application
+#### 1.3 Create Node.js Web Application
 ```bash
 # Create package.json
 cat > package.json << 'EOF'
 {
-  "name": "ecommerce-app",
+  "name": "ecommerce-beanstalk-app",
   "version": "1.0.0",
-  "description": "E-commerce application for CI/CD demo",
+  "description": "E-commerce web application for Elastic Beanstalk",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "jest --coverage",
-    "dev": "nodemon app.js"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "aws-xray-sdk": "^3.4.1",
-    "helmet": "^6.1.5",
-    "cors": "^2.8.5"
+    "ejs": "^3.1.9",
+    "body-parser": "^1.20.2"
   },
   "devDependencies": {
     "jest": "^29.5.0",
-    "supertest": "^6.3.3",
-    "nodemon": "^2.0.22"
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
 EOF
 ```
+
+#### 1.4 Create Main Application (app.js)
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+const app = express();
+const port = process.env.PORT || 8080;
+const version = process.env.APP_VERSION || '1.0.0';
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+
+// In-memory data store (for demo purposes)
+let products = [
+    { id: 1, name: 'Laptop', price: 50000, stock: 10, category: 'Electronics' },
+    { id: 2, name: 'Phone', price: 25000, stock: 25, category: 'Electronics' },
+    { id: 3, name: 'Tablet', price: 15000, stock: 15, category: 'Electronics' },
+    { id: 4, name: 'Headphones', price: 5000, stock: 30, category: 'Accessories' }
+];
+
+let orders = [];
+let orderIdCounter = 1000;
+
+// Routes
+app.get('/', (req, res) => {
+    res.render('index', { 
+        products: products, 
+        version: version,
+        timestamp: new Date().toISOString()
+    });
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        version: version,
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: process.env.NODE_ENV || 'development'
+    });
+});
+
+app.get('/api/products', (req, res) => {
+    res.json({
+        products: products,
+        total: products.length,
+        version: version
+    });
+});
+
+app.post('/api/orders', (req, res) => {
+    const { productId, quantity, customerName } = req.body;
+    
+    if (!productId || !quantity || !customerName) {
+        return res.status(400).json({
+            error: 'Product ID, quantity, and customer name are required',
+            version: version
+        });
+    }
+    
+    const product = products.find(p => p.id == productId);
+    if (!product) {
+        return res.status(404).json({
+            error: 'Product not found',
+            version: version
+        });
+    }
+    
+    if (product.stock < quantity) {
+        return res.status(400).json({
+            error: 'Insufficient stock',
+            available: product.stock,
+            version: version
+        });
+    }
+    
+    // Create order
+    const order = {
+        id: orderIdCounter++,
+        productId: parseInt(productId),
+        productName: product.name,
+        quantity: parseInt(quantity),
+        customerName: customerName,
+        totalPrice: product.price * quantity,
+        status: 'confirmed',
+        timestamp: new Date().toISOString(),
+        version: version
+    };
+    
+    // Update stock
+    product.stock -= quantity;
+    orders.push(order);
+    
+    res.status(201).json(order);
+});
+
+app.get('/api/orders', (req, res) => {
+    res.json({
+        orders: orders,
+        total: orders.length,
+        version: version
+    });
+});
+
+// Metrics endpoint for monitoring
+app.get('/metrics', (req, res) => {
+    res.json({
+        memory: process.memoryUsage(),
+        uptime: process.uptime(),
+        version: version,
+        environment: process.env.NODE_ENV || 'development',
+        timestamp: new Date().toISOString(),
+        totalProducts: products.length,
+        totalOrders: orders.length,
+        lowStockProducts: products.filter(p => p.stock < 5).length
+    });
+});
+
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        error: 'Something went wrong!',
+        version: version
+    });
+});
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).render('404', { version: version });
+});
+
+const server = app.listen(port, () => {
+    console.log(`E-commerce app v${version} running on port ${port}`);
+});
+
+module.exports = { app, server };
+```
+
+#### 1.5 Create EJS Templates
+```bash
+# Create views directory
+mkdir views
+
+# Create main template
+cat > views/index.ejs << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Store - Beanstalk Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }
+        .version { background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px; margin-top: 15px; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .product { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .product h3 { color: #333; margin-top: 0; }
+        .price { font-size: 1.5em; color: #e74c3c; font-weight: bold; }
+        .stock { color: #27ae60; font-weight: bold; }
+        .low-stock { color: #e67e22; }
+        .order-form { background: white; padding: 20px; border-radius: 10px; margin-top: 20px; }
+        .btn { background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn:hover { background: #2980b9; }
+        .status { background: #2ecc71; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛒 E-commerce Store</h1>
+        <p>Elastic Beanstalk CI/CD Demo for TESDA Training</p>
+        <div class="version">
+            <strong>Version:</strong> <%= version %> | 
+            <strong>Deployed:</strong> <%= timestamp %>
+        </div>
+    </div>
+    
+    <div class="status">
+        <h2>✅ System Status: ONLINE & AUTO-DEPLOYING</h2>
+        <p>This application was deployed using Elastic Beanstalk with zero downtime!</p>
+    </div>
+    
+    <h2>📦 Available Products</h2>
+    <div class="products">
+        <% products.forEach(product => { %>
+        <div class="product">
+            <h3><%= product.name %></h3>
+            <p class="price">₱<%= product.price.toLocaleString() %></p>
+            <p class="<%= product.stock < 5 ? 'low-stock' : 'stock' %>">
+                Stock: <%= product.stock %> units
+                <%= product.stock < 5 ? '(Low Stock!)' : '' %>
+            </p>
+            <p><strong>Category:</strong> <%= product.category %></p>
+        </div>
+        <% }); %>
+    </div>
+    
+    <div class="order-form">
+        <h2>🛍️ Place Order</h2>
+        <form id="orderForm">
+            <p>
+                <label>Product:</label>
+                <select id="productId" required>
+                    <option value="">Select a product</option>
+                    <% products.forEach(product => { %>
+                    <option value="<%= product.id %>"><%= product.name %> - ₱<%= product.price.toLocaleString() %></option>
+                    <% }); %>
+                </select>
+            </p>
+            <p>
+                <label>Quantity:</label>
+                <input type="number" id="quantity" min="1" required>
+            </p>
+            <p>
+                <label>Customer Name:</label>
+                <input type="text" id="customerName" required>
+            </p>
+            <button type="submit" class="btn">Place Order</button>
+        </form>
+        <div id="orderResult"></div>
+    </div>
+    
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                productId: document.getElementById('productId').value,
+                quantity: document.getElementById('quantity').value,
+                customerName: document.getElementById('customerName').value
+            };
+            
+            try {
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('orderResult').innerHTML = 
+                        `<div style="background: #2ecc71; color: white; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                            ✅ Order placed successfully! Order ID: ${result.id}
+                        </div>`;
+                    document.getElementById('orderForm').reset();
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    document.getElementById('orderResult').innerHTML = 
+                        `<div style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                            ❌ Error: ${result.error}
+                        </div>`;
+                }
+            } catch (error) {
+                document.getElementById('orderResult').innerHTML = 
+                    `<div style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                        ❌ Network error: ${error.message}
+                    </div>`;
+            }
+        });
+    </script>
+</body>
+</html>
+EOF
+
+# Create 404 template
+cat > views/404.ejs << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .error { background: #e74c3c; color: white; padding: 30px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="error">
+        <h1>404 - Page Not Found</h1>
+        <p>The page you're looking for doesn't exist.</p>
+        <p><strong>Version:</strong> <%= version %></p>
+        <a href="/" style="color: white;">← Back to Home</a>
+    </div>
+</body>
+</html>
+EOF
+```
+
+#### 1.6 Create Test Suite
+```javascript
+# Create test file
+cat > app.test.js << 'EOF'
+const request = require('supertest');
+const { app, server } = require('./app');
+
+describe('E-commerce Beanstalk Application', () => {
+    afterAll(() => {
+        server.close();
+    });
+
+    describe('Health Check', () => {
+        test('GET /health should return 200', async () => {
+            const response = await request(app).get('/health');
+            expect(response.status).toBe(200);
+            expect(response.body.status).toBe('healthy');
+            expect(response.body).toHaveProperty('version');
+            expect(response.body).toHaveProperty('uptime');
+        });
+    });
+
+    describe('Main Routes', () => {
+        test('GET / should return 200', async () => {
+            const response = await request(app).get('/');
+            expect(response.status).toBe(200);
+        });
+
+        test('GET /api/products should return products list', async () => {
+            const response = await request(app).get('/api/products');
+            expect(response.status).toBe(200);
+            expect(response.body.products).toBeInstanceOf(Array);
+            expect(response.body.products.length).toBeGreaterThan(0);
+            expect(response.body).toHaveProperty('total');
+        });
+    });
+
+    describe('Orders API', () => {
+        test('POST /api/orders should create order with valid data', async () => {
+            const orderData = { 
+                productId: 1, 
+                quantity: 2, 
+                customerName: 'Test Customer' 
+            };
+            const response = await request(app)
+                .post('/api/orders')
+                .send(orderData);
+            
+            expect(response.status).toBe(201);
+            expect(response.body).toHaveProperty('id');
+            expect(response.body.productId).toBe(orderData.productId);
+            expect(response.body.quantity).toBe(orderData.quantity);
+            expect(response.body.customerName).toBe(orderData.customerName);
+            expect(response.body.status).toBe('confirmed');
+        });
+
+        test('POST /api/orders should return 400 with invalid data', async () => {
+            const response = await request(app)
+                .post('/api/orders')
+                .send({});
+            
+            expect(response.status).toBe(400);
+            expect(response.body).toHaveProperty('error');
+        });
+
+        test('GET /api/orders should return orders list', async () => {
+            const response = await request(app).get('/api/orders');
+            expect(response.status).toBe(200);
+            expect(response.body.orders).toBeInstanceOf(Array);
+            expect(response.body).toHaveProperty('total');
+        });
+    });
+
+    describe('Metrics', () => {
+        test('GET /metrics should return system metrics', async () => {
+            const response = await request(app).get('/metrics');
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveProperty('memory');
+            expect(response.body).toHaveProperty('uptime');
+            expect(response.body).toHaveProperty('version');
+            expect(response.body).toHaveProperty('totalProducts');
+            expect(response.body).toHaveProperty('totalOrders');
+        });
+    });
+});
+EOF
+```
+
+---
+
+### Step 2: Create Elastic Beanstalk Application (20 minutes)
+
+#### 2.1 Create Beanstalk Application
+```
+🖥️ VISUAL: AWS Console
+📍 Services → Elastic Beanstalk
+📍 Click "Create application"
+📍 Application name: "ecommerce-beanstalk-app"
+📍 Description: "E-commerce web application with CI/CD"
+📍 Platform: Node.js
+📍 Platform version: Node.js 18 running on 64bit Amazon Linux 2023
+📍 Application code: Sample application (for now)
+📍 Click "Create application"
+```
+
+```
+⏳ WAIT: Application creation takes 3-5 minutes
+📍 Watch the environment creation process
+✅ Status should change to "Ok" with green checkmark
+```
+
+#### 2.2 Test Initial Deployment
+```
+🖥️ VISUAL: Beanstalk Console
+📍 Click on the environment URL (looks like: http://ecommerce-beanstalk-app.us-east-1.elasticbeanstalk.com)
+📍 You should see the sample Node.js application
+✅ Verify the application loads successfully
+```
+
+#### 2.3 Configure Environment for Blue-Green Deployment
+```
+🖥️ VISUAL: Beanstalk Environment
+📍 Click "Configuration" in left menu
+📍 Click "Edit" in "Rolling updates and deployments" section
+📍 Deployment policy: Blue/green
+📍 Click "Apply"
+```
+
+```
+💡 EXPLANATION:
+- Blue-green deployment creates a new environment for each deployment
+- Traffic switches instantly from old (blue) to new (green) environment
+- Zero downtime during deployments
+- Easy rollback if issues occur
+```
+
+---
+
+### Step 3: Set Up CI/CD Pipeline (25 minutes)
+
+#### 3.1 Create CodeBuild Project
+```
+🖥️ VISUAL: AWS Console
+📍 Services → CodeBuild
+📍 Click "Create build project"
+📍 Project name: "ecommerce-beanstalk-build"
+📍 Description: "Build and test e-commerce application for Beanstalk"
+```
+
+#### 3.2 Configure Source
+```
+🖥️ VISUAL: Source section
+📍 Source provider: AWS CodeCommit
+📍 Repository: ecommerce-beanstalk-app
+📍 Branch: main
+📍 Git clone depth: 1
+```
+
+#### 3.3 Configure Environment
+```
+🖥️ VISUAL: Environment section
+📍 Environment image: Managed image
+📍 Operating system: Amazon Linux 2
+📍 Runtime: Standard
+📍 Image: aws/codebuild/amazonlinux2-x86_64-standard:4.0
+📍 Service role: Create new service role
+```
+
+#### 3.4 Create Build Specification
+```bash
+# Back in your local repository, create buildspec.yml
+cat > buildspec.yml << 'EOF'
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo Installing dependencies...
+      - npm install
+
+  pre_build:
+    commands:
+      - echo Running tests...
+      - npm test
+      - echo Build started on `date`
+
+  build:
+    commands:
+      - echo Building the application...
+      - echo Creating deployment package...
+      - zip -r deployment-package.zip . -x "*.git*" "node_modules/.cache/*" "coverage/*"
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Deployment package created successfully
+
+artifacts:
+  files:
+    - '**/*'
+  name: ecommerce-beanstalk-$(date +%Y-%m-%d-%H-%M-%S)
+EOF
+```
+
+#### 3.5 Create CodePipeline
+```
+🖥️ VISUAL: AWS Console
+📍 Services → CodePipeline
+📍 Click "Create pipeline"
+📍 Pipeline name: "ecommerce-beanstalk-pipeline"
+📍 Service role: New service role
+📍 Click "Next"
+```
+
+#### 3.6 Add Source Stage
+```
+🖥️ VISUAL: Source stage
+📍 Source provider: AWS CodeCommit
+📍 Repository name: ecommerce-beanstalk-app
+📍 Branch name: main
+📍 Change detection options: Amazon CloudWatch Events
+📍 Click "Next"
+```
+
+#### 3.7 Add Build Stage
+```
+🖥️ VISUAL: Build stage
+📍 Build provider: AWS CodeBuild
+📍 Project name: ecommerce-beanstalk-build
+📍 Build type: Single build
+📍 Click "Next"
+```
+
+#### 3.8 Add Deploy Stage
+```
+🖥️ VISUAL: Deploy stage
+📍 Deploy provider: AWS Elastic Beanstalk
+📍 Application name: ecommerce-beanstalk-app
+📍 Environment name: (select your environment)
+📍 Click "Next"
+📍 Click "Create pipeline"
+```
+
+**🎉 Checkpoint 2 Complete!** You now have a complete CI/CD pipeline with Beanstalk deployment.
+
+---
+
+### Step 4: Test Zero-Downtime Deployment (15 minutes)
+
+#### 4.1 Commit and Push Your Application
+```bash
+# Add all files to git
+git add .
+
+# Commit with descriptive message
+git commit -m "Initial commit: E-commerce Beanstalk app with CI/CD
+
+- Node.js Express application with EJS templates
+- Complete e-commerce functionality (products, orders)
+- Comprehensive test suite with Jest
+- Health check and metrics endpoints
+- Beanstalk-optimized configuration
+- CI/CD pipeline with CodeBuild and CodePipeline"
+
+# Push to trigger pipeline
+git push origin main
+```
+
+#### 4.2 Monitor Pipeline Execution
+```
+🖥️ VISUAL: CodePipeline Console
+📍 Watch your pipeline execute through all stages:
+  1. Source: Pulls code from CodeCommit ✅
+  2. Build: Runs tests and creates package ✅
+  3. Deploy: Deploys to Beanstalk with blue-green ✅
+```
+
+#### 4.3 Verify Zero-Downtime Deployment
+```
+🖥️ VISUAL: Beanstalk Console
+📍 Click "Events" to see deployment progress
+📍 Look for "Environment update completed successfully"
+📍 Click environment URL to test your application
+✅ You should see your e-commerce application running!
+```
+
+#### 4.4 Test Application Functionality
+```
+🖥️ VISUAL: Your Web Application
+📍 Browse products on the homepage
+📍 Place a test order using the form
+📍 Check /health endpoint for system status
+📍 Check /metrics endpoint for monitoring data
+✅ All functionality should work perfectly
+```
+
+---
+
+### Step 5: Test Rollback Capability (5 minutes)
+
+#### 5.1 Make a Breaking Change
+```bash
+# Introduce an intentional error to test rollback
+sed -i 's/app.listen(port/app.listen(invalidPort/' app.js
+
+# Commit the breaking change
+git add app.js
+git commit -m "test: Introduce breaking change to test rollback"
+git push origin main
+```
+
+#### 5.2 Monitor Failed Deployment
+```
+🖥️ VISUAL: Beanstalk Console
+📍 Watch the deployment fail due to health check failures
+📍 Beanstalk will automatically rollback to previous version
+📍 Your application remains available throughout the process
+✅ This demonstrates automatic rollback capability
+```
+
+#### 5.3 Fix and Redeploy
+```bash
+# Fix the breaking change
+sed -i 's/app.listen(invalidPort/app.listen(port/' app.js
+
+# Commit the fix
+git add app.js
+git commit -m "fix: Restore correct port configuration"
+git push origin main
+```
+
+**🎉 Project 1 Complete!** You've built a complete CI/CD pipeline with:
+- ✅ Automated testing on every code change
+- ✅ Zero-downtime deployment with Elastic Beanstalk
+- ✅ Blue-green deployment strategy
+- ✅ Automatic rollback on failures
+- ✅ Complete web application with monitoring
+
+---
+
+## 📊 Project 1 Assessment (5 minutes)
+
+### Verification Checklist
+1. **Pipeline Success**: ✅ Did the pipeline complete all stages successfully?
+2. **Application Running**: ✅ Can you access the application via Beanstalk URL?
+3. **Zero-Downtime**: ✅ Did deployment happen without service interruption?
+4. **Rollback Tested**: ✅ Did automatic rollback work when you introduced errors?
+
+### Understanding Check
+1. What are the advantages of blue-green deployment?
+2. How does Beanstalk differ from ECS/Fargate?
+3. What triggers a new deployment in your pipeline?
+4. How would you add a new feature and deploy it?
+
+**🎯 Project 1 Score: ___/25 points**
+
+---
+
+## 🔥 Project 2: Chaos Engineering & Resilience Testing (80 minutes)
+
+### What You'll Build
+A comprehensive chaos engineering system that:
+- Tests Beanstalk application resilience through controlled failures
+- Validates automatic recovery mechanisms
+- Measures system behavior under stress
+- Provides insights for improving reliability
+
+### Real-World Scenario
+You're the Site Reliability Engineer for a critical e-commerce platform. Before the upcoming 12.12 sale event, you need to ensure your Beanstalk application can handle various failure scenarios. Better to find weaknesses now than during peak shopping hours when millions are trying to buy.
+
+---
+
+### Step 1: Set Up AWS Fault Injection Simulator (20 minutes)
+
+#### 1.1 Create FIS Service Role
+```
+🖥️ VISUAL: AWS Console
+📍 Services → IAM
+📍 Click "Roles" → "Create role"
+📍 Select "AWS service"
+📍 Choose "Fault Injection Simulator"
+📍 Click "Next"
+```
+
+```
+🖥️ VISUAL: Add permissions
+📍 Search and select these policies:
+  - EC2FullAccess (for stopping/starting instances)
+  - ElasticBeanstalkFullAccess (for Beanstalk operations)
+  - CloudWatchFullAccess (for metrics)
+📍 Click "Next"
+📍 Role name: "FISChaosEngineeringRole"
+📍 Description: "Role for chaos engineering experiments on Beanstalk"
+📍 Click "Create role"
+```
+
+#### 1.2 Get Beanstalk Environment Information
+```bash
+# Get your Beanstalk environment details
+aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query 'Environments[0].{EnvironmentName:EnvironmentName,EnvironmentId:EnvironmentId,CNAME:CNAME}'
+
+# Note down the EnvironmentName and CNAME for later use
+```
+
+---
+
+### Step 2: Create Chaos Engineering Experiments (25 minutes)
+
+#### 2.1 Experiment 1: EC2 Instance Termination
+```
+🖥️ VISUAL: AWS Console
+📍 Services → AWS Fault Injection Simulator
+📍 Click "Create experiment template"
+📍 Name: "Beanstalk-Instance-Termination-Test"
+📍 Description: "Test Beanstalk resilience by terminating EC2 instances"
+📍 Role: FISChaosEngineeringRole
+```
+
+```
+🖥️ VISUAL: Actions section
+📍 Click "Add action"
+📍 Name: "StopBeanstalkInstances"
+📍 Action type: aws:ec2:stop-instances
+📍 Parameters:
+  - startInstancesAfterDuration: PT10M (restart after 10 minutes)
+📍 Targets: BeanstalkInstances
+```
+
+```
+🖥️ VISUAL: Targets section
+📍 Click "Add target"
+📍 Name: "BeanstalkInstances"
+📍 Resource type: aws:ec2:instance
+📍 Target method: Resource tags
+📍 Resource tags:
+  - Key: elasticbeanstalk:environment-name
+  - Value: (your Beanstalk environment name)
+📍 Selection mode: Percent(50)
+```
+
+```
+🖥️ VISUAL: Stop conditions
+📍 Click "Add stop condition"
+📍 Source: aws:cloudwatch:alarm
+📍 Value: arn:aws:cloudwatch:us-east-1:YOUR_ACCOUNT:alarm:BeanstalkHighResponseTime
+```
+
+```
+📍 Click "Create experiment template"
+```
+
+#### 2.2 Create Stop Condition Alarm
+```
+🖥️ VISUAL: CloudWatch Console
+📍 Services → CloudWatch
+📍 Click "Alarms" → "Create alarm"
+📍 Select metric: AWS/ELB → Latency
+📍 Load balancer: (your Beanstalk load balancer)
+📍 Statistic: Average
+📍 Period: 1 minute
+📍 Threshold: Greater than 5000 (5 seconds)
+📍 Alarm name: "BeanstalkHighResponseTime"
+📍 Create alarm
+```
+
+#### 2.3 Experiment 2: Application Load Testing
+```bash
+# Create load testing script for Beanstalk
+cat > /home/ec2-user/beanstalk-load-test.sh << 'EOF'
+#!/bin/bash
+
+# Get Beanstalk URL
+BEANSTALK_URL=$(aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query 'Environments[0].CNAME' \
+    --output text)
+
+BASE_URL="http://$BEANSTALK_URL"
+
+echo "Starting load test against Beanstalk application..."
+echo "Target URL: $BASE_URL"
+
+# Generate high load to test auto-scaling
+for i in {1..1000}; do
+    # Multiple concurrent requests
+    for j in {1..10}; do
+        curl -s "$BASE_URL" > /dev/null &
+        curl -s "$BASE_URL/api/products" > /dev/null &
+        curl -s "$BASE_URL/health" > /dev/null &
+    done
+    
+    # Order creation requests (some will succeed, some will fail)
+    if [ $((i % 5)) -eq 0 ]; then
+        curl -s -X POST "$BASE_URL/api/orders" \
+            -H "Content-Type: application/json" \
+            -d '{"productId": 1, "quantity": 1, "customerName": "Load Test User"}' > /dev/null &
+    fi
+    
+    # Random delay between batches
+    sleep $(echo "scale=2; $RANDOM/32767*2" | bc)
+done
+
+wait
+echo "Load test completed!"
+EOF
+
+chmod +x /home/ec2-user/beanstalk-load-test.sh
+```
+
+---
+
+### Step 3: Execute Chaos Experiments (20 minutes)
+
+#### 3.1 Pre-Experiment Monitoring Setup
+```bash
+# Create monitoring script for Beanstalk
+cat > /home/ec2-user/beanstalk-chaos-monitor.sh << 'EOF'
+#!/bin/bash
+
+# Get Beanstalk environment details
+BEANSTALK_URL=$(aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query 'Environments[0].CNAME' \
+    --output text)
+
+BASE_URL="http://$BEANSTALK_URL"
+LOG_FILE="/home/ec2-user/beanstalk-chaos-$(date +%Y%m%d-%H%M%S).log"
+
+echo "Starting Beanstalk chaos experiment monitoring..." | tee -a $LOG_FILE
+echo "Target URL: $BASE_URL" | tee -a $LOG_FILE
+echo "Start Time: $(date)" | tee -a $LOG_FILE
+echo "----------------------------------------" | tee -a $LOG_FILE
+
+# Monitor application availability and response time
+while true; do
+    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+    
+    # Test health endpoint
+    HEALTH_RESPONSE=$(curl -s -w "%{http_code},%{time_total}" -o /dev/null $BASE_URL/health)
+    HEALTH_CODE=$(echo $HEALTH_RESPONSE | cut -d',' -f1)
+    HEALTH_TIME=$(echo $HEALTH_RESPONSE | cut -d',' -f2)
+    
+    # Test main endpoint
+    MAIN_RESPONSE=$(curl -s -w "%{http_code},%{time_total}" -o /dev/null $BASE_URL/)
+    MAIN_CODE=$(echo $MAIN_RESPONSE | cut -d',' -f1)
+    MAIN_TIME=$(echo $MAIN_RESPONSE | cut -d',' -f2)
+    
+    # Test API endpoint
+    API_RESPONSE=$(curl -s -w "%{http_code},%{time_total}" -o /dev/null $BASE_URL/api/products)
+    API_CODE=$(echo $API_RESPONSE | cut -d',' -f1)
+    API_TIME=$(echo $API_RESPONSE | cut -d',' -f2)
+    
+    # Log results
+    echo "$TIMESTAMP,Health:$HEALTH_CODE:${HEALTH_TIME}s,Main:$MAIN_CODE:${MAIN_TIME}s,API:$API_CODE:${API_TIME}s" | tee -a $LOG_FILE
+    
+    # Check for failures
+    if [ "$HEALTH_CODE" != "200" ] || [ "$MAIN_CODE" != "200" ] || [ "$API_CODE" != "200" ]; then
+        echo "⚠️  FAILURE DETECTED at $TIMESTAMP" | tee -a $LOG_FILE
+    fi
+    
+    sleep 10
+done
+EOF
+
+chmod +x /home/ec2-user/beanstalk-chaos-monitor.sh
+```
+
+#### 3.2 Execute Instance Termination Experiment
+```
+🖥️ VISUAL: FIS Console
+📍 Click "Experiment templates"
+📍 Select "Beanstalk-Instance-Termination-Test"
+📍 Click "Start experiment"
+📍 Experiment name: "Beanstalk-Resilience-Test-$(date +%Y%m%d-%H%M%S)"
+📍 Click "Start experiment"
+```
+
+```bash
+# Start monitoring in background
+nohup /home/ec2-user/beanstalk-chaos-monitor.sh &
+
+# Watch Beanstalk environment during experiment
+watch -n 30 'aws elasticbeanstalk describe-environment-health \
+    --environment-name YOUR_ENVIRONMENT_NAME \
+    --attribute-names All'
+```
+
+```
+⏳ OBSERVE: During the experiment, you should see:
+- Some EC2 instances being terminated
+- Beanstalk automatically launching replacement instances
+- Load balancer routing traffic to healthy instances
+- Minimal or no service interruption
+```
+
+#### 3.3 Execute Load Test During Chaos
+```bash
+# Run load test while chaos experiment is active
+/home/ec2-user/beanstalk-load-test.sh &
+
+# Monitor Beanstalk scaling response
+aws elasticbeanstalk describe-environment-resources \
+    --environment-name YOUR_ENVIRONMENT_NAME \
+    --query 'EnvironmentResources.Instances[*].Id'
+```
+
+---
+
+### Step 4: Create Resilience Dashboard (15 minutes)
+
+#### 4.1 Create Beanstalk Resilience Dashboard
+```
+🖥️ VISUAL: CloudWatch Console
+📍 Click "Dashboards" → "Create dashboard"
+📍 Dashboard name: "Beanstalk-Chaos-Engineering"
+📍 Click "Create dashboard"
+```
+
+#### 4.2 Add Beanstalk Health Widget
+```
+🖥️ VISUAL: Add widget
+📍 Select "Line" widget
+📍 Add metrics:
+  - AWS/ELB → Latency (your Beanstalk load balancer)
+  - AWS/ELB → RequestCount (your Beanstalk load balancer)
+  - AWS/ELB → HTTPCode_ELB_2XX (your Beanstalk load balancer)
+  - AWS/ELB → HTTPCode_ELB_5XX (your Beanstalk load balancer)
+📍 Widget title: "Beanstalk Performance During Chaos"
+📍 Create widget
+```
+
+#### 4.3 Add Environment Health Widget
+```
+🖥️ VISUAL: Add another widget
+📍 Select "Number" widget
+📍 Add metrics:
+  - AWS/ElasticBeanstalk → EnvironmentHealth (your environment)
+  - AWS/ElasticBeanstalk → ApplicationRequests2xx (your environment)
+  - AWS/ElasticBeanstalk → ApplicationRequests5xx (your environment)
+📍 Widget title: "Environment Health Status"
+📍 Create widget
+```
+
+#### 4.4 Add Custom Resilience Metrics
+```bash
+# Create script to send custom resilience metrics
+cat > /home/ec2-user/beanstalk-resilience-metrics.sh << 'EOF'
+#!/bin/bash
+
+# Calculate availability percentage from logs
+LOG_FILE=$(ls -t /home/ec2-user/beanstalk-chaos-*.log | head -1)
+
+if [ -f "$LOG_FILE" ]; then
+    TOTAL_REQUESTS=$(grep -c "Health:" $LOG_FILE)
+    SUCCESSFUL_REQUESTS=$(grep -c "Health:200:" $LOG_FILE)
+    
+    if [ $TOTAL_REQUESTS -gt 0 ]; then
+        AVAILABILITY=$(echo "scale=2; $SUCCESSFUL_REQUESTS * 100 / $TOTAL_REQUESTS" | bc)
+        
+        # Send availability metric to CloudWatch
+        aws cloudwatch put-metric-data \
+            --namespace "TESDA/BeanstalkChaos" \
+            --metric-data \
+            MetricName=Availability,Value=$AVAILABILITY,Unit=Percent \
+            MetricName=TotalRequests,Value=$TOTAL_REQUESTS,Unit=Count \
+            MetricName=SuccessfulRequests,Value=$SUCCESSFUL_REQUESTS,Unit=Count
+        
+        echo "Beanstalk Availability: $AVAILABILITY%"
+        echo "Total Requests: $TOTAL_REQUESTS"
+        echo "Successful Requests: $SUCCESSFUL_REQUESTS"
+    fi
+fi
+EOF
+
+chmod +x /home/ec2-user/beanstalk-resilience-metrics.sh
+/home/ec2-user/beanstalk-resilience-metrics.sh
+```
+
+**🎉 Project 2 Complete!** You've implemented chaos engineering with:
+- ✅ Controlled failure injection experiments on Beanstalk
+- ✅ Automated resilience testing
+- ✅ Real-time monitoring during chaos
+- ✅ Resilience metrics and dashboards
+- ✅ Validation of Beanstalk's auto-recovery mechanisms
+
+---
+
+## 📊 Project 2 Assessment (5 minutes)
+
+### Verification Checklist
+1. **Experiments Created**: ✅ Are FIS experiment templates created?
+2. **Chaos Executed**: ✅ Did experiments run successfully?
+3. **Beanstalk Resilience**: ✅ Did Beanstalk recover automatically from instance failures?
+4. **Monitoring Active**: ✅ Were you able to track system behavior during chaos?
+5. **Insights Gained**: ✅ Do you understand Beanstalk's resilience capabilities?
+
+### Resilience Analysis
+Answer these questions based on your experiments:
+1. How long did it take for Beanstalk to replace terminated instances?
+2. What was the availability percentage during chaos experiments?
+3. How did the load balancer handle instance failures?
+4. What Beanstalk features contribute to application resilience?
+
+### Understanding Check
+1. What is the purpose of stop conditions in chaos experiments?
+2. How does Beanstalk's auto-scaling help with resilience?
+3. What metrics indicate good application resilience?
+4. When should you NOT run chaos experiments on production Beanstalk environments?
+
+**🎯 Project 2 Score: ___/25 points**
+
+---
+
+*Continue to Project 3: Advanced Monitoring & Business Intelligence...*
 
 #### 1.4 Create Main Application (app.js)
 ```javascript
