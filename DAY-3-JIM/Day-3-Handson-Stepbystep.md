@@ -1,6 +1,25 @@
 # Day 3: Hands-on Step-by-Step Guide
 ## Advanced Operational Excellence - CI/CD & Chaos Engineering for TESDA
 
+---
+
+## 🏷️ **CRITICAL: STUDENT NAMING CONVENTIONS**
+
+### **Your Student Number**: _____ (Fill in your assigned number)
+
+**IMPORTANT**: All AWS resources you create today MUST include your student number to avoid confusion.
+
+### **Naming Pattern Examples**:
+- Beanstalk App: `ecommerce-student1`, `ecommerce-student2`...
+- CodeCommit Repo: `app-repo-student1`, `app-repo-student2`...
+- Pipeline: `pipeline-student1`, `pipeline-student2`...
+
+**Replace the X in all instructions with YOUR assigned student number!**
+
+📋 **See NAMING-CONVENTIONS.md for complete reference**
+
+---
+
 ### 🎯 Learning Objectives
 By the end of this hands-on session, you will:
 - Build automated CI/CD pipelines with zero-downtime deployment
@@ -37,7 +56,8 @@ You're the DevOps engineer for a popular e-commerce app like Shopee. The develop
 🖥️ VISUAL: AWS Console
 📍 Services → CodeCommit
 📍 Click "Create repository"
-📍 Repository name: "ecommerce-beanstalk-app"
+📍 Repository name: "app-repo-studentX" (Replace X with YOUR student number)
+   Example: "app-repo-student1", "app-repo-student2"
 📍 Description: "E-commerce web application for Beanstalk deployment"
 📍 Click "Create"
 ```
@@ -474,7 +494,8 @@ EOF
 🖥️ VISUAL: AWS Console
 📍 Services → Elastic Beanstalk
 📍 Click "Create application"
-📍 Application name: "ecommerce-beanstalk-app"
+📍 Application name: "ecommerce-studentX" (Replace X with YOUR student number)
+   Example: "ecommerce-student1", "ecommerce-student2"
 📍 Description: "E-commerce web application with CI/CD"
 📍 Platform: Node.js
 📍 Platform version: Node.js 18 running on 64bit Amazon Linux 2023
@@ -588,7 +609,8 @@ EOF
 🖥️ VISUAL: AWS Console
 📍 Services → CodePipeline
 📍 Click "Create pipeline"
-📍 Pipeline name: "ecommerce-beanstalk-pipeline"
+📍 Pipeline name: "pipeline-studentX" (Replace X with YOUR student number)
+   Example: "pipeline-student1", "pipeline-student2"
 📍 Service role: New service role
 📍 Click "Next"
 ```

@@ -1,6 +1,25 @@
 # Day 2: Hands-on Step-by-Step Guide
 ## Operational Excellence - Monitoring & Automation for TESDA
 
+---
+
+## 🏷️ **CRITICAL: STUDENT NAMING CONVENTIONS**
+
+### **Your Student Number**: _____ (Fill in your assigned number)
+
+**IMPORTANT**: All AWS resources you create today MUST include your student number to avoid confusion.
+
+### **Naming Pattern Examples**:
+- EC2 Instance: `ec2-student1`, `ec2-student2`, `ec2-student3`...
+- Load Balancer: `alb-student1`, `alb-student2`...
+- Dashboard: `dashboard-student1`, `dashboard-student2`...
+
+**Replace the X in all instructions with YOUR assigned student number!**
+
+📋 **See NAMING-CONVENTIONS.md for complete reference**
+
+---
+
 ### 🎯 Learning Objectives
 By the end of this hands-on session, you will:
 - Set up professional monitoring for web applications
@@ -51,7 +70,8 @@ You're the IT administrator for an online shopping website. During sale events, 
 ```
 🖥️ VISUAL: In EC2 Dashboard
 📍 Click the orange "Launch Instance" button
-📝 Instance Name: "WebServer-Monitor"
+📝 Instance Name: "ec2-studentX" (Replace X with YOUR student number)
+   Example: "ec2-student1", "ec2-student2", "ec2-student3"
 ```
 
 #### 1.4 Choose Operating System
@@ -515,7 +535,8 @@ A dashboard gives you a visual overview of your entire system's health.
 🖥️ VISUAL: CloudWatch Console
 📍 Click "Dashboards" in left menu
 📍 Click "Create dashboard"
-📍 Dashboard name: "TESDA-ECommerce-Monitor"
+📍 Dashboard name: "dashboard-studentX" (Replace X with YOUR student number)
+   Example: "dashboard-student1", "dashboard-student2"
 📍 Click "Create dashboard"
 ```
 
@@ -1701,7 +1722,8 @@ sed -i "s|YOUR-LOAD-BALANCER-URL|$LOAD_BALANCER_URL|g" /home/ec2-user/load-test.
 ```
 🖥️ VISUAL: CloudWatch Console
 📍 Click "Dashboards" → "Create dashboard"
-📍 Dashboard name: "TESDA-SelfHealing-Monitor"
+📍 Dashboard name: "selfhealing-studentX" (Replace X with YOUR student number)
+   Example: "selfhealing-student1", "selfhealing-student2"
 📍 Click "Create dashboard"
 ```
 
