@@ -289,87 +289,58 @@ X-Ray → Application Traces → Service Map → Performance Insights
 
 ### CI/CD Pipeline Services
 
+**AWS Elastic Beanstalk**
+- **Use Case**: Platform-as-a-Service for web application deployment with zero-downtime
+- **What Students Do**: Deploy Node.js e-commerce app, configure blue-green deployment, manage application versions
+- **Key Features**: Managed platform, auto-scaling, load balancing, blue-green deployment, health monitoring
+- **Video Focus**: Application deployment, environment management, blue-green deployment, rollback procedures
+- **📚 AWS Documentation**: https://docs.aws.amazon.com/elasticbeanstalk/
+- **🎥 AWS YouTube**: [Elastic Beanstalk Overview](https://www.youtube.com/watch?v=SrwxAScdyT0)
+- **🎥 Tutorial Video**: [Beanstalk Web App Deployment](https://www.youtube.com/watch?v=jnMvk5p9QmQ)
+
 **AWS CodeCommit**
-- **Use Case**: Git-based source code repository
-- **What Students Do**: Create repositories, push code, manage branches
-- **Key Features**: Git compatibility, branch protection, integration with CI/CD
-- **Video Focus**: Repository creation, Git operations, branch management
+- **Use Case**: Git-based source code repository for Beanstalk applications
+- **What Students Do**: Create repositories, push Node.js code, manage branches for web app deployment
+- **Key Features**: Git compatibility, branch protection, integration with Beanstalk CI/CD
+- **Video Focus**: Repository creation, Git operations, branch management for web applications
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/codecommit/
 - **🎥 AWS YouTube**: [AWS CodeCommit Overview](https://www.youtube.com/watch?v=46PRLMW8otg)
 - **🎥 Tutorial Video**: [CodeCommit Repository Setup](https://www.youtube.com/watch?v=oHHbQCKbJOE)
 
 **AWS CodeBuild**
-- **Use Case**: Automated building and testing of applications
-- **What Students Do**: Create build projects, configure buildspec.yml, run tests
-- **Key Features**: Managed build environment, custom build specifications, artifact generation
-- **Video Focus**: Project setup, buildspec configuration, build execution monitoring
+- **Use Case**: Automated building and testing of web applications for Beanstalk
+- **What Students Do**: Create build projects, configure buildspec.yml for Node.js, run automated tests
+- **Key Features**: Managed build environment, Node.js runtime, automated testing, artifact generation
+- **Video Focus**: Project setup, buildspec configuration for web apps, build execution monitoring
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/codebuild/
 - **🎥 AWS YouTube**: [AWS CodeBuild Overview](https://www.youtube.com/watch?v=dYOR0Jj0l1E)
-- **🎥 Tutorial Video**: [CodeBuild with Docker and ECR](https://www.youtube.com/watch?v=MrwxhGoFbNA)
-
-**AWS CodeDeploy**
-- **Use Case**: Automated application deployment with blue-green strategy
-- **What Students Do**: Configure deployment groups, set up blue-green deployments, manage rollbacks
-- **Key Features**: Blue-green deployment, automatic rollback, deployment monitoring
-- **Video Focus**: Deployment group setup, blue-green configuration, rollback procedures
-- **📚 AWS Documentation**: https://docs.aws.amazon.com/codedeploy/
-- **🎥 AWS YouTube**: [AWS CodeDeploy Overview](https://www.youtube.com/watch?v=Wx-ain8UryM)
-- **🎥 Tutorial Video**: [Blue-Green Deployment with CodeDeploy](https://www.youtube.com/watch?v=A8vTqHZ86sg)
+- **🎥 Tutorial Video**: [CodeBuild for Web Applications](https://www.youtube.com/watch?v=MrwxhGoFbNA)
 
 **AWS CodePipeline**
-- **Use Case**: Orchestrate the complete CI/CD workflow
-- **What Students Do**: Create pipelines, configure stages, monitor deployments
-- **Key Features**: Multi-stage pipelines, integration with other AWS services, visual workflow
-- **Video Focus**: Pipeline creation, stage configuration, execution monitoring
+- **Use Case**: Orchestrate CI/CD workflow for Beanstalk web application deployment
+- **What Students Do**: Create pipelines, configure stages (Source→Build→Deploy to Beanstalk), monitor deployments
+- **Key Features**: Multi-stage pipelines, Beanstalk integration, visual workflow, automated deployment
+- **Video Focus**: Pipeline creation, Beanstalk deployment stage, execution monitoring
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/codepipeline/
 - **🎥 AWS YouTube**: [AWS CodePipeline Overview](https://www.youtube.com/watch?v=YxcIj_SLflw)
-- **🎥 Tutorial Video**: [Complete CI/CD Pipeline Setup](https://www.youtube.com/watch?v=NwzJCSPSPZs)
-
-### Container Services
-
-**Amazon ECR (Elastic Container Registry)**
-- **Use Case**: Store and manage Docker container images
-- **What Students Do**: Create repositories, push/pull images, configure security scanning
-- **Key Features**: Private registries, image scanning, lifecycle policies
-- **Video Focus**: Repository creation, image push/pull, security scanning
-- **📚 AWS Documentation**: https://docs.aws.amazon.com/ecr/
-- **🎥 AWS YouTube**: [Amazon ECR Overview](https://www.youtube.com/watch?v=8VL9LzMjzv4)
-- **🎥 Tutorial Video**: [ECR with Docker Images](https://www.youtube.com/watch?v=3xbmJ_gCjmU)
-
-**Amazon ECS (Elastic Container Service)**
-- **Use Case**: Run and manage containerized applications
-- **What Students Do**: Create clusters, define tasks, configure services
-- **Key Features**: Fargate serverless containers, service discovery, load balancer integration
-- **Video Focus**: Cluster setup, task definition, service configuration
-- **📚 AWS Documentation**: https://docs.aws.amazon.com/ecs/
-- **🎥 AWS YouTube**: [Amazon ECS Overview](https://www.youtube.com/watch?v=I9VAMGEjW-Q)
-- **🎥 Tutorial Video**: [ECS with Fargate Deployment](https://www.youtube.com/watch?v=esISkPlnxL0)
-
-**AWS Fargate**
-- **Use Case**: Serverless container execution
-- **What Students Do**: Run containers without managing servers
-- **Key Features**: Serverless compute, automatic scaling, pay-per-use
-- **Video Focus**: Fargate vs EC2 comparison, task configuration, cost optimization
-- **📚 AWS Documentation**: https://docs.aws.amazon.com/AmazonECS/latest/userguide/what-is-fargate.html
-- **🎥 AWS YouTube**: [AWS Fargate Overview](https://www.youtube.com/watch?v=DVrGXjjkpig)
-- **🎥 Tutorial Video**: [Fargate Container Deployment](https://www.youtube.com/watch?v=o7s-eigrMAI)
+- **🎥 Tutorial Video**: [CI/CD Pipeline with Beanstalk](https://www.youtube.com/watch?v=NwzJCSPSPZs)
 
 ### Chaos Engineering & Testing
 
 **AWS Fault Injection Simulator (FIS)**
-- **Use Case**: Controlled chaos engineering experiments
-- **What Students Do**: Create experiment templates, inject faults, measure system resilience
-- **Key Features**: Controlled fault injection, experiment templates, safety mechanisms
-- **Video Focus**: Experiment design, fault injection types, safety configurations
+- **Use Case**: Controlled chaos engineering experiments on Beanstalk applications
+- **What Students Do**: Create experiment templates, inject faults into Beanstalk environments, measure resilience
+- **Key Features**: Controlled fault injection, Beanstalk integration, experiment templates, safety mechanisms
+- **Video Focus**: Experiment design for web applications, fault injection types, Beanstalk recovery validation
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/fis/
 - **🎥 AWS YouTube**: [AWS Fault Injection Simulator](https://www.youtube.com/watch?v=4qkSjSgW_9k)
-- **🎥 Tutorial Video**: [Chaos Engineering with FIS](https://www.youtube.com/watch?v=gHJGGas_aaI)
+- **🎥 Tutorial Video**: [Chaos Engineering with Beanstalk](https://www.youtube.com/watch?v=gHJGGas_aaI)
 
 **AWS Systems Manager - Run Command**
-- **Use Case**: Execute commands across multiple instances for chaos testing
-- **What Students Do**: Run network latency injection, stress testing, system manipulation
-- **Key Features**: Remote command execution, document-based automation, multi-instance targeting
-- **Video Focus**: Command execution, document creation, targeting strategies
+- **Use Case**: Execute commands across Beanstalk instances for chaos testing and automation
+- **What Students Do**: Run network latency injection, stress testing, system manipulation on Beanstalk instances
+- **Key Features**: Remote command execution, document-based automation, Beanstalk instance targeting
+- **Video Focus**: Command execution on web servers, document creation, Beanstalk instance management
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/systems-manager/latest/userguide/execute-remote-commands.html
 - **🎥 AWS YouTube**: [Systems Manager Run Command](https://www.youtube.com/watch?v=JibXQmkJlb8)
 - **🎥 Tutorial Video**: [Remote Command Execution](https://www.youtube.com/watch?v=qmtDiGFjbU4)
@@ -377,13 +348,13 @@ X-Ray → Application Traces → Service Map → Performance Insights
 ### Advanced Monitoring & Observability
 
 **AWS X-Ray**
-- **Use Case**: Distributed tracing and application performance monitoring
-- **What Students Do**: Instrument applications, analyze traces, identify bottlenecks
-- **Key Features**: Service maps, trace analysis, performance insights
-- **Video Focus**: Service map interpretation, trace analysis, performance optimization
+- **Use Case**: Distributed tracing and performance monitoring for Beanstalk web applications
+- **What Students Do**: Instrument Node.js applications, analyze traces, identify bottlenecks in web app performance
+- **Key Features**: Service maps, trace analysis, Beanstalk integration, web application performance insights
+- **Video Focus**: Beanstalk X-Ray setup, service map interpretation, web application trace analysis
 - **📚 AWS Documentation**: https://docs.aws.amazon.com/xray/
 - **🎥 AWS YouTube**: [AWS X-Ray Overview](https://www.youtube.com/watch?v=n-RgqYer1L4)
-- **🎥 Tutorial Video**: [X-Ray Distributed Tracing](https://www.youtube.com/watch?v=S3VudxZ3KcI)
+- **🎥 Tutorial Video**: [X-Ray with Beanstalk Applications](https://www.youtube.com/watch?v=S3VudxZ3KcI)
 
 **CloudWatch Anomaly Detection**
 - **Use Case**: Machine learning-based anomaly detection
