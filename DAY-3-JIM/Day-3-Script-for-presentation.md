@@ -208,16 +208,71 @@ Problem: 80% might be normal during lunch time but abnormal at 3 AM.
 
 ---
 
-### Today's Projects Preview (Slide 12)
-**"Now let me give you a detailed preview of what you'll build today."**
+### CI/CD Pipeline Architecture (Slide 5)
+**"Now let me show you the complete CI/CD pipeline we'll build today, using AWS Elastic Beanstalk."**
 
-"**Project 1 - CI/CD Pipeline**: You'll create a system where you can update your website by just uploading new code. The system will automatically test the code, deploy it without downtime, and roll back if there are problems. This is exactly how companies like Grab update their app.
+"We've made an important decision for this training. Instead of using ECS and Fargate, we're using **Elastic Beanstalk** because:
+- **You're web developers** - Beanstalk is designed specifically for web applications
+- **Easier deployment learning** - Focus on the deployment process, not infrastructure complexity
+- **Higher success rate** - Less moving parts means fewer things can go wrong
+- **Industry relevance** - Many companies use Beanstalk for web app deployments"
 
-**Project 2 - Chaos Engineering**: You'll intentionally break parts of your system - shut down servers, slow down networks, cause database errors - and watch your system automatically recover. You'll feel like a hacker, but you're actually making your system stronger.
+"Here's how our pipeline works:
+- **CodeCommit**: Your Git repository where you store your code
+- **CodeBuild**: Automatically tests and builds your application
+- **Elastic Beanstalk**: Deploys your application with zero downtime using blue-green deployment"
 
-**Project 3 - Advanced Monitoring**: You'll build dashboards that don't just show technical metrics, but business metrics. You'll see how system performance affects revenue, customer satisfaction, and business goals. Plus, you'll set up machine learning to predict problems."
+"The beauty of this approach is that you focus on your application code, and AWS handles all the infrastructure complexity for you."
 
-"Each project takes about 80 minutes, and by the end, you'll have a complete enterprise-level system."
+---
+
+### What is Elastic Beanstalk? (Slide 8)
+**"Let me explain exactly what Elastic Beanstalk is, because there's often confusion about this."**
+
+"**Elastic Beanstalk is a Platform-as-a-Service (PaaS)**. Think of it like this:
+- **Traditional way**: You rent a server, install web server software, configure databases, set up load balancers, manage scaling - lots of work!
+- **Beanstalk way**: You just upload your code, and AWS does all that infrastructure work for you
+
+But here's the important part - **Beanstalk is a MANAGED SERVICE, not serverless**."
+
+"**What does 'managed service' mean?**
+- Servers still exist (EC2 instances)
+- AWS manages those servers for you
+- You don't have to configure them, patch them, or worry about them
+- But they're running 24/7, serving your application"
+
+"This is perfect for web applications because:
+- Your website needs to be available all the time
+- Users expect fast response times
+- You want automatic scaling when traffic increases
+- You need built-in monitoring and health checks"
+
+---
+
+### Managed Service vs Serverless (Slide 9)
+**"Since we're infrastructure professionals, let me clarify the difference between managed services and serverless - this is important to understand."**
+
+"**Elastic Beanstalk (Managed Service)**:
+- Servers exist - they're EC2 instances running your web application
+- AWS manages the servers - you don't have to configure or maintain them
+- Always-on - your application runs continuously, ready to serve users
+- You pay for the server time - even when no one is using your website
+- Perfect for web applications that need to be always available"
+
+"**AWS Lambda (Serverless)**:
+- No servers to think about - AWS runs your code only when needed
+- Event-driven - code runs in response to events (HTTP requests, file uploads, etc.)
+- Pay per execution - you only pay when your code actually runs
+- Scales to zero - if no one uses it, you pay nothing
+- Perfect for functions, APIs, and background processing"
+
+"**For web applications like e-commerce sites, managed services like Beanstalk are usually better** because:
+- Users expect the site to load instantly
+- You need consistent performance
+- Database connections stay warm
+- Session management works better"
+
+"**Today we're focusing on the managed service approach** because that's what most web applications use in production."
 
 ---
 

@@ -79,39 +79,48 @@
 ## Slide 5: Project 1 - CI/CD Pipeline Architecture
 
 ```
-PROJECT 1: ZERO-DOWNTIME CI/CD PIPELINE
-=======================================
+PROJECT 1: ZERO-DOWNTIME CI/CD PIPELINE WITH ELASTIC BEANSTALK
+=============================================================
 
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   CODECOMMIT    │────▶│   CODEBUILD     │────▶│   CODEDEPLOY    │
-│   (Git Repo)    │     │  (Build & Test) │     │ (Blue-Green)    │
+│   CODECOMMIT    │────▶│   CODEBUILD     │────▶│ ELASTIC BEANSTALK│
+│   (Git Repo)    │     │  (Build & Test) │     │ (Managed Deploy) │
 │                 │     │                 │     │                 │
 │ • Source Code   │     │ • Run Tests     │     │ • Zero Downtime │
-│ • Version Control│     │ • Build Docker  │     │ • Auto Rollback │
+│ • Version Control│     │ • Build Package │     │ • Auto Rollback │
 │ • Branch Rules  │     │ • Security Scan │     │ • Health Checks │
-│ • Pull Requests │     │ • Quality Gates │     │ • Traffic Switch│
+│ • Pull Requests │     │ • Quality Gates │     │ • Blue-Green    │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
          │                        │                        │
          ▼                        ▼                        ▼
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  TRIGGER EVENT  │     │   BUILD PROCESS │     │  DEPLOYMENT     │
-│                 │     │                 │     │                 │
+│  TRIGGER EVENT  │     │   BUILD PROCESS │     │  BEANSTALK      │
+│                 │     │                 │     │  DEPLOYMENT     │
 │ • Code Push     │     │ ✅ Unit Tests   │     │ 🔵 Blue Env     │
 │ • Auto Start    │     │ ✅ Integration  │     │    (Current)    │
 │ • Notifications │     │ ✅ Security     │     │ 🟢 Green Env    │
 │ • Status Updates│     │ ✅ Performance  │     │    (New Version)│
 └─────────────────┘     └─────────────────┘     └─────────────────┘
 
-BLUE-GREEN DEPLOYMENT FLOW:
-===========================
-Step 1: 🔵 Blue serves 100% traffic (current version)
-Step 2: 🟢 Green deploys new version (0% traffic)
-Step 3: 🧪 Test Green environment thoroughly
-Step 4: 🔄 Switch 100% traffic to Green instantly
-Step 5: 🔵 Blue becomes standby for rollback
+ELASTIC BEANSTALK DEPLOYMENT FLOW:
+==================================
+Step 1: 🔵 Blue environment serves 100% traffic (current version)
+Step 2: 🟢 Beanstalk creates Green environment (new version)
+Step 3: 🧪 Health checks validate Green environment
+Step 4: 🔄 Traffic switches to Green instantly (zero downtime)
+Step 5: 🔵 Blue environment kept for rollback if needed
+
+WHAT IS ELASTIC BEANSTALK?
+=========================
+• MANAGED SERVICE (Not Serverless!)
+• Platform-as-a-Service (PaaS)
+• You upload code, AWS manages infrastructure
+• Runs on EC2 instances (servers exist, AWS manages them)
+• Built-in blue-green deployment
+• Perfect for web applications
 ```
 
-**You'll Build**: Professional deployment system used by Netflix, Amazon, and Google!
+**You'll Build**: Professional deployment system optimized for web applications!
 
 ---
 
@@ -211,7 +220,43 @@ PROJECT 3: ADVANCED MONITORING & BUSINESS INTELLIGENCE
 
 ---
 
-## Slide 8: What is CI/CD?
+## Slide 8: What is Elastic Beanstalk?
+**Platform-as-a-Service (PaaS) for Web Applications**
+
+**Simple Definition**: Upload your code, AWS handles everything else
+
+**Key Characteristics**:
+- **Managed Service** (NOT Serverless!)
+- **Runs on EC2 servers** (AWS manages them for you)
+- **You focus on code** - AWS handles infrastructure
+- **Built-in best practices** - Load balancing, auto-scaling, monitoring
+
+**Perfect for Web Developers**:
+- No server management needed
+- Automatic capacity provisioning
+- Built-in application health monitoring
+- Easy blue-green deployments
+
+---
+
+## Slide 9: Managed Service vs Serverless
+**Understanding the Difference**
+
+**Elastic Beanstalk (Managed Service)**:
+- Servers exist (EC2 instances)
+- AWS manages the servers for you
+- Always-on applications
+- Pay for server time (even when idle)
+- Perfect for web applications
+
+**AWS Lambda (Serverless)**:
+- No servers to think about
+- Event-driven execution only
+- Pay per request/execution
+- Scales to zero when not used
+- Perfect for functions and APIs
+
+**Today's Focus**: Managed Service approach for web application deployment
 **CI/CD = Continuous Integration / Continuous Deployment**
 
 **Like a Modern Factory Assembly Line**:
