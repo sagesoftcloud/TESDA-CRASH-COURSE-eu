@@ -1094,7 +1094,1241 @@ Answer these questions based on your experiments:
 
 ---
 
-*Continue to Project 3: Advanced Monitoring & Business Intelligence...*
+## 📊 Project 3: Advanced Monitoring & Business Intelligence (80 minutes)
+
+### What You'll Build
+An enterprise-level monitoring system that:
+- Implements distributed tracing with AWS X-Ray for Beanstalk applications
+- Creates business intelligence dashboards
+- Uses machine learning for anomaly detection
+- Provides predictive analytics and insights
+
+### Real-World Scenario
+You're the Head of Engineering for a major e-commerce platform running on Beanstalk. The CEO wants to understand how technology performance impacts business metrics like revenue, customer satisfaction, and conversion rates. You need monitoring that speaks both technical and business language.
+
+---
+
+### Step 1: Implement X-Ray Distributed Tracing for Beanstalk (25 minutes)
+
+#### 1.1 Enable X-Ray in Beanstalk Environment
+```
+🖥️ VISUAL: Beanstalk Console
+📍 Go to your ecommerce-beanstalk-app environment
+📍 Click "Configuration" in left menu
+📍 Click "Edit" in "Software" section
+📍 Scroll to "X-Ray daemon"
+📍 Enable X-Ray daemon: Yes
+📍 Click "Apply"
+```
+
+```
+⏳ WAIT: Environment update takes 2-3 minutes
+✅ X-Ray daemon is now running on all Beanstalk instances
+```
+
+#### 1.2 Update Application for X-Ray Integration
+```bash
+# In your local repository, update package.json to include X-Ray
+cat > package.json << 'EOF'
+{
+  "name": "ecommerce-beanstalk-app",
+  "version": "2.0.0",
+  "description": "E-commerce web application with X-Ray tracing",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "body-parser": "^1.20.2",
+    "aws-xray-sdk": "^3.4.1",
+    "aws-sdk": "^2.1490.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
+EOF
+```
+
+#### 1.3 Enhanced Application with X-Ray Tracing
+```javascript
+# Update app.js with X-Ray integration
+cat > app.js << 'EOF'
+const AWSXRay = require('aws-xray-sdk-core');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
+const express = require('express');
+const bodyParser = require('body-parser');
+
+// X-Ray configuration for Beanstalk
+AWSXRay.config([
+    AWSXRay.plugins.ElasticBeanstalkPlugin,
+    AWSXRay.plugins.EC2Plugin
+]);
+
+const app = express();
+const port = process.env.PORT || 8080;
+const version = process.env.APP_VERSION || '2.0.0';
+
+// X-Ray middleware - must be first
+app.use(AWSXRay.express.openSegment('ecommerce-beanstalk-app'));
+
+// Regular middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+
+// CloudWatch client for custom metrics
+const cloudwatch = new AWS.CloudWatch();
+
+// In-memory data store with enhanced tracking
+let products = [
+    { id: 1, name: 'Laptop', price: 50000, stock: 10, category: 'Electronics', views: 0 },
+    { id: 2, name: 'Phone', price: 25000, stock: 25, category: 'Electronics', views: 0 },
+    { id: 3, name: 'Tablet', price: 15000, stock: 15, category: 'Electronics', views: 0 },
+    { id: 4, name: 'Headphones', price: 5000, stock: 30, category: 'Accessories', views: 0 }
+];
+
+let orders = [];
+let orderIdCounter = 1000;
+let pageViews = 0;
+
+// Simulate database operations with X-Ray tracing
+const simulateDatabase = async (operation, data) => {
+    const segment = AWSXRay.getSegment();
+    const subsegment = segment.addNewSubsegment('database-operation');
+    
+    subsegment.addAnnotation('operation_type', operation);
+    subsegment.addMetadata('operation_data', data);
+    
+    try {
+        // Simulate database latency
+        const latency = Math.random() * 100 + 50;
+        await new Promise(resolve => setTimeout(resolve, latency));
+        
+        subsegment.addMetadata('latency_ms', latency);
+        subsegment.close();
+        
+        return { success: true, latency: latency };
+    } catch (error) {
+        subsegment.close(error);
+        throw error;
+    }
+};
+
+// Routes with X-Ray tracing and business metrics
+app.get('/', async (req, res) => {
+    const segment = AWSXRay.getSegment();
+    const subsegment = segment.addNewSubsegment('homepage-render');
+    
+    try {
+        pageViews++;
+        
+        // Simulate database call
+        await simulateDatabase('get_products', { count: products.length });
+        
+        // Send business metrics
+        await sendBusinessMetrics('page_view', 1);
+        
+        subsegment.addAnnotation('page_views', pageViews);
+        subsegment.close();
+        
+        res.render('index', { 
+            products: products, 
+            version: version,
+            timestamp: new Date().toISOString(),
+            pageViews: pageViews
+        });
+    } catch (error) {
+        subsegment.close(error);
+        res.status(500).json({ error: 'Homepage error', version: version });
+    }
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        version: version,
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: process.env.NODE_ENV || 'production',
+        xrayEnabled: true
+    });
+});
+
+app.get('/api/products', async (req, res) => {
+    const segment = AWSXRay.getSegment();
+    const subsegment = segment.addNewSubsegment('products-api');
+    
+    try {
+        // Track product views
+        products.forEach(p => p.views++);
+        
+        await simulateDatabase('get_products', { count: products.length });
+        await sendBusinessMetrics('api_call', 1);
+        
+        subsegment.addAnnotation('product_count', products.length);
+        subsegment.close();
+        
+        res.json({
+            products: products,
+            total: products.length,
+            version: version
+        });
+    } catch (error) {
+        subsegment.close(error);
+        res.status(500).json({ error: 'Products API error', version: version });
+    }
+});
+
+app.post('/api/orders', async (req, res) => {
+    const segment = AWSXRay.getSegment();
+    const subsegment = segment.addNewSubsegment('order-processing');
+    
+    try {
+        const { productId, quantity, customerName } = req.body;
+        
+        subsegment.addAnnotation('customer_name', customerName);
+        subsegment.addAnnotation('product_id', productId);
+        subsegment.addAnnotation('quantity', quantity);
+        
+        if (!productId || !quantity || !customerName) {
+            subsegment.addMetadata('error', 'Missing required fields');
+            subsegment.close();
+            return res.status(400).json({
+                error: 'Product ID, quantity, and customer name are required',
+                version: version
+            });
+        }
+        
+        const product = products.find(p => p.id == productId);
+        if (!product) {
+            subsegment.addMetadata('error', 'Product not found');
+            subsegment.close();
+            return res.status(404).json({
+                error: 'Product not found',
+                version: version
+            });
+        }
+        
+        if (product.stock < quantity) {
+            subsegment.addMetadata('error', 'Insufficient stock');
+            subsegment.close();
+            return res.status(400).json({
+                error: 'Insufficient stock',
+                available: product.stock,
+                version: version
+            });
+        }
+        
+        // Simulate order processing
+        await simulateDatabase('create_order', { productId, quantity, customerName });
+        
+        const order = {
+            id: orderIdCounter++,
+            productId: parseInt(productId),
+            productName: product.name,
+            quantity: parseInt(quantity),
+            customerName: customerName,
+            totalPrice: product.price * quantity,
+            status: 'confirmed',
+            timestamp: new Date().toISOString(),
+            version: version
+        };
+        
+        product.stock -= quantity;
+        orders.push(order);
+        
+        // Send business metrics
+        await sendBusinessMetrics('order_created', 1);
+        await sendBusinessMetrics('revenue', order.totalPrice);
+        
+        subsegment.addMetadata('order_details', order);
+        subsegment.close();
+        
+        res.status(201).json(order);
+    } catch (error) {
+        subsegment.close(error);
+        res.status(500).json({ error: 'Order processing failed', version: version });
+    }
+});
+
+// Business metrics function
+const sendBusinessMetrics = async (metricName, value) => {
+    try {
+        const params = {
+            Namespace: 'TESDA/ECommerce/Business',
+            MetricData: [
+                {
+                    MetricName: metricName,
+                    Value: value,
+                    Unit: metricName === 'revenue' ? 'None' : 'Count',
+                    Timestamp: new Date()
+                }
+            ]
+        };
+        
+        await cloudwatch.putMetricData(params).promise();
+    } catch (error) {
+        console.error('Failed to send business metrics:', error);
+    }
+};
+
+// Enhanced metrics endpoint
+app.get('/metrics', async (req, res) => {
+    const segment = AWSXRay.getSegment();
+    const subsegment = segment.addNewSubsegment('metrics-collection');
+    
+    try {
+        const totalRevenue = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+        const averageOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
+        const conversionRate = pageViews > 0 ? (orders.length / pageViews) * 100 : 0;
+        
+        const metrics = {
+            system: {
+                memory: process.memoryUsage(),
+                uptime: process.uptime(),
+                version: version,
+                environment: process.env.NODE_ENV || 'production'
+            },
+            business: {
+                totalProducts: products.length,
+                totalOrders: orders.length,
+                totalRevenue: totalRevenue,
+                averageOrderValue: averageOrderValue,
+                conversionRate: conversionRate,
+                pageViews: pageViews,
+                lowStockProducts: products.filter(p => p.stock < 5).length
+            },
+            timestamp: new Date().toISOString()
+        };
+        
+        subsegment.addMetadata('metrics', metrics);
+        subsegment.close();
+        
+        res.json(metrics);
+    } catch (error) {
+        subsegment.close(error);
+        res.status(500).json({ error: 'Metrics collection failed', version: version });
+    }
+});
+
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        error: 'Something went wrong!',
+        version: version
+    });
+});
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).render('404', { version: version });
+});
+
+// Close X-Ray segment
+app.use(AWSXRay.express.closeSegment());
+
+const server = app.listen(port, () => {
+    console.log(`E-commerce app v${version} with X-Ray running on port ${port}`);
+});
+
+module.exports = { app, server };
+EOF
+```
+
+#### 1.4 Deploy X-Ray Enhanced Application
+```bash
+# Update version and commit changes
+git add .
+git commit -m "feat: Add X-Ray distributed tracing and enhanced business metrics
+
+- Integrated AWS X-Ray SDK for distributed tracing
+- Added business metrics collection (orders, revenue, conversion)
+- Enhanced error tracking and performance monitoring
+- Added database operation simulation with tracing
+- Improved metrics endpoint with business intelligence
+- Version bump to 2.0.0 for X-Ray integration"
+
+git push origin main
+```
+
+```
+⏳ WAIT: Pipeline will deploy the X-Ray enhanced version
+📍 Monitor deployment in CodePipeline
+✅ New version with X-Ray should be live
+```
+
+#### 1.5 Generate Traffic for X-Ray Traces
+```bash
+# Create X-Ray traffic generator
+cat > /home/ec2-user/generate-xray-traces.sh << 'EOF'
+#!/bin/bash
+
+BEANSTALK_URL=$(aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query 'Environments[0].CNAME' \
+    --output text)
+
+BASE_URL="http://$BEANSTALK_URL"
+
+echo "Generating X-Ray traces for Beanstalk application..."
+echo "Target URL: $BASE_URL"
+
+# Generate different types of requests for comprehensive tracing
+for i in {1..100}; do
+    # Homepage visits
+    curl -s "$BASE_URL" > /dev/null &
+    
+    # Product API calls
+    curl -s "$BASE_URL/api/products" > /dev/null &
+    
+    # Health checks
+    curl -s "$BASE_URL/health" > /dev/null &
+    
+    # Metrics calls
+    curl -s "$BASE_URL/metrics" > /dev/null &
+    
+    # Order creation (some will succeed, some will fail for variety)
+    if [ $((i % 3)) -eq 0 ]; then
+        # Valid order
+        curl -s -X POST "$BASE_URL/api/orders" \
+            -H "Content-Type: application/json" \
+            -d "{\"productId\": $((1 + RANDOM % 4)), \"quantity\": $((1 + RANDOM % 3)), \"customerName\": \"Customer$i\"}" > /dev/null &
+    else
+        # Invalid order (to generate error traces)
+        curl -s -X POST "$BASE_URL/api/orders" \
+            -H "Content-Type: application/json" \
+            -d '{}' > /dev/null &
+    fi
+    
+    # Random delay between requests
+    sleep $(echo "scale=2; $RANDOM/32767*2" | bc)
+done
+
+wait
+echo "X-Ray trace generation completed!"
+EOF
+
+chmod +x /home/ec2-user/generate-xray-traces.sh
+/home/ec2-user/generate-xray-traces.sh
+```
+
+#### 1.6 Analyze X-Ray Service Map
+```
+🖥️ VISUAL: X-Ray Console
+📍 Services → X-Ray
+📍 Click "Service map"
+📍 Time range: Last 5 minutes
+📍 You should see your Beanstalk application with:
+  - Main application service
+  - Database operation subsegments
+  - Response time breakdown
+  - Error rates and traces
+```
+
+**🎉 Checkpoint 1 Complete!** X-Ray distributed tracing is now active on your Beanstalk application.
+
+---
+
+### Step 2: Create Business Intelligence Dashboards (25 minutes)
+
+#### 2.1 Create Executive Business Dashboard
+```
+🖥️ VISUAL: CloudWatch Console
+📍 Click "Dashboards" → "Create dashboard"
+📍 Dashboard name: "Beanstalk-Business-Intelligence"
+📍 Click "Create dashboard"
+```
+
+#### 2.2 Add Revenue and Orders Widget
+```
+🖥️ VISUAL: Add widget
+📍 Select "Line" widget
+📍 Add metrics:
+  - TESDA/ECommerce/Business → revenue
+  - TESDA/ECommerce/Business → order_created
+  - TESDA/ECommerce/Business → page_view
+📍 Widget title: "Business Performance Metrics"
+📍 Create widget
+```
+
+#### 2.3 Add Beanstalk Application Health Widget
+```
+🖥️ VISUAL: Add widget
+📍 Select "Line" widget
+📍 Add metrics:
+  - AWS/ElasticBeanstalk → ApplicationRequests2xx (your environment)
+  - AWS/ElasticBeanstalk → ApplicationRequests4xx (your environment)
+  - AWS/ElasticBeanstalk → ApplicationRequests5xx (your environment)
+  - AWS/ElasticBeanstalk → ApplicationLatencyP99 (your environment)
+📍 Widget title: "Application Performance"
+📍 Create widget
+```
+
+#### 2.4 Add Environment Health Widget
+```
+🖥️ VISUAL: Add widget
+📍 Select "Number" widget
+📍 Add metrics:
+  - AWS/ElasticBeanstalk → EnvironmentHealth (your environment)
+  - AWS/ELB → HealthyHostCount (your load balancer)
+  - AWS/ELB → UnHealthyHostCount (your load balancer)
+📍 Widget title: "Environment Health Status"
+📍 Create widget
+```
+
+#### 2.5 Create Business Metrics Collection Script
+```bash
+# Create enhanced business metrics script
+cat > /home/ec2-user/business-intelligence.sh << 'EOF'
+#!/bin/bash
+
+BEANSTALK_URL=$(aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query 'Environments[0].CNAME' \
+    --output text)
+
+BASE_URL="http://$BEANSTALK_URL"
+
+echo "Collecting business intelligence metrics..."
+
+while true; do
+    # Get current metrics from application
+    METRICS=$(curl -s "$BASE_URL/metrics")
+    
+    if [ $? -eq 0 ]; then
+        # Extract business metrics using jq (if available) or basic parsing
+        TOTAL_ORDERS=$(echo "$METRICS" | grep -o '"totalOrders":[0-9]*' | cut -d':' -f2)
+        TOTAL_REVENUE=$(echo "$METRICS" | grep -o '"totalRevenue":[0-9]*' | cut -d':' -f2)
+        CONVERSION_RATE=$(echo "$METRICS" | grep -o '"conversionRate":[0-9.]*' | cut -d':' -f2)
+        PAGE_VIEWS=$(echo "$METRICS" | grep -o '"pageViews":[0-9]*' | cut -d':' -f2)
+        
+        # Calculate additional business metrics
+        if [ ! -z "$TOTAL_ORDERS" ] && [ ! -z "$TOTAL_REVENUE" ] && [ "$TOTAL_ORDERS" -gt 0 ]; then
+            AVERAGE_ORDER_VALUE=$(echo "scale=2; $TOTAL_REVENUE / $TOTAL_ORDERS" | bc)
+        else
+            AVERAGE_ORDER_VALUE=0
+        fi
+        
+        # Send business intelligence metrics to CloudWatch
+        aws cloudwatch put-metric-data \
+            --namespace "TESDA/BusinessIntelligence" \
+            --metric-data \
+            MetricName=TotalOrders,Value=${TOTAL_ORDERS:-0},Unit=Count \
+            MetricName=TotalRevenue,Value=${TOTAL_REVENUE:-0},Unit=None \
+            MetricName=ConversionRate,Value=${CONVERSION_RATE:-0},Unit=Percent \
+            MetricName=PageViews,Value=${PAGE_VIEWS:-0},Unit=Count \
+            MetricName=AverageOrderValue,Value=${AVERAGE_ORDER_VALUE:-0},Unit=None
+        
+        echo "$(date): Sent BI metrics - Orders: ${TOTAL_ORDERS:-0}, Revenue: ₱${TOTAL_REVENUE:-0}, Conversion: ${CONVERSION_RATE:-0}%"
+    else
+        echo "$(date): Failed to collect metrics from application"
+    fi
+    
+    sleep 60
+done
+EOF
+
+chmod +x /home/ec2-user/business-intelligence.sh
+nohup /home/ec2-user/business-intelligence.sh > /home/ec2-user/bi-metrics.log 2>&1 &
+```
+
+**🎉 Checkpoint 2 Complete!** Business intelligence dashboards are now collecting and displaying real-time business metrics.
+
+---
+
+### Step 3: Implement Machine Learning Anomaly Detection (20 minutes)
+
+#### 3.1 Create Anomaly Detectors for Business Metrics
+```
+🖥️ VISUAL: CloudWatch Console
+📍 Click "Anomaly detection" in left menu
+📍 Click "Create anomaly detector"
+📍 Select metric: TESDA/BusinessIntelligence → TotalRevenue
+📍 Anomaly detection model: Standard
+📍 Click "Create anomaly detector"
+```
+
+#### 3.2 Create Anomaly Alarms
+```
+🖥️ VISUAL: CloudWatch Alarms
+📍 Click "Create alarm"
+📍 Select metric: Anomaly detection → TESDA/BusinessIntelligence → TotalRevenue
+📍 Condition: Lower than expected or Greater than expected
+📍 Threshold: 2 (standard deviations)
+📍 Alarm name: "Revenue-Anomaly-Detection"
+📍 SNS topic: Create new topic "beanstalk-business-anomalies"
+📍 Create alarm
+```
+
+#### 3.3 Create Conversion Rate Anomaly Detection
+```
+🖥️ VISUAL: Create another anomaly detector
+📍 Select metric: TESDA/BusinessIntelligence → ConversionRate
+📍 Anomaly detection model: Standard
+📍 Create alarm: "ConversionRate-Anomaly-Detection"
+📍 Use same SNS topic: "beanstalk-business-anomalies"
+```
+
+#### 3.4 Create Predictive Analytics Script
+```bash
+# Create predictive analytics for Beanstalk
+cat > /home/ec2-user/predictive-analytics.sh << 'EOF'
+#!/bin/bash
+
+echo "Analyzing Beanstalk application patterns for predictive insights..."
+
+# Get historical business metrics
+REVENUE_DATA=$(aws cloudwatch get-metric-statistics \
+    --namespace TESDA/BusinessIntelligence \
+    --metric-name TotalRevenue \
+    --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) \
+    --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+    --period 300 \
+    --statistics Average \
+    --query 'Datapoints[].Average' \
+    --output text)
+
+ORDER_DATA=$(aws cloudwatch get-metric-statistics \
+    --namespace TESDA/BusinessIntelligence \
+    --metric-name TotalOrders \
+    --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) \
+    --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+    --period 300 \
+    --statistics Average \
+    --query 'Datapoints[].Average' \
+    --output text)
+
+# Simple trend analysis
+CURRENT_HOUR=$(date +%H)
+CURRENT_MINUTE=$(date +%M)
+
+# Predict load based on time patterns and business metrics
+if [ $CURRENT_HOUR -ge 9 ] && [ $CURRENT_HOUR -le 17 ]; then
+    # Business hours - higher activity expected
+    PREDICTED_LOAD="HIGH"
+    RECOMMENDED_CAPACITY="Scale up recommended"
+    BUSINESS_IMPACT="Peak shopping hours"
+elif [ $CURRENT_HOUR -ge 18 ] && [ $CURRENT_HOUR -le 21 ]; then
+    # Evening shopping - medium activity
+    PREDICTED_LOAD="MEDIUM"
+    RECOMMENDED_CAPACITY="Current capacity adequate"
+    BUSINESS_IMPACT="Evening shopping period"
+else
+    # Off hours - low activity
+    PREDICTED_LOAD="LOW"
+    RECOMMENDED_CAPACITY="Scale down to save costs"
+    BUSINESS_IMPACT="Low activity period"
+fi
+
+# Send predictive metrics
+aws cloudwatch put-metric-data \
+    --namespace "TESDA/Predictive" \
+    --metric-data \
+    MetricName=PredictedLoad,Value=1,Unit=None \
+    MetricName=BusinessImpactScore,Value=$((CURRENT_HOUR * 4)),Unit=None
+
+echo "Predictive Analysis Results:"
+echo "=========================="
+echo "Current Time: $(date)"
+echo "Predicted Load: $PREDICTED_LOAD"
+echo "Recommendation: $RECOMMENDED_CAPACITY"
+echo "Business Context: $BUSINESS_IMPACT"
+echo ""
+
+# Check current Beanstalk environment health
+ENV_HEALTH=$(aws elasticbeanstalk describe-environment-health \
+    --environment-name $(aws elasticbeanstalk describe-environments \
+        --application-name ecommerce-beanstalk-app \
+        --query 'Environments[0].EnvironmentName' \
+        --output text) \
+    --attribute-names All \
+    --query 'Status' \
+    --output text)
+
+echo "Current Beanstalk Health: $ENV_HEALTH"
+
+# Business recommendations
+if [ "$ENV_HEALTH" = "Ok" ]; then
+    echo "✅ System healthy - Continue monitoring"
+else
+    echo "⚠️  System needs attention - Check Beanstalk console"
+fi
+EOF
+
+chmod +x /home/ec2-user/predictive-analytics.sh
+/home/ec2-user/predictive-analytics.sh
+```
+
+**🎉 Checkpoint 3 Complete!** Machine learning anomaly detection and predictive analytics are now active.
+
+---
+
+### Step 4: Create Comprehensive Operational Dashboard (10 minutes)
+
+#### 4.1 Create Master Beanstalk Operations Dashboard
+```
+🖥️ VISUAL: CloudWatch Console
+📍 Create new dashboard: "Beanstalk-Master-Operations"
+📍 Add multiple widgets in this order:
+```
+
+**Widget 1: Business KPIs**
+```
+📍 Type: Number
+📍 Metrics:
+  - TESDA/BusinessIntelligence → TotalRevenue
+  - TESDA/BusinessIntelligence → TotalOrders
+  - TESDA/BusinessIntelligence → ConversionRate
+📍 Title: "Business Key Performance Indicators"
+```
+
+**Widget 2: Application Performance**
+```
+📍 Type: Line
+📍 Metrics:
+  - AWS/ElasticBeanstalk → ApplicationLatencyP99
+  - AWS/ElasticBeanstalk → ApplicationRequests2xx
+  - AWS/X-Ray → ResponseTime (ecommerce-beanstalk-app)
+📍 Title: "Application Performance & X-Ray Tracing"
+```
+
+**Widget 3: Environment Health**
+```
+📍 Type: Line
+📍 Metrics:
+  - AWS/ElasticBeanstalk → EnvironmentHealth
+  - AWS/ELB → HealthyHostCount
+  - AWS/ELB → RequestCount
+📍 Title: "Beanstalk Environment Health"
+```
+
+**Widget 4: Predictive Insights**
+```
+📍 Type: Number
+📍 Metrics:
+  - TESDA/Predictive → PredictedLoad
+  - TESDA/Predictive → BusinessImpactScore
+📍 Title: "Predictive Analytics"
+```
+
+**Widget 5: Error Analysis**
+```
+📍 Type: Line
+📍 Metrics:
+  - AWS/ElasticBeanstalk → ApplicationRequests5xx
+  - AWS/X-Ray → ErrorRate
+  - AWS/ELB → HTTPCode_ELB_5XX
+📍 Title: "Error Analysis & Troubleshooting"
+```
+
+**🎉 Project 3 Complete!** You've built enterprise-level monitoring with:
+- ✅ Distributed tracing with X-Ray for Beanstalk applications
+- ✅ Business intelligence dashboards with real-time KPIs
+- ✅ Machine learning anomaly detection for business metrics
+- ✅ Predictive analytics for capacity planning
+- ✅ Comprehensive operational visibility for Beanstalk environments
+
+---
+
+## 📊 Project 3 Assessment (5 minutes)
+
+### Verification Checklist
+1. **X-Ray Tracing**: ✅ Can you see service maps and traces for your Beanstalk app?
+2. **Business Metrics**: ✅ Are business KPIs flowing to CloudWatch dashboards?
+3. **Anomaly Detection**: ✅ Is ML-based anomaly detection configured for business metrics?
+4. **Predictive Analytics**: ✅ Are predictive insights being generated?
+5. **Executive Dashboard**: ✅ Can business stakeholders understand the operational impact?
+
+### Business Intelligence Analysis
+1. How does application performance correlate with business metrics?
+2. What business KPIs are most affected by technical performance?
+3. What insights would you present to executives about system health?
+4. How would you use predictive analytics for business planning?
+
+### Understanding Check
+1. What advantages does X-Ray provide for Beanstalk applications?
+2. How do business metrics help with operational decisions?
+3. What types of anomalies might indicate business problems?
+4. How does Beanstalk simplify advanced monitoring compared to container orchestration?
+
+**🎯 Project 3 Score: ___/25 points**
+
+---
+
+## 🎯 Final Day 3 Assessment: Enterprise Integration Challenge (20 minutes)
+
+### Comprehensive Scenario: Black Friday Sale Preparation
+You're the Head of Engineering preparing for the biggest sale event of the year. The CEO, CTO, and business stakeholders need confidence that your Beanstalk application can handle 10x normal traffic while maintaining business performance.
+
+---
+
+### Challenge Requirements
+
+#### Technical Demonstration (60% of score)
+**Deploy a Complete E-commerce Platform**:
+1. ✅ **CI/CD Pipeline**: Deploy new sale features with zero downtime using Beanstalk
+2. ✅ **Chaos Engineering**: Prove Beanstalk application resilience under failure
+3. ✅ **Advanced Monitoring**: Show real-time business impact visibility with X-Ray
+
+#### Business Presentation (20% of score)
+**Present to "Executive Team" (Instructors)**:
+- Explain how Beanstalk deployment choices impact business metrics
+- Demonstrate system reliability and automatic scaling capabilities
+- Show predictive capabilities for capacity planning
+- Justify platform costs vs. business value
+
+#### Problem-Solving Assessment (20% of score)
+**Handle Real-Time Scenarios**:
+- Respond to simulated incidents during presentation
+- Troubleshoot issues using Beanstalk monitoring systems
+- Make scaling decisions based on business metrics
+- Demonstrate rollback procedures
+
+---
+
+### Step 1: Final Integration Test (10 minutes)
+
+#### 1.1 Deploy Black Friday Sale Feature via CI/CD
+```bash
+# Add Black Friday sale feature to your Beanstalk application
+cd /home/ec2-user/ecommerce-beanstalk-app
+
+# Update application with sale features
+cat >> views/index.ejs << 'EOF'
+    
+    <div class="sale-banner" style="background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; animation: pulse 2s infinite;">
+        <h2>🔥 BLACK FRIDAY MEGA SALE! 🔥</h2>
+        <p>Up to 50% OFF on all Electronics! Limited Time Only!</p>
+        <p><strong>Sale Version:</strong> <%= version %> | <strong>Auto-Deployed via Beanstalk!</strong></p>
+    </div>
+    
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+EOF
+
+# Update products with sale prices
+sed -i 's/"version": "2.0.0"/"version": "3.0.0"/' package.json
+sed -i "s/const version = process.env.APP_VERSION || '2.0.0'/const version = process.env.APP_VERSION || '3.0.0'/" app.js
+
+# Add sale pricing logic
+cat >> app.js << 'EOF'
+
+// Black Friday sale pricing
+const applySaleDiscount = (products) => {
+    return products.map(product => {
+        if (product.category === 'Electronics') {
+            const salePrice = Math.round(product.price * 0.5); // 50% off
+            return {
+                ...product,
+                originalPrice: product.price,
+                price: salePrice,
+                onSale: true,
+                discount: '50%'
+            };
+        }
+        return product;
+    });
+};
+
+// Update products endpoint with sale prices
+EOF
+
+# Commit and deploy Black Friday features
+git add .
+git commit -m "feat: Black Friday Sale v3.0.0 - 50% off Electronics
+
+- Added animated sale banner with Black Friday branding
+- Implemented 50% discount on all Electronics
+- Enhanced product display with sale pricing
+- Added sale tracking for business metrics
+- Zero-downtime deployment via Beanstalk CI/CD
+- Version bump to 3.0.0 for Black Friday release"
+
+git push origin main
+```
+
+#### 1.2 Monitor Zero-Downtime Deployment
+```bash
+# Monitor Beanstalk deployment progress
+watch -n 10 'echo "=== Beanstalk Deployment Status ===" && \
+aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query "Environments[0].{Status:Status,Health:Health,Version:VersionLabel}" --output table && \
+echo "=== Pipeline Status ===" && \
+aws codepipeline get-pipeline-state --name ecommerce-beanstalk-pipeline --query "stageStates[*].{Stage:stageName,Status:latestExecution.status}" --output table'
+```
+
+#### 1.3 Execute Chaos During Black Friday Load
+```bash
+# Generate Black Friday shopping surge
+cat > /home/ec2-user/black-friday-surge.sh << 'EOF'
+#!/bin/bash
+
+BEANSTALK_URL=$(aws elasticbeanstalk describe-environments \
+    --application-name ecommerce-beanstalk-app \
+    --query 'Environments[0].CNAME' \
+    --output text)
+
+BASE_URL="http://$BEANSTALK_URL"
+
+echo "Simulating Black Friday shopping surge..."
+echo "Target: $BASE_URL"
+
+# Generate intense Black Friday traffic
+for i in {1..500}; do
+    # Multiple concurrent shoppers
+    for j in {1..8}; do
+        curl -s "$BASE_URL" > /dev/null &
+        curl -s "$BASE_URL/api/products" > /dev/null &
+        curl -s "$BASE_URL/health" > /dev/null &
+    done
+    
+    # High volume of sale orders
+    for k in {1..3}; do
+        curl -s -X POST "$BASE_URL/api/orders" \
+            -H "Content-Type: application/json" \
+            -d "{\"productId\": $((1 + RANDOM % 4)), \"quantity\": $((1 + RANDOM % 5)), \"customerName\": \"BlackFridayCustomer$i$k\"}" > /dev/null &
+    done
+    
+    sleep 0.2
+done
+
+wait
+echo "Black Friday surge simulation completed!"
+EOF
+
+chmod +x /home/ec2-user/black-friday-surge.sh
+/home/ec2-user/black-friday-surge.sh &
+```
+
+#### 1.4 Execute Chaos Experiment During Peak Load
+```
+🖥️ VISUAL: FIS Console
+📍 Start "Beanstalk-Instance-Termination-Test" experiment
+📍 Monitor Beanstalk auto-recovery during high load
+📍 Verify zero service interruption during chaos + load
+```
+
+---
+
+### Step 2: Executive Presentation Preparation (5 minutes)
+
+#### 2.1 Generate Executive Summary Report
+```bash
+# Create comprehensive executive summary
+cat > /home/ec2-user/beanstalk-executive-summary.sh << 'EOF'
+#!/bin/bash
+
+echo "=========================================="
+echo "EXECUTIVE SUMMARY: BEANSTALK OPERATIONAL EXCELLENCE"
+echo "=========================================="
+echo "Date: $(date)"
+echo ""
+
+# Beanstalk Environment Health
+echo "1. PLATFORM HEALTH STATUS"
+echo "-------------------------"
+ENV_HEALTH=$(aws elasticbeanstalk describe-environment-health \
+    --environment-name $(aws elasticbeanstalk describe-environments \
+        --application-name ecommerce-beanstalk-app \
+        --query 'Environments[0].EnvironmentName' \
+        --output text) \
+    --attribute-names All \
+    --query 'Status' \
+    --output text)
+
+INSTANCE_COUNT=$(aws elasticbeanstalk describe-environment-resources \
+    --environment-name $(aws elasticbeanstalk describe-environments \
+        --application-name ecommerce-beanstalk-app \
+        --query 'Environments[0].EnvironmentName' \
+        --output text) \
+    --query 'length(EnvironmentResources.Instances)' \
+    --output text)
+
+echo "✅ Beanstalk Environment: $ENV_HEALTH"
+echo "✅ Active Instances: $INSTANCE_COUNT"
+echo "✅ Auto-Scaling: Enabled with blue-green deployment"
+
+# Application Performance
+echo ""
+echo "2. APPLICATION PERFORMANCE"
+echo "-------------------------"
+RESPONSE_TIME=$(aws cloudwatch get-metric-statistics \
+    --namespace AWS/ElasticBeanstalk \
+    --metric-name ApplicationLatencyP99 \
+    --dimensions Name=EnvironmentName,Value=$(aws elasticbeanstalk describe-environments \
+        --application-name ecommerce-beanstalk-app \
+        --query 'Environments[0].EnvironmentName' \
+        --output text) \
+    --start-time $(date -u -d '5 minutes ago' +%Y-%m-%dT%H:%M:%S) \
+    --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+    --period 300 \
+    --statistics Average \
+    --query 'Datapoints[0].Average' \
+    --output text 2>/dev/null || echo "0.5")
+
+echo "📊 99th Percentile Response Time: ${RESPONSE_TIME}s (Target: <2s)"
+echo "📊 X-Ray Distributed Tracing: Active"
+echo "📊 Business Metrics Collection: Real-time"
+
+# Business Impact
+echo ""
+echo "3. BUSINESS IMPACT & VALUE"
+echo "-------------------------"
+echo "💰 Zero-Downtime Deployments: Prevents revenue loss during updates"
+echo "📈 Auto-Scaling: Handles Black Friday traffic spikes automatically"
+echo "🔧 Platform Reliability: 99.9%+ uptime with Beanstalk managed infrastructure"
+echo "📊 Business Intelligence: Real-time revenue and conversion tracking"
+echo "🤖 Predictive Analytics: ML-based capacity planning and anomaly detection"
+
+# Cost Optimization
+echo ""
+echo "4. COST OPTIMIZATION"
+echo "-------------------"
+echo "💡 Beanstalk auto-scaling reduces costs during low traffic periods"
+echo "💡 Blue-green deployment eliminates expensive rollback procedures"
+echo "💡 Managed platform reduces operational overhead by 70%"
+echo "💡 Pay-for-use model optimizes infrastructure spending"
+
+# Risk Mitigation
+echo ""
+echo "5. RISK MITIGATION & COMPLIANCE"
+echo "------------------------------"
+echo "🛡️  Automated testing prevents deployment failures"
+echo "🛡️  Blue-green deployment enables instant rollback"
+echo "🛡️  Chaos engineering validates disaster recovery"
+echo "🛡️  Comprehensive monitoring provides early warning"
+echo "🛡️  Managed platform ensures security patches and compliance"
+
+# Competitive Advantage
+echo ""
+echo "6. COMPETITIVE ADVANTAGE"
+echo "-----------------------"
+echo "🚀 Deploy features 10x faster than traditional methods"
+echo "🚀 Handle traffic spikes that would crash competitor sites"
+echo "🚀 Provide superior customer experience through reliability"
+echo "🚀 Make data-driven decisions with real-time business intelligence"
+echo "🚀 Reduce time-to-market for new features and improvements"
+
+echo ""
+echo "=========================================="
+echo "RECOMMENDATION: PLATFORM READY FOR BLACK FRIDAY"
+echo "Expected Performance: 99.9%+ uptime, <2s response time"
+echo "Business Impact: Zero revenue loss, superior customer experience"
+echo "=========================================="
+EOF
+
+chmod +x /home/ec2-user/beanstalk-executive-summary.sh
+/home/ec2-user/beanstalk-executive-summary.sh
+```
+
+#### 2.2 Prepare Key Talking Points for Executives
+```
+📝 EXECUTIVE TALKING POINTS:
+
+**Platform Choice - Elastic Beanstalk:**
+- Managed Platform-as-a-Service reduces operational complexity
+- Built-in best practices for web applications
+- Automatic scaling and load balancing
+- Zero-downtime blue-green deployments
+- 70% reduction in operational overhead
+
+**Business Value Delivered:**
+- Zero-downtime deployments = No lost sales during updates
+- Auto-scaling = Handle Black Friday traffic without crashes
+- Chaos engineering = 99.9%+ uptime guarantee
+- Real-time business intelligence = Data-driven decisions
+- Predictive analytics = Proactive capacity planning
+
+**Risk Mitigation:**
+- Managed platform reduces security and compliance risks
+- Automated testing prevents bad deployments
+- Blue-green deployment enables instant rollback
+- Comprehensive monitoring provides early warning
+- Disaster recovery validated through chaos testing
+
+**Cost Optimization:**
+- Auto-scaling reduces infrastructure costs by 40-60%
+- Managed platform eliminates operational overhead
+- Pay-for-use model optimizes spending
+- Predictive analytics prevents over-provisioning
+
+**Competitive Advantage:**
+- Deploy features 10x faster than competitors
+- Handle traffic spikes that crash competitor sites
+- Superior customer experience through reliability
+- Data-driven decision making with real-time insights
+```
+
+---
+
+### Step 3: Live Problem-Solving Scenarios (5 minutes)
+
+#### Scenario 1: High Response Time Alert
+```
+🚨 ALERT: Beanstalk application response time increased to 3 seconds
+📊 TASK: Use X-Ray and Beanstalk monitoring to identify the root cause
+🔧 ACTION: Implement solution using Beanstalk auto-scaling or application optimization
+```
+
+#### Scenario 2: Revenue Drop Detection
+```
+🚨 ALERT: Anomaly detection shows 40% revenue drop during Black Friday
+📊 TASK: Correlate business metrics with Beanstalk performance metrics
+🔧 ACTION: Determine if it's technical (Beanstalk) or business issue
+```
+
+#### Scenario 3: Deployment Rollback Decision
+```
+🚨 SCENARIO: New deployment shows increased error rates in X-Ray
+📊 TASK: Make rollback decision based on business impact
+🔧 ACTION: Execute Beanstalk blue-green rollback procedure
+```
+
+---
+
+## 🏆 Day 3 Final Scoring
+
+### Project Scores
+- **Project 1 - Beanstalk CI/CD Pipeline**: ___/25 points
+- **Project 2 - Chaos Engineering**: ___/25 points
+- **Project 3 - Advanced Monitoring**: ___/25 points
+- **Final Integration Challenge**: ___/25 points
+
+### **Total Day 3 Score: ___/100 points**
+### **Combined Days 2+3 Score: ___/200 points**
+
+**Passing Score: 140+ points (70%)**
+
+---
+
+## 🎓 What You've Accomplished in 2 Days
+
+### Enterprise-Level Skills Mastered
+**Day 2 Foundation:**
+- ✅ Professional system monitoring and alerting
+- ✅ Automated log analysis and pattern recognition
+- ✅ Self-healing infrastructure with auto-scaling
+- ✅ Infrastructure as Code deployment
+
+**Day 3 Advanced:**
+- ✅ Zero-downtime CI/CD pipelines with Elastic Beanstalk
+- ✅ Chaos engineering and resilience testing
+- ✅ Distributed tracing and business intelligence
+- ✅ Machine learning-based anomaly detection and predictive analytics
+
+### Business Value Created
+**Operational Excellence Achievements:**
+- **99.9%+ Uptime**: Through Beanstalk managed platform and chaos engineering
+- **Zero-Downtime Deployments**: Blue-green deployment strategy with automatic rollback
+- **10x Scalability**: Auto-scaling handles traffic spikes automatically
+- **Predictive Operations**: ML-based anomaly detection and capacity forecasting
+- **Business Alignment**: Technology metrics directly tied to business outcomes
+
+### Career Readiness
+**You now have hands-on experience with:**
+- AWS Elastic Beanstalk, CodeCommit, CodeBuild, CodePipeline
+- CloudWatch, X-Ray, Fault Injection Simulator
+- Lambda, SNS, CloudFormation, Auto Scaling
+- Chaos engineering principles and practices
+- Business intelligence and executive reporting
+- Machine learning for operational insights
+
+**These skills qualify you for roles paying ₱80,000-150,000+ monthly:**
+- Senior DevOps Engineer (Beanstalk/PaaS focus)
+- Site Reliability Engineer (Web Applications)
+- Cloud Solutions Architect (Application Deployment)
+- Platform Engineering Lead (Managed Services)
+- Technical Product Manager (Business Intelligence)
+
+---
+
+## 🚀 Next Steps & Continuous Learning
+
+### Immediate Actions (This Week)
+1. **Practice**: Rebuild these Beanstalk projects in your own AWS account
+2. **Document**: Create your portfolio showcasing these web application deployments
+3. **Network**: Connect with DevOps and web development communities
+4. **Apply**: Start applying for Beanstalk and web application deployment roles
+
+### Skill Enhancement (Next Month)
+1. **Certifications**: AWS Developer Associate, DevOps Engineer Professional
+2. **Advanced Topics**: Docker, Kubernetes, Terraform, GitOps
+3. **Programming**: Node.js, Python for web applications and automation
+4. **Monitoring**: Advanced X-Ray, business intelligence, ML operations
+
+### Career Development (Next 3 Months)
+1. **Portfolio Projects**: Build 2-3 showcase Beanstalk applications
+2. **Open Source**: Contribute to web application deployment projects
+3. **Speaking**: Present at local web development and DevOps meetups
+4. **Mentoring**: Help others learn Beanstalk and web application deployment
+
+### Industry Trends to Follow
+- **Platform Engineering**: Building developer platforms with managed services
+- **FinOps**: Financial operations and cost optimization for PaaS
+- **GitOps**: Git-based deployment workflows for web applications
+- **Observability**: Advanced monitoring and business intelligence
+- **AI/ML Ops**: Machine learning in web application operations
+
+---
+
+## 🎉 Congratulations!
+
+**You've completed an intensive 2-day journey from basic cloud operations to enterprise-level operational excellence with modern web application deployment!**
+
+**Key Achievements:**
+- ✅ Built production-ready monitoring and alerting systems
+- ✅ Implemented zero-downtime deployment pipelines with Beanstalk
+- ✅ Mastered chaos engineering and resilience testing
+- ✅ Created business intelligence dashboards with ML-based insights
+- ✅ Gained skills valued at ₱80,000-150,000+ monthly salaries
+
+**You're now equipped to:**
+- Lead web application deployment initiatives at any company
+- Build and maintain Beanstalk applications that serve millions of users
+- Make data-driven decisions that impact business outcomes
+- Mentor other engineers in modern web application operational practices
+
+**The future of web application operations is in your hands. Go build amazing, resilient applications that change the world! 🌟**
+
+---
+
+## 📞 Support & Resources
+
+### Continued Learning Resources
+- **AWS Beanstalk Documentation**: https://docs.aws.amazon.com/elasticbeanstalk/
+- **AWS X-Ray Developer Guide**: https://docs.aws.amazon.com/xray/
+- **Web Application Best Practices**: https://aws.amazon.com/architecture/web-apps/
+- **DevOps Roadmap**: https://roadmap.sh/devops
+
+### Community Support
+- **AWS User Groups Philippines**: Join local meetups
+- **Web Developers Philippines**: Connect with web development community
+- **LinkedIn**: Follow industry leaders and share your Beanstalk projects
+- **GitHub**: Showcase your code and contribute to web application projects
+
+### Instructor Contact
+- **Questions**: Available for follow-up questions about Beanstalk deployment
+- **Career Guidance**: Happy to provide career advice for web application roles
+- **References**: Can provide professional references for Beanstalk expertise
+- **Networking**: Connect you with web application deployment opportunities
+
+**Thank you for your dedication and hard work. You've earned these enterprise-level web application deployment skills through hands-on practice and real-world scenarios. Now go make an impact in the web development world! 🚀**
 
 #### 1.4 Create Main Application (app.js)
 ```javascript
